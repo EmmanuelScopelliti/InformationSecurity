@@ -1,0 +1,81 @@
+{% block block_zen_gallery_heading_buybox %}
+    {% set galleryWidthConfig = theme_config('zen-product-gallery-slider-width') ?: 7 %}
+    {% set buyboxWidthConfig = theme_config('zen-product-gallery-slider-width') ? 12 - theme_config('zen-product-gallery-slider-width') : 5 %}
+
+    {% if galleryWidthConfig > 6 %}
+        {% set columns = 1 %}
+    {% else %}
+        {% set columns = 2 %}
+    {% endif %}
+
+    {% block block_zen_gallery_heading_buybox_column_left %}
+        {% set element = block.slots.getSlot('left') %}
+        {% set config = element.fieldConfig.elements %}
+
+        <div class="col-lg-7 col-xl-{{ galleryWidthConfig }} product-detail-media"
+             data-cms-element-id="{{ element.id }}">
+            {% block block_zen_gallery_heading_buybox_column_left_inner %}
+                {% sw_include "@Storefront/storefront/element/cms-element-" ~ element.type ~ ".html.twig" ignore missing
+                    with {
+                    'isProduct': config.sliderItems.value == 'product.media' and config.sliderItems.source == 'mapped',
+                    'startIndexThumbnails': 1,
+                    'startIndexSlider': 1,
+                    'fallbackImageTitle': page.product.translated.name
+                } %}
+            {% endblock %}
+        </div>
+    {% endblock %}
+
+    {% block block_zen_gallery_heading_buybox_column_right %}
+        {% set buyboxElement = block.slots.getSlot('right-bottom') %}
+        {% set productNameElement = block.slots.getSlot('right-top-left') %}
+        {% set manufacturerLogoElement = block.slots.getSlot('right-top-right') %}
+
+        <div class="col-lg-5 col-xl-{{ buyboxWidthConfig }} product-detail-buy" data-cms-element-id="{{ buyboxElement.id }}" data-sticky-buybox="true">
+            {% block block_zen_gallery_heading_buybox_column_right_top %}
+                {% block block_zen_gallery_heading_buybox_product_heading %}
+                    <div class="row product-detail-headline">
+
+                        {% block block_zen_gallery_heading_buybox_product_name_element %}
+                            <div class="col product-heading-name-container" data-cms-element-id="{{ productNameElement.id }}">
+                                {% block block_zen_gallery_heading_buybox_product_name_inner %}
+                                    {# ... get totalReviews from buyboxElement #}
+                                    {% sw_include "@Storefront/storefront/element/cms-element-" ~ productNameElement.type ~ ".html.twig" ignore missing with {
+                                        element: productNameElement,
+                                        totalReviews: buyboxElement.data.totalReviews
+                                    } %}
+                                {% endblock %}
+                            </div>
+                        {% endblock %}
+            
+                        {% block block_zen_gallery_heading_buybox_product_manufacturer_logo_element %}
+                            <div class="col-md-auto product-heading-manufacturer-logo-container" data-cms-element-id="{{ manufacturerLogoElement.id }}">
+                                {% block block_zen_gallery_heading_buybox_product_manufacturer_logo_inner %}
+                                    {% sw_include "@Storefront/storefront/element/cms-element-" ~ manufacturerLogoElement.type ~ ".html.twig" ignore missing with {
+                                        element: manufacturerLogoElement
+                                    } %}
+                                {% endblock %}
+                            </div>
+                        {% endblock %}
+                    </div>
+
+                    {% block block_zen_gallery_heading_buybox_product_short_description %}
+                        {% if page.product.translated.metaDescription and theme_config('zen-product-details-short-description') %}
+                            <div class="product-detail-short-description">
+                                {{ page.product.translated.metaDescription|raw }}
+                            </div>
+                        {% endif %}
+                    {% endblock %}
+                {% endblock %}
+            {% endblock %}
+    
+            {% block block_zen_gallery_heading_buybox_buybox_element %}
+                {% block block_zen_gallery_heading_buybox_buybox_inner %}
+                    {% sw_include "@Storefront/storefront/element/cms-element-" ~ buyboxElement.type ~ ".html.twig" ignore missing with {
+                        element: buyboxElement
+                    }%}
+                {% endblock %}
+            {% endblock %}
+        </div>
+    {% endblock %}
+{% endblock %}

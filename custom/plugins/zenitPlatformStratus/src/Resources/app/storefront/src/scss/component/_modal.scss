@@ -1,0 +1,17 @@
+.modal-content {
+    @include border-radius($zen-layout-element-radius * 1px);
+
+    @if $zen-container-bg == transparent {
+        background: $body-bg;
+    } @else {
+        background: $zen-container-bg;
+    }
+}
+
+.modal-header {
+    @include border-top-radius($zen-layout-element-radius * 1px);
+
+    .icon {
+        @include text-color-contrast;
+    }
+}

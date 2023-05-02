@@ -1,0 +1,93 @@
+{% sw_extends '@Storefront/storefront/page/content/index.html.twig' %}
+
+{% block base_main_inner %}
+    <div class="container-main">
+        {% block page_content %}
+
+            {# ... checks if custom zenit-breadcrumb is in use #}
+            {% set defaultBreadcrumbs = true %}
+            {% for section in page.cmsPage.sections %}
+                {% for block in section.blocks %}
+                    {% if block.type is same as ('zenit-breadcrumb') %}
+                        {% set defaultBreadcrumbs = false %}
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+
+            {% if theme_config("zen-category-header-position") is same as ('absolute')
+                or (theme_config("zen-category-header-position") is same as ('relative') and zenCustomFields.category.zenit_stratus_category_header_position is same as ('absolute')) %}
+                {% set sectionCategoryOverlay = true %}
+            {% endif %}
+
+            {% if theme_config("zen-category-image") is same as (true) and zenCustomFields.category.zenit_stratus_category_image is not same as ('hide')
+                or ( theme_config("zen-category-image") is same as (false) and (zenCustomFields.category.zenit_stratus_category_image is same as ('display')) ) %}
+                {% set allowCategoryImage = true %}
+            {% endif %}
+
+            {# ... checks if there is either a category image or a
+            section image to prevent unwanted hero-sections #}
+            {% set hasCategoryImage = false %}
+            {% if allowCategoryImage %}
+                {% set categoryMedia = page.header.navigation.active.media %}
+
+                {% if categoryMedia %}
+                    {% set hasCategoryImage = true %}
+                {% else %}
+                    {# ... there is not category media, so we have to check if there exists any fallback #}
+                    {% for section in page.cmsPage.sections %}
+                        {% if loop.index is same as (1) %}
+                            {% set sectionBgImg = section.backgroundMedia|sw_encode_media_url %}
+
+                            {% if sectionBgImg %}
+                                {% set hasCategoryImage = true %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+
+            {% if zenCustomFields.category.zenit_stratus_category_image_color is not empty %}
+                {% set hasCategoryBgColor = true %}
+            {% endif %}
+
+            {% if hasCategoryBgColor is same as (true) or hasCategoryImage is same as (true) %}
+                {% set isHeroSection = true %}
+            {% endif %}
+
+            {# ... if not a hero section #}
+            {% if isHeroSection is not same as (true) and defaultBreadcrumbs %}
+                {# ... check if there is any breadcrumb to show #}
+                {% if sw_breadcrumb_full(page.header.navigation.active, context.context) %}
+                    <div class="breadcrumb-container">
+                        <div class="container">
+                            <div class="breadcrumb-wrap cms-breadcrumb justify-content-{{ theme_config('zen-breadcrumbs-align')|replace({'flex-': ''}) }}">
+                                {% block cms_breadcrumb %}
+                                    {% sw_include '@Storefront/storefront/layout/breadcrumb.html.twig' with {
+                                        navigationTree: page.header.navigation.tree,
+                                        category: page.header.navigation.active
+                                    } only %}
+                                {% endblock %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+
+            {% block cms_content %}
+                {% set cmsPageClasses = ('cms-page ' ~ page.cmsPage.cssClass|striptags)|trim %}
+                <div class="{{ cmsPageClasses }}">
+                    {% block page_content_blocks %}
+                        {% sw_include "@Storefront/storefront/page/content/detail.html.twig" with {
+                            'cmsPage': page.cmsPage,
+                            'defaultBreadcrumbs': defaultBreadcrumbs,
+                            'sectionCategoryOverlay': sectionCategoryOverlay,
+                            'hasCategoryImage': hasCategoryImage,
+                            'hasCategoryBgColor': hasCategoryBgColor,
+                            'isHeroSection': isHeroSection
+                        } %}
+                    {% endblock %}
+                </div>
+            {% endblock %}
+        {% endblock %}
+    </div>
+{% endblock %}

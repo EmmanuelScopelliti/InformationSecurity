@@ -1,0 +1,18 @@
+/*
+Custom Variables
+==================================================
+Contains overrides of bootstrap and shopware default variables with non theme config variables.
+
+https://getbootstrap.com/docs/4.3/getting-started/theming/#variable-defaults
+*/
+$modal-backdrop-opacity:                        1 !default; // 1 because backdrop has transparency already and backdrop-filter looks terrible with any opacity < 1
+
+// Tables
+$table-accent-bg:                               rgba(#ffffff, .05) !default;
+$table-accent-bg-dark:                          rgba(#000000, .05) !default;
+
+$magnifier-overlay-zindex:                      1000 !default; // changed 1100 to 1000 to prevent overlaying sticky header
+
+$tooltip-opacity:                               1 !default;
+
+$btn-transition:                                color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .3s ease !default;

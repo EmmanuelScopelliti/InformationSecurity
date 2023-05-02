@@ -1,0 +1,3 @@
+<?php //Shopware%255CCore%255CInstaller%255CController%255CDatabaseImportController%2523__construct
+
+return [PHP_INT_MAX, []];

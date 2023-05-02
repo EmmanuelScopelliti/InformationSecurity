@@ -1,0 +1,83 @@
+/*
+Gallery slider
+==============================================
+Styling for gallery slider component.
+Displays images in a slider gallery with thumbnail navigation.
+based on "base-slider" component and "tiny-slider" (https://github.com/ganlanyuan/tiny-slider)
+*/
+
+.gallery-slider-thumbnails-item-inner {
+    @include border-radius($zen-layout-element-radius * 1px);
+}
+
+.gallery-slider-thumbnails-container {
+    &.is-underneath {
+        .tns-outer {
+            margin: 0;
+        }
+    }
+}
+
+.gallery-slider-thumbnails-col {
+    .gallery-slider-thumbnails-controls-prev,
+    .gallery-slider-thumbnails-controls-next {
+        background: $zen-base-slider-controls-inside-bg;
+
+        @if $zen-layout-button-radius == 100 {
+            @include border-radius($zen-layout-button-radius * 1px);
+            width: 50px;
+            height: 50px;
+        }
+
+        .icon {
+            color: $zen-base-slider-controls-inside-color;
+        }
+
+        &:hover {
+            background: $zen-base-slider-controls-inside-hover-bg;
+
+            .icon {
+                color: $zen-base-slider-controls-inside-hover-color;
+            }
+        }
+    }
+
+    @if $zen-layout-button-radius != 100 {
+        .gallery-slider-thumbnails-controls-prev {
+            @include border-top-radius($zen-layout-button-radius * 1px);
+            @include border-bottom-radius(0);
+        }
+
+        .gallery-slider-thumbnails-controls-next {
+            @include border-top-radius(0);
+            @include border-bottom-radius($zen-layout-button-radius * 1px);
+        }
+
+        &.is-underneath {
+            .gallery-slider-thumbnails-controls-prev {
+                @include border-left-radius($zen-layout-button-radius * 1px);
+                @include border-right-radius(0);
+            }
+
+            .gallery-slider-thumbnails-controls-next {
+                @include border-left-radius(0);
+                @include border-right-radius($zen-layout-button-radius * 1px);
+            }
+        }
+    }
+}
+
+/*
+    Is needed to avoid flashing through the background due to pixel
+    inaccuracies on elements with percentage widths.
+ */
+.gallery-slider {
+    .tns-item {
+        padding-right: 1px;
+    }
+}
+
+// ... prevents issue NEXT-9276 | shopping experiences slider imprecise
+.gallery-slider-item-container:not(.tns-slide-active) {
+    padding: 0 1px;
+}

@@ -1,0 +1,67 @@
+{% block element_zenit_features %}
+    {%  set config = element.fieldConfig.elements %}
+
+    <div class="cms-element-{{ element.type }} row">
+        {% block element_zenit_features_inner %}
+
+            {% set textValues = [] %}
+            {% set iconValues = [] %}
+            {% set itemsCount = [] %}
+
+            {% for item in config %}
+                {% if 'Icon' in item.name %}
+                    {% set iconValues = iconValues|merge([item.value]) %}
+                {% else %}
+                    {% if item.value is not iterable %}
+                        {% set textValues = textValues|merge([item.value]) %}
+                    {% endif %}
+
+                    {% if item.value is not empty and item.value is not iterable %}
+                        {% set itemsCount = itemsCount|merge([item.value]) %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            {% set itemsCount = itemsCount|length %}
+            {% if itemsCount > 0 %}
+                {% set gridColumns = [] %}
+
+                {% if section and section.type == 'sidebar' %}
+                    {% set gridColumns = ['col-12'] %}
+                {% else %}
+                    {% set gridColumns = ['col-' ~ 12]|merge(gridColumns) %}
+                    {% set gridColumns = ['col-md-' ~ 12 / 2]|merge(gridColumns) %}
+                    {% set gridColumns = ['col-lg-' ~ 12 / itemsCount]|merge(gridColumns) %}
+                {% endif %}
+
+                {% for item in textValues %}
+                    {% if item is not empty %}
+                        {% set content = item|raw %}
+
+                        {% block element_zenit_features_item %}
+                            <div class="cms-element-{{ element.type }}-element {{ gridColumns|join(' ') }}">
+
+                                {% block element_zenit_features_item_icon %}
+                                    {% sw_include "@Storefront/storefront/utilities/icon.html.twig" with { 'name': iconValues[loop.index0], 'size': 'md', 'class': 'cms-element-zenit-features-icon'} %}
+                                {% endblock %}
+
+                                {% block element_zenit_features_item_text %}
+                                    <div class="cms-element-{{ element.type }}-text">
+                                        {% if config('zenitPlatformStratus.config.twigStringLoaderExtension') %}
+                                            {% sw_include '@zenitPlatformStratus/storefront/utilities/zen-template-from-string.html.twig' with {
+                                                content: content
+                                            } only %}
+                                        {% else %}
+                                            {{ content|raw }}
+                                        {% endif %}
+                                    </div>
+                                {% endblock %}
+                            </div>
+                        {% endblock %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+        {% endblock %}
+    </div>
+{% endblock %}

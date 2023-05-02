@@ -1,0 +1,16 @@
+{% sw_extends '@Storefront/storefront/section/cms-section-sidebar.html.twig' %}
+
+{% block page_content_section_sidebar %}
+    {% set sectionMobileBehaviorClass = 'cms-section-sidebar-mobile-' ~ section.mobileBehavior %}
+    {% set layout = section.sizingMode ? section.sizingMode|replace({"_": "-"}) : "container" %}
+
+    <div class="cms-section-sidebar {{ sectionMobileBehaviorClass }} {{ layout }} row no-gutters"> {# ... @zenit add no-gutters #}
+
+        {% set sidebarBlocks = section.blocks.filterBySectionPosition('sidebar') %}
+        {% set mainContentBlocks = section.blocks.filterBySectionPosition('main') %}
+
+        {{ block('section_sidebar_content') }}
+
+        {{ block('section_main_content') }}
+    </div>
+{% endblock %}

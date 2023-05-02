@@ -1,0 +1,35 @@
+{% sw_extends '@Storefront/storefront/page/product-detail/buy-widget-form.html.twig' %}
+
+{% block page_product_detail_buy_form_inner %}
+    {# @var page \Shopware\Storefront\Page\Product\ProductPage #}
+
+    {# @var product \Shopware\Core\Content\Product\SalesChannel\SalesChannelProductEntity #}
+    {% set product = page.product %}
+
+    {# ... @zenit change add to cart plugin to prevent calling on confirm pages #}
+    <form id="productDetailPageBuyProductForm"
+        action="{% block page_product_detail_buy_form_action %}{{ path('frontend.checkout.line-item.add') }}{% endblock %}"
+        method="post"
+        class="buy-widget"
+        data-zen-add-to-cart="true">
+
+        {{ block('page_product_detail_buy_form_inner_csrf') }}
+
+        {% set buyable = product.available and product.childCount <= 0 and product.calculatedMaxPurchase > 0 %}
+        {{ block('page_product_detail_buy_container') }}
+
+    </form>
+{% endblock %}
+
+
+{% block page_product_detail_buy_redirect_input %}
+    {# ... @zenit change fallback redirect back to cart page is deactivated via js #}
+    <input type="hidden"
+           name="redirectTo"
+           value="frontend.checkout.confirm.page">
+
+    <input type="hidden"
+           name="redirectParameters"
+           data-redirect-parameters="true"
+           value='{"productId": "{{ product.id }}"}'>
+{% endblock %}

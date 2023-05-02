@@ -1,0 +1,42 @@
+{% sw_extends '@Storefront/storefront/utilities/offcanvas.html.twig' %}
+
+{% block utilities_offcanvas_content %}
+    {% block zen_page_product_detail_datasheets_container %}
+        <div class="product-detail-datasheets tab-pane-container">
+            {% set mediaCollection = searchMedia(datasheetsIds, context.context) %}
+
+            {% for datasheetId in datasheetsIds %}
+                {% set datasheetMedia = mediaCollection.get(datasheetId) %}
+
+                {% if datasheetMedia.mediaType.name is same as ('IMAGE') %}
+
+                    {% block zen_page_product_detail_datasheets_image %}
+                        {% sw_thumbnails 'datasheets-image-thumbnails' with {
+                            media: datasheetMedia,
+                            attributes: {
+                                'alt': (datasheetMedia.translated.alt ?: datasheetMedia.translated.name),
+                                'title': (datasheetMedia.translated.title ?: datasheetMedia.translated.name)
+                            }
+                        } %}
+                    {% endblock %}
+                {% else %}
+                    {% block zen_page_product_detail_datasheets_embed %}
+                        <div class="datasheets-embed embed-responsive embed-responsive-1by1">
+                            {% if config('zenitPlatformStratus.config.pdfrenderer') is same as ('pdfjs') %}
+                                {% if context.context.extensions['zenitPlatformStratus'].system is not defined %}
+                                    {% set viewer = asset('bundles/zenitplatformstratus/assets/pdfviewer/web/viewer.html?file=') %}
+                                    <iframe class="embed-responsive-item" loading="lazy" src="{{ viewer }}{{ datasheetMedia.url|url_encode }}" frameborder="0"></iframe>
+                                {% else %}
+                                    {% set viewer = asset('bundles/zenitplatformstratus/storefront/assets/pdfviewer/web/viewer.html?file=') %}
+                                    <iframe class="embed-responsive-item" loading="lazy" src="{{ viewer }}{{ datasheetMedia.url|url_encode }}" frameborder="0"></iframe>
+                                {% endif %}
+                            {% else %}
+                                <iframe class="embed-responsive-item" loading="lazy" src="https://docs.google.com/viewer?url={{ datasheetMedia.url|url_encode }}&embedded=true" frameborder="0"></iframe>
+                            {% endif %}
+                        </div>
+                    {% endblock %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endblock %}
+{% endblock %}

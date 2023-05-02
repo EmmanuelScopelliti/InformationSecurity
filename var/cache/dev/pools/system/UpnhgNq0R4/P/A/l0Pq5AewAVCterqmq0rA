@@ -1,0 +1,3 @@
+<?php //%5BC%5DShopware%255CCore%255CInstaller%255CController%255CDatabaseConfigurationController%2523databaseInformation
+
+return [PHP_INT_MAX, 1683030535];

@@ -1,0 +1,48 @@
+{% sw_extends '@Storefront/storefront/layout/navigation/categories.html.twig' %}
+
+{# ... custom fields #}
+{% set zenCustomFields = {
+    category: page.header.navigation.active.translated.customFields,
+} %}
+
+{% block layout_navigation_categories_item %}
+    {# ... override navigation MaxDepth, taking into account that the flyout menu starts
+    counting the level without top categories level, unlike the sidebar categories.
+    So we have to reduce zen-flyout-navigation-max-depth by one #}
+    {% if theme_config('zen-flyout-navigation-max-depth') %}
+        {% set navigationMaxDepth = theme_config('zen-flyout-navigation-max-depth') - 1 %}
+    {% else %}
+        {% set navigationMaxDepth = 3 %}
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block layout_navigation_categories_item_link %}
+    {% if treeItem.category.type == 'folder' %}
+        <div class="nav-item nav-link navigation-flyout-link is-level-{{ level }}"
+             title="{{ name }}">
+            <span itemprop="name">{{ name }}</span>
+
+            {# ... add badge #}
+            {% sw_include '@zenitPlatformStratus/storefront/layout/navigation/zen-navigation-badge.html.twig' with {
+                category: treeItem.category,
+            } only %}
+        </div>
+    {% else %}
+        <a class="nav-item nav-link navigation-flyout-link is-level-{{ level }}{% if id == activeId or id in activePath %} active{% endif %}"
+           href="{{ link }}"
+           itemprop="url"
+           {% if category_linknewtab(treeItem.category) %}target="_blank"
+           {% if treeItem.category.linkType == "external" %}rel="noopener noreferrer"{% endif %}
+            {% endif %}
+           title="{{ name }}">
+            <span itemprop="name">{{ name }}</span>
+
+            {# ... add badge #}
+            {% sw_include '@zenitPlatformStratus/storefront/layout/navigation/zen-navigation-badge.html.twig' with {
+                category: treeItem.category,
+            } only %}
+        </a>
+    {% endif %}
+{% endblock %}

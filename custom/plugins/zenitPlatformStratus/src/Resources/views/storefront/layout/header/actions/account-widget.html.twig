@@ -1,0 +1,8 @@
+{% sw_extends '@Storefront/storefront/layout/header/actions/account-widget.html.twig' %}
+
+{% block layout_header_actions_account_widget_dropdown_menu %}
+    <div class="dropdown-menu dropdown-menu-right account-menu-dropdown shadow js-account-menu-dropdown"
+         aria-labelledby="accountWidget">
+        {% sw_include '@Storefront/storefront/layout/header/account-menu.html.twig' %}
+    </div>
+{% endblock %}

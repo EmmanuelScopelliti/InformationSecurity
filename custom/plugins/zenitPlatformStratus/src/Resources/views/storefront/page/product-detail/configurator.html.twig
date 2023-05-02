@@ -1,0 +1,12 @@
+{% sw_extends '@Storefront/storefront/page/product-detail/configurator.html.twig' %}
+
+{% block page_product_detail_configurator_form %}
+    {% if quickviewContext and context.context.extensions['zenitPlatformStratus'].system is defined %}
+        {% set config = {
+            url: url('widgets.zenit.PlatformStratus.quickview.variant', { productId: page.product.parentId }),
+            elementId: 'zenitQuickview'
+        } %}
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}

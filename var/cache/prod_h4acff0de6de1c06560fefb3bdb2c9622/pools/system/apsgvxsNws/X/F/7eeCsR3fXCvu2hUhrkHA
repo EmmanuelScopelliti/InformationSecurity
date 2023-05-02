@@ -1,0 +1,32 @@
+<?php //Shopware%255CCore%255CSystem%255CCustomEntity%255CApi%255CCustomEntityApiController%2523create
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['Symfony\\Component\\Routing\\Annotation\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Routing\\Annotation\\Route')),
+    ],
+    null,
+    [
+        'Symfony\\Component\\Routing\\Annotation\\Route' => [
+            'path' => [
+                '/api/custom-entity-{entityName}{path}',
+            ],
+            'name' => [
+                'api.custom_entity_entity.create',
+            ],
+            'requirements' => [
+                [
+                    'path' => '(\\/[0-9a-f]{32}\\/(extensions\\/)?[a-zA-Z-]+)*\\/?$',
+                ],
+            ],
+            'methods' => [
+                [
+                    'POST',
+                ],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+    ],
+    []
+); }];

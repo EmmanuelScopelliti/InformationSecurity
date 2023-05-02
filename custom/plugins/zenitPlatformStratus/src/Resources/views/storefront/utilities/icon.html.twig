@@ -1,0 +1,16 @@
+{% sw_extends '@Storefront/storefront/utilities/icon.html.twig' %}
+
+{% block utilities_icon %}
+    {# ... change icons without extending every block #}
+    {% set icons = [ 'heart', 'heart-fill', 'avatar', 'bag', 'help', 'stack', 'search', 'x', 'eye-open' ] %}
+
+    {% if pack is not defined and theme_config('zen-icon-set') is not same as ('default') %}
+        {% if name in icons %}
+            {% set pack = theme_config('zen-icon-set') %}
+            {% set namespace = 'zenitPlatformStratus' %}
+        {% endif %}
+    {% endif %}
+
+    {{ parent() }}
+
+{% endblock %}

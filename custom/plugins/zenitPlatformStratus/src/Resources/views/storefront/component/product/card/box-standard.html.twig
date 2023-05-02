@@ -1,0 +1,145 @@
+{% sw_extends '@Storefront/storefront/component/product/card/box-standard.html.twig' %}
+
+{% block component_product_box_name %}
+    {% if theme_config('zen-product-listing-card-ordernumber') == 'prepend' and product.productNumber %}
+        <div class="product-ordernumber">{{ product.productNumber }}</div>
+    {% endif %}
+
+    {{ parent() }}
+
+    {% if theme_config('zen-product-listing-card-ordernumber') == 'append' and product.productNumber %}
+        <div class="product-ordernumber">{{ product.productNumber }}</div>
+    {% endif %}
+{% endblock %}
+
+{% block component_product_box_image %}
+
+    {# fallback if display mode is not set #}
+    {% set displayMode = displayMode ?: 'standard' %}
+
+    {# set display mode 'cover' for box-image with default display mode #}
+    {% if layout == 'image' and displayMode == 'standard' %}
+        {% set displayMode = 'cover' %}
+    {% endif %}
+
+    <div class="product-image-wrapper is-{{ displayMode }}">
+
+        {% block component_product_box_image_link %}
+            <a href="{{ seoUrl('frontend.detail.page', { 'productId': id }) }}"
+               title="{{ name }}"
+               class="product-image-link is-{{ displayMode }}">
+                {% block component_product_box_image_link_inner %}
+                    {% if cover.url %}
+                        {% set attributes = {
+                            'class': 'product-image is-'~displayMode,
+                            'alt': (cover.translated.alt ?: name),
+                            'title': (cover.translated.title ?: name)
+                        } %}
+
+                        {% if displayMode == 'cover' or displayMode == 'contain' %}
+                            {% set attributes = attributes|merge({ 'data-object-fit': displayMode }) %}
+                        {% endif %}
+
+                        {# ... enables lazy loading for images #}
+                        {% if config('zenitPlatformStratus.config.lazyloading') and element.type is not same as ('product-slider') %}
+                            {% set attributes = attributes|merge({ 'loading': 'lazy' }) %}
+                        {% endif %}
+
+                        {% block component_product_box_image_thumbnail %}
+                            {% sw_thumbnails 'product-image-thumbnails' with {
+                                media: cover,
+                                sizes: sizes
+                            } %}
+                        {% endblock %}
+                    {% else %}
+                        {% block component_product_box_image_placeholder %}
+                            <div class="product-image-placeholder">
+                                {% sw_icon 'placeholder' style {
+                                    'size': 'fluid'
+                                } %}
+                            </div>
+                        {% endblock %}
+                    {% endif %}
+
+                    {% block zen_component_product_box_image_switch %}
+                        {% sw_include '@zenitPlatformStratus/storefront/component/product/card/zen-cover-switch.html.twig' %}
+                    {% endblock %}
+                {% endblock %}
+            </a>
+        {% endblock %}
+
+        {% block zen_component_product_box_overlay_product_actions %}
+            <div class="overlay-product-actions">
+                {% block zen_component_product_box_overlay_product_actions_inner %}
+                    {% if config('core.cart.wishlistEnabled') %}
+                        {% block component_product_box_wishlist_action %}
+                            {% sw_include '@Storefront/storefront/component/product/card/wishlist.html.twig' with {
+                                appearance: 'circle',
+                                productId: id,
+                                tooltip: true,
+                                tooltipPlacement: 'left'
+                            } %}
+                        {% endblock %}
+                    {% endif %}
+
+                    {% if theme_config('zen-product-listing-card-actions-quickview') %}
+                        {% block zen_component_product_box_quickview_action %}
+                            {% sw_include '@zenitPlatformStratus/storefront/component/product/card/zen-action-quickview-toggle.html.twig' with {
+                                tooltip: true,
+                                tooltipPlacement: 'left'
+                            } %}
+                        {% endblock %}
+                    {% endif %}
+                {% endblock %}
+            </div>
+        {% endblock %}
+
+        {% block zen_component_product_box_action_overlay_rating %}
+            {% if config('core.listing.showReview') and theme_config('zen-product-listing-card-rating-position') is not same as ('default') %}
+
+                <div class="product-rating">
+                    {% if product.ratingAverage %}
+                        {% sw_include '@Storefront/storefront/component/review/rating.html.twig' with {
+                            points: product.ratingAverage,
+                            style: 'text-primary'
+                        } %}
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endblock %}
+
+        {% block zen_component_product_box_action_overlay %}
+            {% if theme_config('zen-product-listing-card-actions') is same as ('overlay') %}
+                {% sw_include '@Storefront/storefront/component/product/card/action.html.twig' %}
+            {% endif %}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block component_product_box_rating %}
+    {% if theme_config('zen-product-listing-card-rating-position') is same as ('default') %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block component_product_box_variant_characteristics %}
+    {% if theme_config('zen-product-listing-card-variant-characteristics') %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block component_product_box_description %}
+    {% if theme_config('zen-product-listing-card-meta-description') and product.translated.metaDescription|striptags|raw is not empty %}
+        <div class="product-description">
+            {{ product.translated.metaDescription|striptags|raw }}
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+ {% block component_product_box_action %}
+     {% if theme_config('zen-product-listing-card-actions') is not same as ('overlay') %}
+         {{ parent() }}
+     {% endif %}
+ {% endblock %}

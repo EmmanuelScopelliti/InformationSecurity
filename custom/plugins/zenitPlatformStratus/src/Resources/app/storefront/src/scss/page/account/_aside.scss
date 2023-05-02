@@ -1,0 +1,94 @@
+.account-aside-header {
+    @include headline-color-contrast;
+}
+
+.account-aside-list-group {
+    padding-top: $spacer;
+    padding-bottom: $spacer;
+}
+
+.account-content-aside {
+
+    @if $zen-sidebar-navigation-border == 1 {
+        .card-header {
+            + .list-group {
+                .list-group-item:first-child {
+                    border-top: 1px solid $zen-sidebar-navigation-border-color;
+                }
+            }
+        }
+    }
+
+    .account-aside-item {
+        display: flex;
+        background: $zen-sidebar-navigation-bg;
+        color: $zen-sidebar-navigation-color;
+        font-weight: $zen-sidebar-navigation-font-weight;
+        line-height: 34px;
+        padding-top: px($zen-sidebar-navigation-pv);
+        padding-bottom: px($zen-sidebar-navigation-pv);
+        text-transform: $zen-sidebar-navigation-text-transform;
+        overflow: hidden;
+
+        @if $zen-sidebar-navigation-border == 1 {
+            border: 1px solid $zen-sidebar-navigation-border-color;
+        }
+
+        &.is-active {
+            background: $zen-sidebar-navigation-hover-bg;
+            color: $zen-sidebar-navigation-hover-color;
+            font-weight: $zen-sidebar-navigation-font-weight-hover;
+
+            @if ($zen-container-bg != transparent and $zen-sidebar-navigation-active-bg != $zen-container-bg) or ($zen-container-bg == transparent and $zen-sidebar-navigation-active-bg != $sw-background-color) {
+                margin-bottom: 0;
+            } @else {
+                margin-bottom: px($zen-sidebar-navigation-mb);
+            }
+
+            @if $zen-sidebar-navigation-border == 1 {
+                border: 1px solid $zen-sidebar-navigation-border-hover-color;
+            }
+        }
+
+        &:hover {
+            background: $zen-sidebar-navigation-hover-bg;
+            color: $zen-sidebar-navigation-hover-color;
+
+            @if $zen-sidebar-navigation-border == 1 {
+                border: 1px solid $zen-sidebar-navigation-border-hover-color;
+            }
+        }
+    }
+
+    // underlined navigation link
+        //@if $zen-sidebar-navigation-hover-animation == "underlined" {
+    //    .account-aside-item {
+    //        position: relative;
+    //
+    //        &::after {
+    //            @include transition($transition-base);
+    //            content: '';
+    //            position: absolute;
+    //            bottom: px($zen-sidebar-navigation-pv);
+    //            left: 20px;
+    //            right: 20px;
+    //            background: $zen-sidebar-navigation-hover-color;
+    //            height: 1px;
+    //            transform: scaleX(0);
+    //        }
+    //
+    //        &:hover,
+    //        &.is-active {
+    //            &::after {
+    //                transform: scaleX(1);
+    //            }
+    //        }
+    //    }
+    //}
+}
+
+.account-aside-btn {
+    .icon {
+        color: inherit;
+    }
+}

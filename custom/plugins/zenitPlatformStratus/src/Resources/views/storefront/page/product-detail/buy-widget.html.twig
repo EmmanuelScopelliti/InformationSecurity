@@ -1,0 +1,226 @@
+{% sw_extends '@Storefront/storefront/page/product-detail/buy-widget.html.twig' %}
+
+{% block page_product_detail_buy_inner %}
+    {# ... @zenit fallbacks for older child-themes without these configs #}
+    {% set productDetailRatingPosition = theme_config('zen-product-details-rating-position') ?: 'default' %}
+    {% set productDetailWishlistPosition = theme_config('zen-product-details-wishlist-position') ?: 'default' %}
+
+    {{ parent() }}
+
+    {% if theme_config('zen-product-details-features') is not same as (false) %}
+        {% sw_include '@zenitPlatformStratus/storefront/component/product/zen-product-features.html.twig' %}
+    {% endif %}
+{% endblock %}
+
+{% block page_product_detail_reviews %}
+    {% if productDetailRatingPosition is same as ('default') %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block page_product_detail_wishlist %}
+    {% if productDetailWishlistPosition is same as ('default') %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block page_product_detail_ordernumber_container %}
+    {# stock #}
+    {% block zen_page_product_detail_stock_container %}
+        {% if theme_config('zen-product-details-stock') and page.product.stock %}
+            <div class="product-detail-container product-detail-stock-container">
+                {% block zen_page_product_detail_stock_label %}
+                    <span class="product-detail-label product-detail-stock-label">
+                        {{ "zentheme.detail.stockLabel"|trans|sw_sanitize }}
+                    </span>
+                {% endblock %}
+
+                {% block zen_page_product_detail_stock %}
+                    <span class="product-detail-stock">
+                        {{ page.product.stock }}
+                    </span>
+                {% endblock %}
+            </div>
+        {% endif %}
+    {% endblock %}
+
+    {# isCloseout #}
+    {% block zen_page_product_detail_closeout_container %}
+        {% if theme_config('zen-product-details-closeout') and page.product.isCloseout %}
+            <div class="product-detail-container product-detail-closeout-container">
+                {% block zen_page_product_detail_closeout_label %}
+                    <span class="product-detail-label product-detail-closeout-label">
+                        {{ "zentheme.detail.isCloseoutLabel"|trans|sw_sanitize }}
+                    </span>
+                {% endblock %}
+            </div>
+        {% endif %}
+    {% endblock %}
+
+    {# ordernumber #}
+    {% if theme_config('zen-product-details-ordernumber') and page.product.productNumber %}
+        <div class="product-detail-container product-detail-ordernumber-container">
+            {% block page_product_detail_ordernumber_label %}
+                <span class="product-detail-label product-detail-ordernumber-label">
+                    {{ "detail.ordernumberLabel"|trans|sw_sanitize }}
+                </span>
+            {% endblock %}
+
+            {% block page_product_detail_ordernumber %}
+                <meta itemprop="productID"
+                      content="{{ page.product.id }}"/>
+                <span class="product-detail-ordernumber"
+                      itemprop="sku">
+                        {{ page.product.productNumber }}
+                </span>
+            {% endblock %}
+        </div>
+    {% endif %}
+
+    {# ean #}
+    {% block zen_page_product_detail_ean_container %}
+        {% if theme_config('zen-product-details-ean') and page.product.ean %}
+            <div class="product-detail-container product-detail-ean-container">
+                {% block zen_page_product_detail_ean_label %}
+                    <span class="product-detail-label product-detail-ean-label">
+                        {{ "zentheme.detail.eanLabel"|trans|sw_sanitize }}
+                    </span>
+                {% endblock %}
+
+                {% block zen_page_product_detail_ean %}
+                    {# meta rich snippets specification is already set #}
+                    <span class="product-detail-ean">
+                        {{ page.product.ean }}
+                    </span>
+                {% endblock %}
+            </div>
+        {% endif %}
+    {% endblock %}
+
+    {# manufacturer name #}
+    {% block zen_page_product_detail_manufacturer_name_container %}
+        {% if theme_config('zen-product-details-manufacturer-name') and page.product.manufacturer.name %}
+            <div class="product-detail-container product-detail-manufacturer-name-container">
+                {% block zen_page_product_detail_manufacturer_name_label %}
+                    <span class="product-detail-label product-detail-manufacturer-name-label">
+                        {{ "zentheme.detail.manufacturerNameLabel"|trans|sw_sanitize }}
+                    </span>
+                {% endblock %}
+
+                {% block zen_page_product_detail_manufacturer_name %}
+                    <span class="product-detail-manufacturer-name">
+                        {# meta rich snippets specification is already set #}
+                        {% if theme_config('zen-product-details-manufacturer-link') and page.product.manufacturer.link %}
+                            <a href="{{ page.product.manufacturer.link }}" title="{{ page.product.manufacturer.name }}" target="_blank" rel="noopener">
+                                {{ page.product.manufacturer.name }}
+                            </a>
+                        {% else %}
+                            {{ page.product.manufacturer.name }}
+                        {% endif %}
+                    </span>
+                {% endblock %}
+            </div>
+        {% endif %}
+    {% endblock %}
+
+    {# manufacturer number #}
+    {% block zen_page_product_detail_manufacturer_number_container %}
+        {% if theme_config('zen-product-details-manufacturer-number') and page.product.manufacturerNumber %}
+            <div class="product-detail-container product-detail-manufacturer-number-container">
+                {% block zen_page_product_detail_manufacturer_number_label %}
+                    <span class="product-detail-label product-detail-manufacturer-number-label">
+                        {{ "zentheme.detail.manufacturerNumberLabel"|trans|sw_sanitize }}
+                    </span>
+                {% endblock %}
+
+                {% block zen_page_product_detail_manufacturer_number %}
+                    {# meta rich snippets specification is already set #}
+                    <span class="product-detail-manufacturer-number">
+                        {{ page.product.manufacturerNumber }}
+                    </span>
+                {% endblock %}
+            </div>
+        {% endif %}
+    {% endblock %}
+
+    {# length #}
+    {% block zen_page_product_detail_length_container %}
+        {% if theme_config('zen-product-details-length') and page.product.length %}
+            <div class="product-detail-container product-detail-length-container">
+                {% block zen_page_product_detail_length_label %}
+                    <span class="product-detail-label product-detail-length-label">
+                        {{ "zentheme.detail.lengthLabel"|trans|sw_sanitize }}
+                    </span>
+                {% endblock %}
+
+                {% block zen_page_product_detail_length %}
+                    {# meta rich snippets specification is already set #}
+                    <span class="product-detail-length">
+                        {{ page.product.length }} mm
+                    </span>
+                {% endblock %}
+            </div>
+        {% endif %}
+    {% endblock %}
+
+    {# width #}
+    {% block zen_page_product_detail_width_container %}
+        {% if theme_config('zen-product-details-width') and page.product.width %}
+            <div class="product-detail-container product-detail-width-container">
+                {% block zen_page_product_detail_width_label %}
+                    <span class="product-detail-label product-detail-width-label">
+                        {{ "zentheme.detail.widthLabel"|trans|sw_sanitize }}
+                    </span>
+                {% endblock %}
+
+                {% block zen_page_product_detail_width %}
+                    {# meta rich snippets specification is already set #}
+                    <span class="product-detail-width">
+                        {{ page.product.width }} mm
+                    </span>
+                {% endblock %}
+            </div>
+        {% endif %}
+    {% endblock %}
+
+    {# height #}
+    {% block zen_page_product_detail_height_container %}
+        {% if theme_config('zen-product-details-height') and page.product.height %}
+            <div class="product-detail-container product-detail-height-container">
+                {% block zen_page_product_detail_height_label %}
+                    <span class="product-detail-label product-detail-height-label">
+                        {{ "zentheme.detail.heightLabel"|trans|sw_sanitize }}
+                    </span>
+                {% endblock %}
+
+                {% block zen_page_product_detail_height %}
+                    {# meta rich snippets specification is already set #}
+                    <span class="product-detail-height">
+                        {{ page.product.height }} mm
+                    </span>
+                {% endblock %}
+            </div>
+        {% endif %}
+    {% endblock %}
+
+    {# weight #}
+    {% block zen_page_product_detail_weight_container %}
+        {% if theme_config('zen-product-details-weight') and page.product.weight %}
+            <div class="product-detail-container product-detail-weight-container">
+                {% block zen_page_product_detail_weight_label %}
+                    <span class="product-detail-label product-detail-weight-label">
+                        {{ "zentheme.detail.weightLabel"|trans|sw_sanitize }}
+                    </span>
+                {% endblock %}
+
+                {% block zen_page_product_detail_weight %}
+                    {# meta rich snippets specification is already set #}
+                    <span class="product-detail-weight">
+                        {{ page.product.weight }} kg
+                    </span>
+                {% endblock %}
+            </div>
+        {% endif %}
+    {% endblock %}
+
+{% endblock %}

@@ -1,0 +1,125 @@
+{
+    "zentheme": {
+        "stratus": {
+            "content": {
+                "marketingText": "%placeholder%",
+                "marketingButtonText": "%placeholder%",
+                "marketingButtonLink": "%placeholder%",
+                "customTabTitle": "%placeholder%",
+                "customTabText": "%placeholder%",
+                "customColumnTitle": "%placeholder%",
+                "customColumnText": "%placeholder%",
+                "socialFacebookUrl": "%placeholder%",
+                "socialTwitterUrl": "%placeholder%",
+                "socialYoutubeUrl": "%placeholder%",
+                "socialVimeoUrl": "%placeholder%",
+                "socialPinterestUrl": "%placeholder%",
+                "socialInstagramUrl": "%placeholder%",
+                "socialFlickrUrl": "%placeholder%",
+                "socialLinkedInUrl": "%placeholder%",
+                "socialXingUrl": "%placeholder%",
+                "socialWhatsappUrl": "%placeholder%",
+                "socialAmazonUrl": "%placeholder%",
+                "socialTikTokUrl": "%placeholder%",
+                "socialRSSUrl": "%placeholder%"
+            }
+        },
+        "cookie": {
+            "googleFonts": {
+                "name": "Google Fonts",
+                "description": "Loads the required web fonts from Google servers."
+            }
+        },
+        "general": {
+            "toggleWishlist": "Add to wishlist",
+            "copyright": "© %year% %shopname% - with %love% by <a href=\"%href%\" title=\"%title%\" rel=\"dofollow noopener\" target=\"_blank\">%name%</a>",
+            "moreLink": "More",
+            "closeTopBar": "Close Top bar"
+        },
+        "footer": {
+            "socialMediaHeadline": "Follow us",
+            "newsletterHeadline": "Newsletter",
+            "newsletterContent": "Subscribe to the free newsletter and do not miss any news or promotions."
+        },
+        "detail": {
+            "stockLabel": "Stock:",
+            "isCloseoutLabel": "Clearance sale",
+            "eanLabel": "EAN:",
+            "manufacturerNameLabel": "Manufacturer:",
+            "manufacturerNumberLabel": "Manufacturer number:",
+            "lengthLabel": "Length:",
+            "widthLabel": "Width:",
+            "heightLabel": "Height:",
+            "weightLabel": "Weight:",
+            "tabsDatasheets": "Datasheets",
+            "tabsManufacturer": "Manufacturer",
+            "tabsProperties": "Properties",
+            "tabsVideo": "Video",
+            "manufacturerWebsite": "Manufacturer website",
+            "features": "Features"
+        },
+        "listing": {
+            "quickview": "Quickview",
+            "boxAddProductWithIcon": "Add to"
+        },
+        "sw-cms": {
+            "blocks": {
+                "addElement": "Add element",
+                "zen-grid-12": {
+                    "label": "One column"
+                },
+                "zen-grid-6-6": {
+                    "label": "Two columns"
+                },
+                "zen-grid-4-4-4": {
+                    "label": "Three columns"
+                },
+                "zen-grid-3-3-3-3": {
+                    "label": "Four columns"
+                },
+                "zen-grid-24-24-24-24-24": {
+                    "label": "Five columns"
+                },
+                "zen-grid-2-2-2-2-2-2": {
+                    "label": "Six columns"
+                },
+                "zen-grid-9-3": {
+                    "label": "Two columns - 9/3"
+                },
+                "zen-grid-3-9": {
+                    "label": "Two columns - 3/9"
+                },
+                "zen-grid-8-4": {
+                    "label": "Two columns - 8/4"
+                },
+                "zen-grid-4-8": {
+                    "label": "Two columns - 4/8"
+                },
+                "zen-grid-7-5": {
+                    "label": "Two columns - 7/5"
+                },
+                "zen-grid-5-7": {
+                    "label": "Two columns - 5/7"
+                },
+                "zen-grid-6-3-3": {
+                    "label": "Three columns - 6/3/3"
+                },
+                "zen-grid-3-3-6": {
+                    "label": "Three columns - 3/3/6"
+                },
+                "zen-grid-3-6-3": {
+                    "label": "Three columns - 3/6/3"
+                },
+                "zen-grid-2-8-2": {
+                    "label": "Three columns - 2/8/2"
+                },
+                "zen-layout-simple": {
+                    "label": "Simple layout"
+                },
+                "zen-layout-simple-reversed": {
+                    "label": "Simple layout reversed"
+                }
+            }
+        }
+    }
+}

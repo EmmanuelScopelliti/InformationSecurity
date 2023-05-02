@@ -1,0 +1,17 @@
+{% block zen_component_product_box_action_quickview_toggle_inner %}
+    <span class="quickview-toggle"
+          data-toggle="modal"
+          data-modal-class="quickview-modal"
+          data-url="{{ path('widgets.quickview.minimal', { 'productId': product.id }) }}">
+        <button
+           class="btn btn-block btn-quickview btn-icon-only"
+           {% if tooltip %}
+               data-toggle="tooltip"
+               data-placement="{{ tooltipPlacement ?: 'top' }}"
+           {% endif %}
+           title="{{ 'zentheme.listing.quickview'|trans }}"
+           aria-label="{{ 'zentheme.listing.quickview'|trans }} {{ product.translated.name }}">
+            {% sw_icon 'eye-open' %}
+        </button>
+    </span>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% sw_extends '@Storefront/storefront/component/product/card/action.html.twig' %}
+
+{% block component_product_box_action_inner %}
+    {% set id = product.id %}
+
+    {% if config('core.listing.allowBuyInListing') %}
+        <div class="product-action">
+            {% set isAvailable = not product.isCloseout or (product.availableStock >= product.minPurchase) %}
+            {% set displayFrom = product.calculatedPrices.count > 1 %}
+
+            {% if theme_config('zen-product-listing-card-actions-details-btn-variants') %}
+                {% set displayBuyButton = isAvailable and not displayFrom and product.childCount <= 0 and product.childCount is not null %}
+            {% else %}
+                {% set displayBuyButton = isAvailable and not displayFrom and product.childCount <= 0 %}
+            {% endif %}
+
+            {% block zen_component_product_box_action_quickview_toggle_with_buy %}
+                {% if theme_config('zen-product-listing-card-actions-quickview') and theme_config('zen-product-listing-card-actions') is same as ('default') %}
+                    {% sw_include '@zenitPlatformStratus/storefront/component/product/card/zen-action-quickview-toggle.html.twig' %}
+                {% endif %}
+            {% endblock %}
+
+            {% if displayBuyButton %}
+                {% block component_product_box_action_buy %}
+                    {# @var product \Shopware\Core\Content\Product\SalesChannel\SalesChannelProductEntity #}
+                    <form action="{{ path('frontend.checkout.line-item.add') }}"
+                          method="post"
+                          class="buy-widget"
+                          data-add-to-cart="true">
+
+                        {{ block('component_product_box_action_buy_csrf') }}
+
+                        {% block component_product_box_action_form %}
+
+                            {{ block('component_product_box_action_buy_redirect_input') }}
+
+                            {{ block('page_product_detail_buy_product_buy_info') }}
+
+                            {{ block('page_product_detail_product_buy_meta') }}
+
+                            {% if theme_config('zen-product-listing-card-actions-quantity-select') %}
+                                {% sw_include '@zenitPlatformStratus/storefront/component/product/card/zen-action-buy-widget-container.html.twig' with {
+                                    quantityCol:  'col',
+                                    buttonCol: 'col-auto',
+                                }  %}
+                            {% else %}
+                                <button class="btn btn-block btn-buy"
+                                        title="{{ "listing.boxAddProduct"|trans|striptags }}">
+                                        {{ "listing.boxAddProduct"|trans|sw_sanitize }}
+                                </button>
+                            {% endif %}
+                        {% endblock %}
+                    </form>
+                {% endblock %}
+            {% else %}
+                {% block component_product_box_action_detail %}
+                    <a href="{{ seoUrl('frontend.detail.page', {'productId': id}) }}"
+                       class="btn btn-block btn-light btn-details"
+                       title="{{ "listing.boxProductDetails"|trans|striptags }}">
+                        {{ "listing.boxProductDetails"|trans|sw_sanitize }}
+                    </a>
+                {% endblock %}
+            {% endif %}
+        </div>
+    {% elseif theme_config('zen-product-listing-card-actions-details-btn') %}
+        <div class="product-action">
+            {% if theme_config('zen-product-listing-card-actions-details-btn') %}
+                {% block zen_component_product_box_action_detail %}
+                    <a href="{{ seoUrl('frontend.detail.page', {'productId': id}) }}"
+                       class="btn btn-block btn-light btn-details"
+                       title="{{ "listing.boxProductDetails"|trans|striptags }}">
+                        {{ "listing.boxProductDetails"|trans|sw_sanitize }}
+                    </a>
+                {% endblock %}
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {{ block('component_product_box_action_meta') }}
+{% endblock %}

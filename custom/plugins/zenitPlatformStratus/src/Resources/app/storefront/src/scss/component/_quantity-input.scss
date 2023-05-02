@@ -1,0 +1,31 @@
+.buy-widget-quantity-input-group {
+    flex-wrap: nowrap;
+    height: 100%;
+
+    .input-group-btn {
+        height: 100%;
+    }
+
+    .buy-widget-quantity-input {
+        height: auto;
+        min-width: 60px;
+        max-width: 100px;
+    }
+
+    .btn {
+        height: 100%;
+
+        @include media-breakpoint-down(xs) {
+            padding: 4px;
+        }
+    }
+
+    .icon {
+        @include text-color-contrast;
+    }
+
+    .buy-widget-quantity-input {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}

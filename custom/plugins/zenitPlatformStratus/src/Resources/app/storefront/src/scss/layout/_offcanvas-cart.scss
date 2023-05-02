@@ -1,0 +1,46 @@
+/*
+Offcanvas cart
+==============================================
+Custom skin styling for the cart offcanvas.
+*/
+.offcanvas-cart-actions {
+    .input-group {
+        > .form-control {
+            // bugfix because of wrong placed label
+            &:not(:first-child) {
+                @if $zen-layout-forms-style != underlined {
+                    @include border-left-radius($zen-layout-input-radius * 1px);
+                } @else {
+                    &::-webkit-input-placeholder {
+                        @include text-color-contrast;
+                    }
+
+                    &::-moz-placeholder {
+                        @include text-color-contrast;
+                    }
+
+                    &:-ms-input-placeholder {
+                        @include text-color-contrast;
+                    }
+
+                    &::-ms-input-placeholder {
+                        @include text-color-contrast;
+                    }
+
+                    &::placeholder {
+                        @include text-color-contrast;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.offcanvas-cart-header-count,
+.offcanvas-cart-tax {
+    @if $zen-container-bg == transparent {
+        color: color-yiq($body-bg, $text-muted, $light-text-muted)
+    } @else {
+        color: color-yiq($zen-container-bg, $text-muted, $light-text-muted)
+    }
+}

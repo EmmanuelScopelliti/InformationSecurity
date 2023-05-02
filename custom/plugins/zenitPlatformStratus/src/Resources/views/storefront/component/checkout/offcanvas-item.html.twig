@@ -1,0 +1,27 @@
+{% sw_extends '@Storefront/storefront/component/checkout/offcanvas-item.html.twig' %}
+
+{% block component_offcanvas_product_details %}
+    <div class="col-8 cart-item-details">
+        {{ block('component_offcanvas_product_details_inner') }}
+    </div>
+{% endblock %}
+
+{% block component_offcanvas_product_buy_quantity %}
+    {% set selectQuantityThresholdExceeded = (maxQuantity - quantityInformation.minPurchase) / quantityInformation.purchaseSteps > selectQuantityThreshold %}
+    {% if theme_config('zen-buy-quantity-style') is same as ('input') or (theme_config('zen-buy-quantity-style') is same as ('select') and selectQuantityThresholdExceeded) %}
+        {% block zen_component_offcanvas_product_buy_quantity_zenit_input %}
+            {% sw_include '@zenitPlatformStratus/storefront/component/buy-widget/zen-buy-widget-quantity.html.twig' with {
+                id:  lineItem.id,
+                minPurchase: quantityInformation.minPurchase,
+                maxPurchase: maxQuantity,
+                step: quantityInformation.purchaseSteps,
+                autoChange: 'dispatch',
+                value: lineItem.quantity,
+                name: 'quantity',
+                quantityClasses: 'cart-item-quantity-input js-offcanvas-cart-change-quantity'
+            } %}
+        {% endblock %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,12 @@
+{% block block_zen_teaser_grid_4_4_4 %}
+    {% block block_zen_teaser_grid_4_4_4_inner %}
+        {% sw_include "@zenitPlatformStratus/storefront/block/cms-block-zen-grid.html.twig" with {
+            elements: block.slots,
+            cols: {
+                'md': [6,6,6],
+                'lg': [4,4,4]
+            },
+            columns: 3
+        } %}
+    {% endblock %}
+{% endblock %}

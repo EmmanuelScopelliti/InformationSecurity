@@ -1,0 +1,12 @@
+{% block element_zen_grid_placeholder %}
+    {% set config = element.fieldConfig.elements %}
+    {% set blockname = "zentheme.sw-cms.blocks." ~ block.type ~ ".label" %}
+
+    <div class="cms-element-{{ element.type }} has-vertical-alignment py-4">
+        <div class="card bg-light">
+            <div class="card-body py-4 px-2">
+                <p class="card-text text-center">{{ blockname|trans }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

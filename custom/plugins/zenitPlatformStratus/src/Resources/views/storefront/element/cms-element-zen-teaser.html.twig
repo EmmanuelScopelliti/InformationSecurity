@@ -1,0 +1,227 @@
+{% block element_zen_teaser %}
+    {% set config = element.fieldConfig.elements %}
+
+    {% set customClasses = config.customClasses.value %}
+
+    {% set elemClasses = [] %}
+    {% set elemClasses = ['hover-text-' ~ config.textHover.value]|merge(elemClasses) %}
+    {% set elemClasses = ['hover-image-' ~ config.imageHover.value]|merge(elemClasses) %}
+
+    {% set textClasses = [] %}
+    {% set textClasses = ['zen-font-family-' ~ config.fontFamily.value]|merge(textClasses) %}
+
+    {% set animationClasses = [] %}
+    {% if config.animationIn.value != 'none' %}
+        {% set animationClasses = ['animation-in-' ~ config.animationIn.value]|merge(animationClasses) %}
+    {% endif %}
+    {% if config.animationOut.value != 'none' %}
+        {% set animationClasses = ['animation-out-' ~ config.animationOut.value]|merge(animationClasses) %}
+    {% endif %}
+
+    {% set elemStyles = { } %}
+    {% if config.imageBorderRadius.value %}
+        {% set elemStyles = elemStyles|merge({ 'border-radius': config.imageBorderRadiusTopLeft.value ~ ' ' ~ config.imageBorderRadiusTopRight.value ~ ' ' ~ config.imageBorderRadiusBottomRight.value ~ ' ' ~ config.imageBorderRadiusBottomLeft.value }) %}
+    {% endif %}
+
+    {% set imgStyles = { } %}
+    {% if config.imageBorderRadius.value %}
+        {% set imgStyles = imgStyles|merge({ 'border-radius': config.imageBorderRadiusTopLeft.value ~ ' ' ~ config.imageBorderRadiusTopRight.value ~ ' ' ~ config.imageBorderRadiusBottomRight.value ~ ' ' ~ config.imageBorderRadiusBottomLeft.value }) %}
+    {% endif %}
+
+    {% if config.overlay.value %}
+        {% set overlayStyles = {
+            'background-color': (config.overlayColor.value ?: 'transparent'),
+            'opacity': (config.overlayOpacity.value ?: '0%'),
+        } %}
+        {% if config.imageBorderRadius.value %}
+            {% set overlayStyles = overlayStyles|merge({ 'border-radius': config.imageBorderRadiusTopLeft.value ~ ' ' ~ config.imageBorderRadiusTopRight.value ~ ' ' ~ config.imageBorderRadiusBottomRight.value ~ ' ' ~ config.imageBorderRadiusBottomLeft.value }) %}
+        {% endif %}
+    {% endif %}
+
+    {% set textContainerStyles = {
+        'align-items': (config.verticalTextAlign.value ?: 'flex-start'),
+        'justify-content': (config.horizontalTextAlign.value ?: 'flex-start'),
+    } %}
+
+    {% set textStyles = { } %}
+    {% if config.textBorderRadius.value %}
+        {% set textStyles = textStyles|merge({ 'border-radius': config.textBorderRadiusTopLeft.value ~ ' ' ~ config.textBorderRadiusTopRight.value ~ ' ' ~ config.textBorderRadiusBottomRight.value ~ ' ' ~ config.textBorderRadiusBottomLeft.value }) %}
+    {% endif %}
+    {% if config.textPaddings.value %}
+        {% set textStyles = textStyles|merge({ 'padding': config.textPaddingTop.value ~ ' ' ~ config.textPaddingRight.value ~ ' ' ~ config.textPaddingBottom.value ~ ' ' ~ config.textPaddingLeft.value }) %}
+    {% endif %}
+    {% if config.textMargins.value %}
+        {% set textStyles = textStyles|merge({ 'margin': config.textMarginTop.value ~ ' ' ~ config.textMarginRight.value ~ ' ' ~ config.textMarginBottom.value ~ ' ' ~ config.textMarginLeft.value }) %}
+    {% endif %}
+    {% if config.textAlign.value %}
+        {% set textStyles = textStyles|merge({ 'text-align': config.textAlign.value }) %}
+    {% endif %}
+    {% if config.fontSize.value %}
+        {% set textStyles = textStyles|merge({ 'font-size': config.fontSize.value }) %}
+    {% endif %}
+    {% if config.fontWeight.value %}
+        {% set textStyles = textStyles|merge({ 'font-weight': config.fontWeight.value }) %}
+    {% endif %}
+    {% if config.color.value %}
+        {% set textStyles = textStyles|merge({ 'color': config.color.value }) %}
+    {% endif %}
+    {% if config.backgroundColor.value %}
+        {% set textStyles = textStyles|merge({ 'background-color': config.backgroundColor.value }) %}
+    {% endif %}
+    {% if config.textMinWidth.value %}
+        {% set textStyles = textStyles|merge({ 'width': config.textMinWidth.value }) %}
+    {% endif %}
+    {% if config.textMaxWidth.value %}
+        {% set textStyles = textStyles|merge({ 'max-width': config.textMaxWidth.value }) %}
+    {% endif %}
+
+    <style>
+        {% if elemStyles %}
+            .cms-element-{{ element.type }}-{{ element.id }} {
+                {% for property, value in elemStyles %}
+                    {{ property }}: {{ value }};
+                {% endfor %}
+            }
+        {% endif %}
+
+        {% if imgStyles %}
+            .cms-element-{{ element.type }}-{{ element.id }} .cms-teaser-image {
+                {% for property, value in imgStyles %}
+                    {{ property }}: {{ value }};
+                {% endfor %}
+            }
+        {% endif %}
+
+        {% if overlayStyles %}
+            .cms-element-{{ element.type }}-{{ element.id }} .cms-teaser-overlay {
+                {% for property, value in overlayStyles %}
+                    {{ property }}: {{ value }};
+                {% endfor %}
+            }
+        {% endif %}
+
+        {% if textContainerStyles %}
+            .cms-element-{{ element.type }}-{{ element.id }} .cms-teaser-text-container {
+                {% for property, value in textContainerStyles %}
+                    {{ property }}: {{ value }};
+                {% endfor %}
+            }
+        {% endif %}
+
+        {% if textStyles %}
+            .cms-element-{{ element.type }}-{{ element.id }} .cms-teaser-text {
+                {% for property, value in textStyles %}
+                    {{ property }}: {{ value }};
+                {% endfor %}
+            }
+        {% endif %}
+
+        .cms-element-{{ element.type }}-{{ element.id }} .icon-cms-teaser {
+            width: {{ config.fontSize.value }};
+            height: {{ config.fontSize.value }};
+            color: {{ config.color.value }};
+        }
+
+        .cms-element-{{ element.type }}-{{ element.id }}.hover-text-distance-arrow .cms-teaser-text-value {
+            padding-right: {{ config.fontSize.value }};
+        }
+
+        .cms-element-{{ element.type }}-{{ element.id }}.hover-text-distance-arrow:hover .cms-teaser-text-value {
+            padding-right: calc( {{ config.fontSize.value }} + 10px );
+        }
+
+        .cms-element-{{ element.type }}-{{ element.id }}.hover-text-distance-arrow .icon-cms-teaser {
+            left: calc(100% - {{ config.fontSize.value }} - {{ config.textPaddingRight.value }})
+        }
+
+        .cms-element-{{ element.type }}-{{ element.id }}.hover-text-show-arrow :hover .cms-teaser-text-value {
+            padding-right: {{ config.fontSize.value }};
+        }
+
+        .cms-element-{{ element.type }}-{{ element.id }}.hover-text-show-arrow:hover .icon-cms-teaser {
+            left: calc(100% - {{ config.fontSize.value }} - {{ config.textPaddingRight.value }})
+        }
+    </style>
+
+    {% block element_zen_teaser_element %}
+        <div class="cms-element-{{ element.type }} cms-element-{{ element.type }}-{{ element.id }}{% if config.verticalImageAlign.value %} has-vertical-alignment{% endif %} {{ elemClasses|sort|join(' ') }} {{ customClasses }}">
+            {% block element_zen_teaser_alignment %}
+                {% if config.verticalImageAlign.value %}
+                    <div class="cms-element-alignment{% if config.verticalImageAlign.value == "center" %} align-self-center{% elseif config.verticalImageAlign.value == "flex-end" %} align-self-end{% else %} align-self-start{% endif %}">
+                {% endif %}
+                {% block element_zen_teaser_inner %}
+                    {% set imageElement %}
+                        {% block element_zen_teaser_container %}
+                            {% if element.data.media.url %}
+                                <div class="cms-teaser-image-container is-{{ element.translated.config.displayMode.value }}"
+                                    {% if element.translated.config.minHeight.value and element.translated.config.displayMode.value == "cover" %} style="min-height: {{ element.translated.config.minHeight.value }};"{% endif %}>
+                                    {% block element_zen_teaser_media %}
+                                        {% set attributes = {
+                                            'class': 'cms-teaser-image',
+                                            'alt': (element.data.media.translated.alt ?: ''),
+                                            'title': (element.data.media.translated.title ?: '')
+                                        } %}
+
+                                        {% if element.translated.config.displayMode.value == 'cover' or element.translated.config.displayMode.value == 'contain' %}
+                                            {% set attributes = attributes|merge({ 'data-object-fit': element.translated.config.displayMode.value }) %}
+                                        {% endif %}
+
+                                        {% sw_thumbnails 'cms-image-thumbnails' with {
+                                            media: element.data.media
+                                        } %}
+                                    {% endblock %}
+                                </div>
+                            {% endif %}
+
+                            <div class="cms-teaser-content-container {{ animationClasses|sort|join(' ') }}"
+                                 {% if config.animationIn.value != 'none' or config.animationOut.value != 'none' %}data-animation="true"{% endif %}
+                            >
+                                {% if config.overlay.value %}
+                                    <div class="cms-teaser-overlay"></div>
+                                {% endif %}
+
+                                {% if config.text.value %}
+                                    {% set content = config.text.value|raw %}
+
+                                    <div class="cms-teaser-text-container">
+                                        <span class="cms-teaser-text {{ textClasses|sort|join(' ') }}">
+                                            <span class="cms-teaser-text-value">
+                                                {% if config('zenitPlatformStratus.config.twigStringLoaderExtension') %}
+                                                    {% sw_include '@zenitPlatformStratus/storefront/utilities/zen-template-from-string.html.twig' with {
+                                                        content: content
+                                                    } only %}
+                                                {% else %}
+                                                    {{ content|raw }}
+                                                {% endif %}
+                                            </span>
+                                            {% if config.textHover.value == 'show-arrow' or config.textHover.value == 'distance-arrow' %}
+                                                {% sw_icon 'arrow-medium-right' style { 'pack': 'solid', 'class': 'cms-teaser' } %}
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                        {% endblock %}
+                    {% endset %}
+
+                    {% if element.translated.config.url.value %}
+                        <a href="{{ element.translated.config.url.value }}"
+                           class="cms-teaser-image-inner cms-teaser-image-link"
+                           {% if element.translated.config.newTab.value %}target="_blank" rel="noopener"{% endif %}>
+                            {{ imageElement }}
+                        </a>
+                    {% else %}
+                        <div class="cms-teaser-image-inner cms-teaser-image-no-link">
+                            {{ imageElement }}
+                        </div>
+                    {% endif %}
+                {% endblock %}
+                {% if config.verticalImageAlign.value %}
+                    </div>
+                {% endif %}
+            {% endblock %}
+        </div>
+    {% endblock %}
+
+{% endblock %}

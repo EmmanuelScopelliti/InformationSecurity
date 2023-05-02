@@ -1,0 +1,264 @@
+{% sw_extends '@Storefront/storefront/component/product/quickview/minimal.html.twig' %}
+
+{# @var product \Shopware\Core\Content\Product\SalesChannel\SalesChannelProductEntity #}
+{% set product = page.product %}
+
+{% block component_product_quickview_minimal %}
+    {% set name = product.translated.name %}
+    {% set manufacturer = product.manufacturer %}
+
+    {# ... @zenit fallbacks for older child-themes without these configs #}
+    {% set productDetailRatingPosition = theme_config('zen-product-details-rating-position') ?: 'default' %}
+    {% set productDetailWishlistPosition = theme_config('zen-product-details-wishlist-position') ?: 'default' %}
+    {% set productDetailManufacturerPosition = theme_config('zen-product-details-manufacturer-position') ?: 'default' %}
+
+    {% set quickviewConfig = {
+        elementId: 'zenitQuickview'
+    } %}
+
+    <div id="zenitQuickview"
+         class="quickview-minimal-container container"
+         data-zen-quickview="true"
+         data-zen-quickview-variant-switch="true"
+         data-zen-quickview-variant-switch-options='{{ quickviewConfig|json_encode }}'>
+
+        {% block component_product_quickview_minimal_top %}
+            <div class="row quickview-minimal-top">
+                {% block component_product_quickview_minimal_img %}
+                    <div class="col-12 col-lg-7 quickview-minimal-image">
+                        {% if product.media %}
+                            {% set mediaItems = product.media.media %}
+                            {% sw_include '@Storefront/storefront/element/cms-element-image-gallery.html.twig' with {
+                                'mediaItems': mediaItems,
+                                'zoom': true,
+                                'zoomModal': false,
+                                'displayMode': 'contain',
+                                'gutter': 5,
+                                'minHeight': '430px',
+                                'navigationArrows': 'inside',
+                                'navigationDots': 'inside',
+                                'galleryPosition': 'left',
+                                'isProduct': true,
+                                'fallbackImageTitle': product.translated.name,
+                                'startIndexThumbnails': product.cover.position + 1,
+                                'startIndexSlider': product.cover.position + 1
+                            } %}
+                        {% endif %}
+                    </div>
+                {% endblock %}
+
+                {% block component_product_quickview_minimal_product %}
+                    <div class="col-12 col-lg-5 quickview-minimal-product js-magnifier-zoom-image-container">
+                        <div class="row product-detail-headline">
+
+                            {% block zen_component_product_quickview_minimal_product_detail_reviews_headline %}
+                                {% if productDetailRatingPosition is same as ('headline') %}
+                                    <div class="{% if productDetailManufacturerPosition is same as ('top') %}col-md-auto {% else%}col-12 {% endif %}product-detail-review-container">
+                                        <span class="product-detail-reviews">
+                                            {% if product.ratingAverage %}
+                                                {% sw_include '@Storefront/storefront/component/review/rating.html.twig' with {
+                                                    points: product.ratingAverage,
+                                                    style: 'text-primary'
+                                                } %}
+                                            {% else %}
+                                                {% sw_include '@Storefront/storefront/component/review/rating.html.twig' with {
+                                                    points: 0,
+                                                    style: 'text-primary'
+                                                } %}
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                {% endif %}
+                            {% endblock %}
+
+                            {% if productDetailManufacturerPosition is same as ('top') %}
+                                {% block component_product_quickview_minimal_product_manufacturer %}
+                                    {% if manufacturer %}
+                                        <div class="col-md-auto product-detail-manufacturer">
+                                            {{ parent() }}
+                                        </div>
+                                    {% endif %}
+                                {% endblock %}
+                            {% endif %}
+
+                            {% block component_product_quickview_minimal_product_name %}
+                                <div class="{% if productDetailManufacturerPosition is same as ('default') %}col {% else%}col-12 {% endif %}product-detail-name-container">
+                                    <a href="{{ seoUrl('frontend.detail.page', {'productId': product.id}) }}"
+                                       title="{{ name }}"
+                                       class="h4 quickview-minimal-product-name">
+                                        {{ name }}
+                                    </a>
+
+                                    {# ... add variant characteristics #}
+                                    {% block component_product_quickview_minimal_variant_characteristics %}
+                                        {% if theme_config('zen-product-details-variant-characteristics') %}
+                                            <div class="product-variant-characteristics">
+                                                {% for variation in product.variation %}
+                                                    {{ variation.group }}:
+                                                    <span class="product-variant-characteristics-option">
+                                                        {{ variation.option }}
+                                                    </span>
+
+                                                    {% if product.variation|last != variation %}
+                                                        {{ " | " }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    {% endblock %}
+                                </div>
+                            {% endblock %}
+
+                            {% if productDetailManufacturerPosition is same as ('default') %}
+                                {{ block('component_product_quickview_minimal_product_manufacturer') }}
+                            {% endif %}
+                        </div>
+
+                        {% block component_product_quickview_minimal_product_number %}{% endblock %}
+
+                        {% block zen_component_product_quickview_minimal_product_description %}
+                            {% if product.translated.description %}
+                                <p class="quickview-minimal-product-short-description">
+                                    {{ product.translated.description|raw|striptags|sw_sanitize|u.truncate(180, '…') }}
+                                </p>
+                            {% endif %}
+                        {% endblock %}
+
+                        {% block zen_component_product_quickview_minimal_product_detail_price %}
+                            {# ... add compatibility with NetiNextAccessManager #}
+                            {% if not page.netiAMblockedPrices %}
+                                <div class="product-detail-price-container">
+                                    {% sw_include '@Storefront/storefront/page/product-detail/buy-widget-price.html.twig' %}
+                                </div>
+                            {% endif %}
+                        {% endblock %}
+
+                        {% block zen_component_product_quickview_minimal_product_tax %}
+                            {# ... add compatibility with NetiNextAccessManager #}
+                            {% if not page.netiAMblockedPrices %}
+                                <div class="product-detail-tax-container">
+                                    {% if context.taxState == "gross" %}
+                                        {% set taxText = "general.grossTaxInformation"|trans|sw_sanitize %}
+                                    {% else %}
+                                        {% set taxText = "general.netTaxInformation"|trans|sw_sanitize %}
+                                    {% endif %}
+
+                                    <p class="product-detail-tax">
+                                        {% block page_product_detail_tax_link %}
+                                            <a class="product-detail-tax-link"
+                                               href="{{ path('frontend.cms.page',{ id: config('core.basicInformation.shippingPaymentInfoPage') }) }}"
+                                               title="{{ taxText }}"
+                                            {{ dataBsToggleAttr }}="modal"
+                                            data-url="{{ path('frontend.cms.page',{ id: config('core.basicInformation.shippingPaymentInfoPage') }) }}">
+                                            {{ taxText }}
+                                            </a>
+                                        {% endblock %}
+                                    </p>
+                                </div>
+                            {% endif %}
+                        {% endblock %}
+
+                        {% block zen_component_product_quickview_minimal_product_detail_reviews %}
+                            {% if productDetailRatingPosition is same as ('default') %}
+                                {% if page.product.ratingAverage > 0 and config('core.listing.showReview') %}
+                                    <div class="product-detail-reviews">
+
+                                        {% if product.ratingAverage %}
+                                            {% sw_include '@Storefront/storefront/component/review/rating.html.twig' with {
+                                                points: product.ratingAverage,
+                                                style: 'text-primary'
+                                            } %}
+                                        {% else %}
+                                            {% sw_include '@Storefront/storefront/component/review/rating.html.twig' with {
+                                                points: 0,
+                                                style: 'text-primary'
+                                            } %}
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endblock %}
+
+                        {% block zen_component_product_quickview_minimal_product_detail_delivery_informations %}
+                            <div class="product-detail-delivery-information">
+                                {% sw_include '@Storefront/storefront/component/delivery-information.html.twig' %}
+                            </div>
+                        {% endblock %}
+
+                        {% block zen_component_product_quickview_minimal_product_detail_configurator_include %}
+                            {% if context.context.extensions['zenitPlatformStratus'].system is defined and page.product.parentId and page.configuratorSettings|length > 0 %}
+                                <div class="product-detail-configurator-container">
+                                    {# ... add quickviewContext to enable configurator config in configurator.html.twig #}
+                                    {% sw_include '@Storefront/storefront/page/product-detail/configurator.html.twig' with {
+                                        'quickviewContext': true
+                                    } %}
+                                </div>
+                            {% endif %}
+                        {% endblock %}
+
+                        {% set isAvailable = not product.isCloseout or (product.availableStock >= product.minPurchase) %}
+                        {% set displayFrom = product.calculatedPrices.count > 1 %}
+
+                        {% if theme_config('zen-product-listing-card-actions-details-btn-variants') %}
+                            {% set displayBuyButton = isAvailable and not displayFrom and product.childCount <= 0 and product.childCount is not null %}
+                        {% else %}
+                            {% set displayBuyButton = isAvailable and not displayFrom and product.childCount <= 0 %}
+                        {% endif %}
+
+                        {% if (context.context.extensions['zenitPlatformStratus'].system is not defined and displayBuyButton is same as (false))
+                            or (page.configuratorSettings|length <= 0 and displayBuyButton is same as (false)) %}
+
+                            {% block zen_component_product_quickview_minimal_variant_detail %}
+                                <div class="product-detail-form-container">
+                                    <a href="{{ seoUrl('frontend.detail.page', {'productId': product.id}) }}"
+                                       class="btn btn-block btn-light btn-details"
+                                       title="{{ "listing.boxProductDetails"|trans|striptags }}">
+                                        {{ "listing.boxProductDetails"|trans|sw_sanitize }}
+                                    </a>
+                                </div>
+                            {% endblock %}
+                        {% else %}
+                            {% block zen_component_product_quickview_minimal_product_detail_buy_form %}
+                                {# ... add compatibility with NetiNextAccessManager #}
+                                {% if not page.netiAMblockedPrices %}
+                                    {# ... include custom zen-quickview-buy-widget-form.html.twig because of checkout add to cart redirect #}
+                                    {% if page.product.active %}
+                                        <div class="product-detail-form-container">
+                                            {% sw_include '@zenitPlatformStratus/storefront/component/product/quickview/zen-quickview-buy-widget-form.html.twig' with {
+                                                'quickviewContext': true
+                                            } %}
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            {% endblock %}
+                        {% endif %}
+
+                        {% if config('core.cart.wishlistEnabled') %}
+                            {% block zen_component_product_quickview_minimal_product_detail_wishlist %}
+                                {% if productDetailWishlistPosition is same as ('default') %}
+                                    {% sw_include '@Storefront/storefront/component/product/card/wishlist.html.twig' with {
+                                        showText: true,
+                                        size: 'md',
+                                        productId: page.product.id
+                                    } %}
+                                {% endif %}
+                            {% endblock %}
+                        {% endif %}
+                    </div>
+                {% endblock %}
+            </div>
+        {% endblock %}
+
+        {% block component_product_quickview_minimal_footer %}
+            <div class="quickview-minimal-footer">
+                {% block zen_component_product_quickview_minimal_action_detail %}
+                    <a href="{{ seoUrl('frontend.detail.page', {'productId': product.id}) }}"
+                       class="btn btn-block btn-light btn-details"
+                       title="{{ "listing.boxProductDetails"|trans|striptags }}">
+                        {{ "listing.boxProductDetails"|trans|sw_sanitize }}
+                    </a>
+                {% endblock %}
+            </div>
+        {% endblock %}
+    </div>
+{% endblock %}

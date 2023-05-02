@@ -1,0 +1,17 @@
+{% block element_zenit_breadcrumb %}
+
+    {# cms element data and configs #}
+    {% if element.fieldConfig is defined %}
+        {% set breadcrumbConfig = element.fieldConfig.elements %}
+        {% set horizontalAlign = breadcrumbConfig.horizontalAlign.value %}
+    {% endif %}
+
+    <div class="breadcrumb-wrap zenit-cms-breadcrumb{% if horizontalAlign == "center" %} justify-content-center{% elseif horizontalAlign == "flex-end" %} justify-content-end{% else %} justify-content-start{% endif %}">
+        {% set category = page.product.seoCategory ? page.product.seoCategory : page.header.navigation.active %}
+        {% sw_include '@Storefront/storefront/layout/breadcrumb.html.twig' with {
+            context: context,
+            category: category
+        } only %}
+    </div>
+
+{% endblock %}

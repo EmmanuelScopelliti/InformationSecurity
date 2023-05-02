@@ -1,0 +1,38 @@
+/*
+IE11 fixes
+==================================================
+Contains specific browser fixes which are only applied in IE.
+*/
+
+html.is-ie {
+    // fix: ie 11 can not handle position sticky
+    .product-detail-main {
+        .js-sticky {
+            top: 0;
+        }
+    }
+
+    //fix: because ie 11 can not set select color to transparent
+    .js-label-floating {
+        label {
+            background: $input-bg;
+            width: calc(100% - 9px - 25px - 5px - 5px); // 100% - input-padding-left - input-padding-right - form-group-padding-left - form-group-padding-right
+        }
+    }
+
+    //fix: because ie 11 can not set select color to transparent
+    .js-floated {
+        label {
+            background: none;
+            width: 100%;
+        }
+    }
+
+    // fix: because ie 11 can not set select color to transparent
+    .js-focus,
+    .js-hover {
+        label {
+            background: $input-focus-bg;
+        }
+    }
+}

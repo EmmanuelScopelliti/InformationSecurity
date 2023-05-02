@@ -1,0 +1,639 @@
+@if $zen-product-detail-tabs-bg != transparent {
+    @if ($zen-container-bg != transparent and $zen-product-detail-tabs-bg != $zen-container-bg) or ($zen-container-bg == transparent and $zen-product-detail-tabs-bg != $sw-background-color) {
+        .is-ctl-product {
+            .container-main {
+                padding-bottom: 0;
+
+                .cms-page {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+// spacings
+.product-detail-content,
+.product-detail-tabs {
+    > .container {
+        padding-top: px($zen-product-details-spacing-top);
+        @if $zen-product-details-spacing-right != auto {
+            padding-right: px($zen-product-details-spacing-right);
+        }
+        @if $zen-product-details-spacing-left != auto {
+            padding-left: px($zen-product-details-spacing-left);
+        }
+        padding-bottom: px($zen-product-details-spacing-bottom)
+    }
+}
+
+// backgrounds
+.product-detail-content {
+    background: $zen-product-details-bg;
+    margin-bottom: 0;
+
+    @if $zen-product-details-bg != transparent {
+        color: color-yiq($zen-product-details-bg, $sw-text-color, $zen-light-text-color);
+    }
+
+    .product-breadcrumb {
+        margin-top: 0;
+    }
+}
+
+.product-detail-form-container {
+    .buy-widget-quantity-input-group {
+        .buy-widget-quantity-input {
+            min-width: 80px;
+        }
+    }
+}
+
+// ... added cms block gallery buybox, so that cms-pages can use the following color-yig, too;
+// settings are overridable
+.cms-block-product-heading,
+.cms-block-gallery-buybox,
+.cms-block-zen-gallery-heading-buybox {
+    background: $zen-product-details-bg;
+
+    @if $zen-product-details-bg != transparent {
+        color: color-yiq($zen-product-details-bg, $sw-text-color, $zen-light-text-color);
+    }
+}
+
+.product-detail .product-detail-tabs,
+.cms-block-product-description-reviews {
+    background: $zen-product-detail-tabs-bg;
+
+    @if $zen-product-detail-tabs-bg != transparent {
+        color: color-yiq($zen-product-detail-tabs-bg, $sw-text-color, $zen-light-text-color);
+    }
+
+    .product-detail-tabs-content {
+        /* ... tabs container has custom background-color
+        therefore we have to overwrite some color-contrasts */
+        @if $zen-product-tabs-content-bg != transparent or $zen-product-detail-tabs-bg != transparent {
+            background: $zen-product-tabs-content-bg;
+            color: color-yiq($zen-product-tabs-content-bg, $sw-text-color, $zen-light-text-color);
+
+            @if ($zen-product-detail-tabs-bg != transparent and $zen-product-tabs-content-bg != $zen-product-detail-tabs-bg)
+                or $zen-product-detail-tabs-bg == transparent and (($zen-container-bg != transparent and $zen-product-tabs-content-bg != $zen-container-bg) or ($zen-container-bg == transparent and $zen-product-tabs-content-bg != $sw-background-color)) {
+                @include layout-container-horizontal-padding(remToPx($spacer-xl), remToPx($spacer-xl));
+                @include layout-container-vertical-padding(remToPx($spacer-xl), remToPx($spacer-xl));
+                @include border-radius($zen-layout-element-radius * 1px);
+            }
+
+            @if $zen-product-tabs-style != "tabs" {
+                margin-top: $spacer-lg;
+            }
+
+            h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6,
+            p,
+            .table {
+                color: color-yiq($zen-product-tabs-content-bg, $sw-text-color, $zen-light-text-color);
+            }
+
+            .table-striped {
+                tbody tr:nth-of-type(#{$table-striped-order}) {
+                    @if $zen-container-bg == transparent {
+                        background-color: color-yiq($zen-product-tabs-content-bg, $table-accent-bg-dark, $table-accent-bg);
+                    } @else {
+                        background-color: color-yiq($zen-product-tabs-content-bg, $table-accent-bg-dark, $table-accent-bg);
+                    }
+                }
+            }
+
+            .product-detail-review-sortby-form {
+                .custom-select {
+                    color: color-yiq($zen-product-tabs-content-bg, $sw-text-color, $zen-light-text-color);
+                }
+            }
+
+            .custom-select {
+                @if $zen-layout-forms-style == underlined {
+                    /* if underlined selects have no background,
+                    therefore the background icons then becomes relevant */
+                    background: color-yiq($zen-product-tabs-content-bg, $custom-select-background, $custom-select-light-background)
+                }
+            }
+
+            .blockquote-footer {
+                color: color-yiq($zen-product-tabs-content-bg, lighten($sw-text-color, 20%), darken($zen-light-text-color, 20%));
+            }
+
+            .custom-control-input {
+                &:disabled {
+                    ~ .custom-control-label {
+                        color: color-yiq($zen-product-tabs-content-bg, lighten($sw-text-color, 20%), darken($zen-light-text-color, 20%));
+                    }
+                }
+            }
+        }
+    }
+}
+
+// tabs scroller
+@if $zen-product-detail-tabs-mode == scroller {
+    .product-detail,
+    .cms-block-product-description-reviews {
+        .product-detail-tabs {
+            @if $zen-product-details-bg != transparent or $zen-product-detail-tabs-bg != transparent {
+                padding-top: $spacer-xl;
+                padding-bottom: $spacer-xl;
+            }
+        }
+
+        .tab-content {
+            > .tab-pane {
+                display: block;
+                opacity: 1;
+                padding-bottom: 30px;
+            }
+        }
+    }
+}
+
+.cms-block-product-description-reviews {
+    .cms-block-container {
+        @if $zen-product-details-bg != transparent or $zen-product-detail-tabs-bg != transparent {
+            margin-top: $spacer-xl; // ... as a margin, it can be overridden by the settings in the CMS element
+            margin-bottom: $spacer-xl; // ... as a margin, it can be overridden by the settings in the CMS element
+        }
+    }
+}
+
+.product-detail-manufacturer-logo {
+    max-width: 160px;
+    max-height: 60px;
+}
+
+.product-detail-headline {
+    margin-bottom: $spacer-md;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.product-detail-name-container {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.product-detail-name {
+    margin-bottom: 0;
+    color: $zen-product-details-name-color;
+    @include font-size($zen-product-details-name-font-size);
+    font-weight: $zen-product-details-name-font-weight;
+    text-transform: $zen-product-details-name-text-transform;
+    line-height: 1.2;
+
+    @if $zen-product-details-name-font-family == headline {
+        font-family: $headings-font-family;
+    } @else {
+        font-family: $font-family-base;
+    }
+}
+
+.product-detail-variant-characteristics {
+    padding-left: 0;
+}
+
+.product-detail-short-description-container {
+    margin-top: $spacer-md;
+}
+
+.product-detail-short-description {
+    border-bottom: 1px solid $border-color;
+    padding-bottom: $spacer-md;
+    margin-bottom: $spacer-md;
+}
+
+.product-detail-price {
+    color: $zen-product-details-price-color;
+    @include font-size($zen-product-details-price-font-size);
+    font-weight: $zen-product-details-price-font-weight;
+
+    @if $zen-product-details-price-font-family == headline {
+        font-family: $headings-font-family;
+    } @else {
+        font-family: $font-family-base;
+    }
+}
+
+.product-detail-form-container {
+    .buy-widget-quantity-input-group {
+        padding-bottom: $spacer-sm;
+
+        .icon {
+            @if $zen-product-details-bg != transparent {
+                color: color-yiq($zen-product-details-bg, $sw-text-color, $zen-light-text-color);
+            }
+        }
+    }
+}
+
+// product details
+.product-detail-container {
+    border-top: 1px solid $border-color;
+    padding-top: $spacer-md;
+    margin-top: $spacer-md;
+    margin-bottom: $spacer-sm;
+
+    ~ .product-detail-container {
+        border-top: none;
+        padding-top: 0;
+        margin-top: 0;
+    }
+}
+
+.product-detail-label {
+    font-weight: $font-weight-bold;
+}
+
+// sticky buy box
+.is-ctl-product {
+    .cms-section,
+    .cms-block-gallery-buybox,
+    .cms-block-zen-gallery-heading-buybox {
+        overflow: initial; // ... position sticky not working with overflow hidden
+        display: flex; // ... prevent collapsing margins
+        flex-direction: column; // ... prevent collapsing margins
+    }
+}
+
+.product-detail-main,
+.cms-block-gallery-buybox .cms-block-container-row,
+.cms-block-zen-gallery-heading-buybox .cms-block-container-row {
+    align-items: flex-start; // ... needed for position sticky
+}
+
+.product-detail-buy {
+    // Prevents the magnifier-zoom-image overlaying
+    // by the product-detail-tab-navigation.
+    z-index: $product-detail-buy-zindex;
+
+    &.js-sticky {
+        position: sticky;
+
+        @if $zen-header-style == single-line {
+            top: calc(#{$zen-header-height}px + #{$zen-header-padding-top}px + #{$spacer-lg});
+        } @else {
+            top: calc(#{$zen-header-height}px + #{$zen-main-navigation-height}px + #{$zen-header-padding-top}px + #{$spacer-lg});
+        }
+
+        .js-top-bar-open &,
+        .is-tb-default & {
+            @if $zen-header-style == single-line {
+                top: calc(#{$zen-header-height}px + #{$zen-header-padding-top}px + #{$zen-top-bar-height}px + #{$spacer-lg});
+            } @else {
+                top: calc(#{$zen-header-height}px + #{$zen-main-navigation-height}px + #{$zen-header-padding-top}px + #{$zen-top-bar-height}px + #{$spacer-lg});
+            }
+        }
+    }
+}
+
+// Gallery slider loading state
+// height is needed to display placeholder properly
+.gallery-slider-row {
+    &.is-loading {
+        @if $zen-product-gallery-slider-image-ratio == 1 {
+            height: auto;
+        } @else {
+            height: px($zen-product-gallery-slider-min-height-mobile);
+
+            @include media-breakpoint-up(md) {
+                height: px($zen-product-gallery-slider-min-height-tablet)
+            }
+
+            @include media-breakpoint-up(lg) {
+                height: px($zen-product-gallery-slider-min-height-desktop);
+            }
+        }
+
+        .gallery-slider {
+            @if $zen-product-gallery-slider-image-ratio == 1 {
+                @if $zen-product-listing-card-img-width == 0 or $zen-product-listing-card-img-height == 0 {
+                    height: 0;
+                    padding-top: percent($zen-product-listing-card-img-padding);
+                } @else {
+                    height: 0;
+                    padding-top: percent(strip-unit($zen-product-listing-card-img-height) / strip-unit($zen-product-listing-card-img-width) * 100);
+                }
+            }
+        }
+
+        .gallery-slider > .tns-outer {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        .gallery-slider-col,
+        .gallery-slider {
+            height: 100%;
+        }
+    }
+}
+
+// Gallery
+.product-detail-media,
+.quickview-minimal-image {
+    // wishlist over gallery
+    .product-wishlist {
+        .product-wishlist-action {
+            display: flex;
+            justify-content: center;
+            position: absolute;
+            top: $spacer-lg;
+            right: $spacer-lg;
+            margin-bottom: 10px;
+            background: $white;
+            height: 50px;
+            width: 50px;
+            @include transition($btn-transition);
+            @include border-radius($zen-layout-button-radius * 1px);
+            overflow: visible;
+            z-index: 1;
+
+            .icon {
+                color: color-yiq($white);
+            }
+
+            .icon-xl {
+                width: 30px;
+                height: 30px;
+            }
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                @include border-radius($zen-layout-button-radius * 1px);
+                box-shadow: 0 2px 4px rgba($black, .15);
+                z-index: -1;
+            }
+
+            &:hover {
+                background: $sw-color-brand-primary;
+                box-shadow: 0 0 0 2px rgba($sw-color-brand-primary, 1);
+
+                .icon {
+                    color: color-yiq($sw-color-brand-primary);
+                }
+
+                &::after {
+                    box-shadow: 0 0px 0px rgba($black, .15);
+                }
+            }
+        }
+    }
+
+    // override inline style on mobile devices
+    .gallery-slider-item,
+    .gallery-slider-single-image:not(.is-placeholder) {
+        @if $zen-product-gallery-img-display-bg == 1 and $zen-product-listing-card-img-color-overlay == 1 {
+            position: relative;
+            background-color: #fff;
+
+            &:after {
+                content: '';
+                background-color: $zen-product-listing-card-img-bg;
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                opacity: .03;
+                pointer-events: none;
+            }
+        } @else if $zen-product-gallery-img-display-bg == 1 {
+            background-color: $zen-product-listing-card-img-bg;
+        }
+    }
+
+    .gallery-slider-col { // ... exclude zoom modal
+        .gallery-slider-item,
+        .gallery-slider-single-image:not(.is-placeholder) {
+            @include media-breakpoint-down(lg) {
+                min-height: px($zen-product-gallery-slider-min-height-tablet);
+            }
+
+            @include media-breakpoint-down(md) {
+                min-height: px($zen-product-gallery-slider-min-height-mobile);
+            }
+
+            @if $zen-product-gallery-slider-image-ratio == 1 {
+                @if $zen-product-listing-card-img-width == 0 or $zen-product-listing-card-img-height == 0 {
+                    height: 0;
+                    padding-top: percent($zen-product-listing-card-img-padding);
+                } @else {
+                    height: 0;
+                    padding-top: percent(strip-unit($zen-product-listing-card-img-height) / strip-unit($zen-product-listing-card-img-width) * 100);
+                }
+
+                &.is-standard {
+                    .gallery-slider-image {
+                        margin: auto;
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        bottom: 0;
+                        left: 0;
+                        object-fit: scale-down;
+                        font-family: 'object-fit: scale-down;'; // IE polyfill
+                    }
+                }
+            }
+        }
+    }
+
+    &.is-standard {
+        .gallery-slider-image {
+            margin: auto;
+        }
+    }
+
+    .gallery-slider-thumbnails-item {
+        @if $zen-product-gallery-slider-gallery-image-ratio == 1 {
+            height: auto;
+        }
+
+        &.tns-nav-active,
+        &:hover {
+            .gallery-slider-thumbnails-item-inner {
+                @if $zen-product-gallery-slider-gallery-style == alternate {
+                    opacity: 1;
+                }
+
+                @if $zen-product-gallery-slider-gallery-style == default {
+                    .gallery-slider-thumbnails-image {
+                        border-color: $primary;
+                    }
+                }
+            }
+        }
+    }
+
+    .gallery-slider-thumbnails-item-inner {
+        @if $zen-product-gallery-slider-gallery-style == alternate {
+            opacity: .5;
+            transition: opacity .3s ease;
+        }
+
+        @if $zen-product-gallery-img-display-bg == 1 and $zen-product-listing-card-img-color-overlay == 1 {
+            position: relative;
+            background-color: #fff;
+
+            &:after {
+                content: '';
+                background-color: $zen-product-listing-card-img-bg;
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                opacity: .03;
+                pointer-events: none;
+
+                @if $zen-product-gallery-slider-gallery-image-ratio == 0 {
+                    @include border-radius($zen-layout-element-radius * 1px);
+                }
+            }
+        } @else if $zen-product-gallery-img-display-bg == 1 {
+            background-color: $zen-product-listing-card-img-bg;
+        }
+
+        @if $zen-product-gallery-slider-gallery-image-ratio == 1 {
+            position: relative;
+            height: 0;
+            padding-bottom: 0;
+            @include border-radius(0);
+            border: none;
+
+            @if $zen-product-listing-card-img-width == 0 or $zen-product-listing-card-img-height == 0 {
+                padding-top: percent($zen-product-listing-card-img-padding);
+            } @else {
+                padding-top: percent(strip-unit($zen-product-listing-card-img-height) / strip-unit($zen-product-listing-card-img-width) * 100);
+            }
+        }
+
+        .gallery-slider-thumbnails-image {
+            @if $zen-product-gallery-slider-gallery-image-ratio == 1 {
+                margin: auto;
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                object-fit: scale-down;
+                font-family: 'object-fit: scale-down;'; // IE polyfill
+                width: 100%;
+
+                @if $zen-product-gallery-slider-gallery-style == default {
+                    border: 1px solid $border-color;
+                }
+            }
+        }
+    }
+}
+
+// gallery scroller
+.js-gallery-scroller {
+    .gallery-slider-row.is-loading {
+        overflow: initial;
+        height: auto;
+    }
+
+    .gallery-slider-item,
+    .gallery-slider-single-image {
+        margin-bottom: $spacer;
+    }
+
+    .gallery-slider { // ... prevent affecting modal
+        .base-slider-dots,
+        .gallery-slider-controls,
+        .gallery-slider-thumbnails-controls {
+            display: none;
+        }
+    }
+
+    .gallery-slider-thumbnails-container {
+        position: sticky;
+
+        @if $zen-header-style == single-line {
+            top: calc(#{$zen-header-height}px + #{$zen-header-padding-top}px + #{$spacer-lg});
+        } @else {
+            top: calc(#{$zen-header-height}px + #{$zen-main-navigation-height}px + #{$zen-header-padding-top}px + #{$spacer-lg});
+        }
+
+        .js-top-bar-open &,
+        .is-tb-default & {
+            @if $zen-header-style == single-line {
+                top: calc(#{$zen-header-height}px + #{$zen-header-padding-top}px + #{$zen-top-bar-height}px + #{$spacer-lg});
+            } @else {
+                top: calc(#{$zen-header-height}px + #{$zen-main-navigation-height}px + #{$zen-header-padding-top}px + #{$zen-top-bar-height}px + #{$spacer-lg});
+            }
+        }
+    }
+}
+
+// gallery grid
+.js-gallery-grid {
+    .gallery-slider-row.is-loading {
+        overflow: initial;
+        height: auto;
+    }
+
+    .gallery-slider-single-image {
+        margin-bottom: $spacer;
+    }
+
+    .gallery-slider { // ... prevent affecting modal
+        .base-slider-dots,
+        .gallery-slider-controls,
+        .gallery-slider-thumbnails-controls {
+            display: none;
+        }
+    }
+
+    .gallery-slider-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .gallery-slider-item-container {
+        width: calc(50% - #{$spacer-lg} / 2);
+        margin-right: $spacer-lg;
+        margin-bottom: $spacer-lg;
+
+        &:nth-child(2n) {
+            margin-right: 0;
+        }
+    }
+
+    .gallery-slider-thumbnails-col {
+        display: none;
+    }
+}
+
+.product-block-prices-grid {
+    thead {
+        @if $zen-container-bg == transparent {
+            background-color: color-yiq($body-bg, $table-accent-bg-dark, $table-accent-bg);
+        } @else {
+            background-color: color-yiq($zen-container-bg, $table-accent-bg-dark, $table-accent-bg);
+        }
+    }
+
+    .product-block-prices-body .product-block-prices-row {
+        @if $zen-container-bg == transparent {
+            border-top-color: color-yiq($body-bg, $table-accent-bg-dark, $table-accent-bg);
+        } @else {
+            border-top-color: color-yiq($zen-container-bg, $table-accent-bg-dark, $table-accent-bg);
+        }
+    }
+}

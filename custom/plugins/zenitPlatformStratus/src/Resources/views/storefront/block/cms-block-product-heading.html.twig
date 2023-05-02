@@ -1,0 +1,16 @@
+{% sw_extends '@Storefront/storefront/block/cms-block-product-heading.html.twig' %}
+
+{% block block_product_heading %}
+    {{ parent() }}
+
+    {# ... add short description #}
+    {% block block_product_heading_product_short_description %}
+        {% if page.product.translated.metaDescription and theme_config('zen-product-details-short-description') %}
+            <div class="col-12 product-detail-short-description-container">
+                <div class="product-detail-short-description">
+                    {{ page.product.translated.metaDescription|raw }}
+                </div>
+            </div>
+        {% endif %}
+    {% endblock %}
+{% endblock %}
