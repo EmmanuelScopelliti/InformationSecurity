@@ -178,8 +178,4 @@
       "@popperjs/core": "^2.11.6"
     }
   }
-
-,"_resolved": "https://registry.npmjs.org/bootstrap/-/bootstrap-5.2.2.tgz"
-,"_integrity": "sha512-dEtzMTV71n6Fhmbg4fYJzQsw1N29hJKO1js5ackCgIpDcGid2ETMGC6zwSYw09v05Y+oRdQ9loC54zB1La3hHQ=="
-,"_from": "bootstrap5@npm:bootstrap@5.2.2"
 }
