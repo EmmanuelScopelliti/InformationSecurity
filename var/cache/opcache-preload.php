@@ -1,3 +1,3 @@
 <?php
 
-require_once __DIR__ . '/prod_h4acff0de6de1c06560fefb3bdb2c9622/Shopware_Core_KernelProdContainer.preload.php';
+require_once __DIR__ . '/dev_h339cd4f72ffea632acc8623ae0077744/Shopware_Core_KernelDevDebugContainer.preload.php';
