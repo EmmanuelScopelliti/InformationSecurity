@@ -123,7 +123,6 @@ return array(
     'JmesPath\\' => array($vendorDir . '/mtdowling/jmespath.php/src'),
     'Interop\\Queue\\' => array($vendorDir . '/queue-interop/queue-interop/src'),
     'Interop\\Amqp\\' => array($vendorDir . '/queue-interop/amqp-interop/src'),
-    'Http\\Message\\' => array($vendorDir . '/php-http/message-factory/src'),
     'GuzzleHttp\\Stream\\' => array($vendorDir . '/ezimuel/guzzlestreams/src'),
     'GuzzleHttp\\Ring\\' => array($vendorDir . '/ezimuel/ringphp/src'),
     'GuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),

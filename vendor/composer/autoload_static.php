@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitd72f7d603d0de4ba02a128a4ff79a18f
+class ComposerStaticInit1310691b2575a5214701e797c0504d15
 {
     public static $files = array (
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
@@ -191,10 +191,6 @@ class ComposerStaticInitd72f7d603d0de4ba02a128a4ff79a18f
         array (
             'Interop\\Queue\\' => 14,
             'Interop\\Amqp\\' => 13,
-        ),
-        'H' => 
-        array (
-            'Http\\Message\\' => 13,
         ),
         'G' => 
         array (
@@ -739,10 +735,6 @@ class ComposerStaticInitd72f7d603d0de4ba02a128a4ff79a18f
         'Interop\\Amqp\\' => 
         array (
             0 => __DIR__ . '/..' . '/queue-interop/amqp-interop/src',
-        ),
-        'Http\\Message\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/php-http/message-factory/src',
         ),
         'GuzzleHttp\\Stream\\' => 
         array (
@@ -1646,6 +1638,8 @@ class ComposerStaticInitd72f7d603d0de4ba02a128a4ff79a18f
         'Aws\\NimbleStudio\\NimbleStudioClient' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/NimbleStudio/NimbleStudioClient.php',
         'Aws\\OAM\\Exception\\OAMException' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/OAM/Exception/OAMException.php',
         'Aws\\OAM\\OAMClient' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/OAM/OAMClient.php',
+        'Aws\\OSIS\\Exception\\OSISException' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/OSIS/Exception/OSISException.php',
+        'Aws\\OSIS\\OSISClient' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/OSIS/OSISClient.php',
         'Aws\\Omics\\Exception\\OmicsException' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Omics/Exception/OmicsException.php',
         'Aws\\Omics\\OmicsClient' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Omics/OmicsClient.php',
         'Aws\\OpenSearchServerless\\Exception\\OpenSearchServerlessException' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/OpenSearchServerless/Exception/OpenSearchServerlessException.php',
@@ -4308,6 +4302,7 @@ class ComposerStaticInitd72f7d603d0de4ba02a128a4ff79a18f
         'Google\\Cloud\\Core\\LongRunning\\LongRunningOperation' => __DIR__ . '/..' . '/google/cloud-core/src/LongRunning/LongRunningOperation.php',
         'Google\\Cloud\\Core\\LongRunning\\OperationResponseTrait' => __DIR__ . '/..' . '/google/cloud-core/src/LongRunning/OperationResponseTrait.php',
         'Google\\Cloud\\Core\\PhpArray' => __DIR__ . '/..' . '/google/cloud-core/src/PhpArray.php',
+        'Google\\Cloud\\Core\\Report\\CloudRunMetadataProvider' => __DIR__ . '/..' . '/google/cloud-core/src/Report/CloudRunMetadataProvider.php',
         'Google\\Cloud\\Core\\Report\\EmptyMetadataProvider' => __DIR__ . '/..' . '/google/cloud-core/src/Report/EmptyMetadataProvider.php',
         'Google\\Cloud\\Core\\Report\\GAEFlexMetadataProvider' => __DIR__ . '/..' . '/google/cloud-core/src/Report/GAEFlexMetadataProvider.php',
         'Google\\Cloud\\Core\\Report\\GAEMetadataProvider' => __DIR__ . '/..' . '/google/cloud-core/src/Report/GAEMetadataProvider.php',
@@ -4333,8 +4328,6 @@ class ComposerStaticInitd72f7d603d0de4ba02a128a4ff79a18f
         'Google\\Cloud\\Core\\Testing\\Lock\\MockValues' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/Lock/MockValues.php',
         'Google\\Cloud\\Core\\Testing\\Reflection\\DescriptionFactory' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/Reflection/DescriptionFactory.php',
         'Google\\Cloud\\Core\\Testing\\Reflection\\ReflectionHandlerFactory' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/Reflection/ReflectionHandlerFactory.php',
-        'Google\\Cloud\\Core\\Testing\\Reflection\\ReflectionHandlerV3' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/Reflection/ReflectionHandlerV3.php',
-        'Google\\Cloud\\Core\\Testing\\Reflection\\ReflectionHandlerV4' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/Reflection/ReflectionHandlerV4.php',
         'Google\\Cloud\\Core\\Testing\\Reflection\\ReflectionHandlerV5' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/Reflection/ReflectionHandlerV5.php',
         'Google\\Cloud\\Core\\Testing\\RegexFileFilter' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/RegexFileFilter.php',
         'Google\\Cloud\\Core\\Testing\\Snippet\\Container' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/Snippet/Container.php',
@@ -4741,11 +4734,6 @@ class ComposerStaticInitd72f7d603d0de4ba02a128a4ff79a18f
         'HTMLPurifier_VarParser_Flexible' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier/VarParser/Flexible.php',
         'HTMLPurifier_VarParser_Native' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier/VarParser/Native.php',
         'HTMLPurifier_Zipper' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier/Zipper.php',
-        'Http\\Message\\MessageFactory' => __DIR__ . '/..' . '/php-http/message-factory/src/MessageFactory.php',
-        'Http\\Message\\RequestFactory' => __DIR__ . '/..' . '/php-http/message-factory/src/RequestFactory.php',
-        'Http\\Message\\ResponseFactory' => __DIR__ . '/..' . '/php-http/message-factory/src/ResponseFactory.php',
-        'Http\\Message\\StreamFactory' => __DIR__ . '/..' . '/php-http/message-factory/src/StreamFactory.php',
-        'Http\\Message\\UriFactory' => __DIR__ . '/..' . '/php-http/message-factory/src/UriFactory.php',
         'Interop\\Amqp\\AmqpBind' => __DIR__ . '/..' . '/queue-interop/amqp-interop/src/AmqpBind.php',
         'Interop\\Amqp\\AmqpConnectionFactory' => __DIR__ . '/..' . '/queue-interop/amqp-interop/src/AmqpConnectionFactory.php',
         'Interop\\Amqp\\AmqpConsumer' => __DIR__ . '/..' . '/queue-interop/amqp-interop/src/AmqpConsumer.php',
@@ -5272,6 +5260,7 @@ class ComposerStaticInitd72f7d603d0de4ba02a128a4ff79a18f
         'Nyholm\\Psr7\\Response' => __DIR__ . '/..' . '/nyholm/psr7/src/Response.php',
         'Nyholm\\Psr7\\ServerRequest' => __DIR__ . '/..' . '/nyholm/psr7/src/ServerRequest.php',
         'Nyholm\\Psr7\\Stream' => __DIR__ . '/..' . '/nyholm/psr7/src/Stream.php',
+        'Nyholm\\Psr7\\StreamTrait' => __DIR__ . '/..' . '/nyholm/psr7/src/StreamTrait.php',
         'Nyholm\\Psr7\\UploadedFile' => __DIR__ . '/..' . '/nyholm/psr7/src/UploadedFile.php',
         'Nyholm\\Psr7\\Uri' => __DIR__ . '/..' . '/nyholm/psr7/src/Uri.php',
         'ONGR\\ElasticsearchDSL\\Aggregation\\AbstractAggregation' => __DIR__ . '/..' . '/ongr/elasticsearch-dsl/src/Aggregation/AbstractAggregation.php',
@@ -15169,10 +15158,10 @@ class ComposerStaticInitd72f7d603d0de4ba02a128a4ff79a18f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitd72f7d603d0de4ba02a128a4ff79a18f::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitd72f7d603d0de4ba02a128a4ff79a18f::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitd72f7d603d0de4ba02a128a4ff79a18f::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitd72f7d603d0de4ba02a128a4ff79a18f::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit1310691b2575a5214701e797c0504d15::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit1310691b2575a5214701e797c0504d15::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit1310691b2575a5214701e797c0504d15::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit1310691b2575a5214701e797c0504d15::$classMap;
 
         }, null, ClassLoader::class);
     }
