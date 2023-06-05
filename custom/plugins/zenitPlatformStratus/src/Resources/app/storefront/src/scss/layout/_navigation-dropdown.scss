@@ -1,0 +1,173 @@
+/*
+Navigation dropdown
+==============================================
+Styling for navigation dropdown which opens on hover over the main navigation.
+*/
+.main-navigation-item {
+    &.dropdown-trigger-hover {
+
+        // needed to set offset for dropdowns with hover trigger
+        .navigation-dropdown-list-wrapper {
+            position: absolute;
+            z-index: $z-index-dropdown;
+            visibility: hidden;
+            opacity: 0;
+            margin-top: -15px;
+            width: 100%;
+            transition: all 0.3s ease-in-out 0s, opacity 0.3s;
+
+            .navbar-nav-scroll & {
+                position: fixed; // because of overflow hidden
+            }
+
+            .header-single-line & {
+                padding-top: px(($zen-header-height-mobile - $zen-main-navigation-height) * .25);
+
+                @include media-breakpoint-up(lg) {
+                    padding-top: px(($zen-header-height - $zen-main-navigation-height) * .25);
+                }
+            }
+        }
+
+        // unfolding first-level item list
+        > .navigation-dropdown-list-wrapper {
+            &.is-open {
+                visibility: visible;
+                opacity: 1;
+                margin-top: 0;
+
+                > .navigation-dropdown-list {
+                    visibility: visible;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    &.dropdown-trigger-click {
+        > .navigation-dropdown-list {
+            margin-top: -15px;
+
+            .header-single-line & {
+                margin-top: px(($zen-header-height-mobile - $zen-main-navigation-height)  * .25 - 15);
+
+                @include media-breakpoint-up(lg) {
+                    margin-top: px(($zen-header-height - $zen-main-navigation-height)  * .25 - 15);
+                }
+            }
+        }
+
+        // unfolding first-level item list
+        &.show {
+            > .navigation-dropdown-list {
+                visibility: visible;
+                opacity: 1;
+                margin-top: 0;
+
+                .header-single-line & {
+                    margin-top: px(($zen-header-height-mobile - $zen-main-navigation-height) * .25);
+
+                    @include media-breakpoint-up(lg) {
+                        margin-top: px(($zen-header-height - $zen-main-navigation-height) * .25);
+                    }
+                }
+            }
+        }
+    }
+
+    .dropdown-menu {
+        min-width: 12rem;
+    }
+}
+
+.navigation-dropdown-list {
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    z-index: $z-index-dropdown;
+    background: $zen-dropdown-navigation-bg;
+    @include border-radius($zen-layout-element-radius * 1px);
+    transition: margin 0.3s ease-in-out 0s, opacity 0.3s;
+
+    @if $zen-dropdown-navigation-list-border == 1 {
+        border-color: $zen-dropdown-navigation-list-border-color;
+    } @else {
+        border: none;
+    }
+
+    .navigation-dropdown-list {
+        @if $zen-dropdown-navigation-list-border == 1 {
+            top: -1px;
+        } @else {
+            top: 0;
+        }
+    }
+
+    .dropdown-divider {
+        margin: 0;
+        border-color: rgba($zen-dropdown-navigation-color, .2);
+    }
+
+    // navigation badge
+    .navigation-badge {
+        background: $zen-dropdown-navigation-color;
+        color: $zen-flyout-navigation-bg;
+    }
+}
+
+.navigation-dropdown-item {
+    position: relative;
+
+    > .navigation-dropdown-list {
+        display: none; // ... needed for touch displays
+    }
+
+    // unfolding sub items
+    &:hover {
+        > .navigation-dropdown-list {
+            display: block; // ... needed for touch displays
+            visibility: visible;
+            opacity: 1;
+            left: 100%; // because of not setting display: none positioning may only take place on :hover
+        }
+    }
+
+    &:first-child {
+        > .navigation-dropdown-link {
+            @include border-top-radius($zen-layout-element-radius * 1px);
+        }
+    }
+
+    &:last-child {
+        > .navigation-dropdown-link {
+            @include border-bottom-radius($zen-layout-element-radius * 1px);
+        }
+    }
+}
+
+.navigation-dropdown-link {
+    color: $zen-dropdown-navigation-color;
+    display: flex;
+
+    &:hover {
+        color: $zen-dropdown-navigation-hover-color;
+        background: $zen-dropdown-navigation-hover-bg;
+
+        .navigation-dropdown-link-icon {
+            .icon {
+                color: $zen-dropdown-navigation-hover-color;
+            }
+        }
+    }
+
+    .navigation-dropdown-link-icon {
+        margin-left: auto;
+
+        .icon {
+            color: $zen-dropdown-navigation-color;
+        }
+    }
+}

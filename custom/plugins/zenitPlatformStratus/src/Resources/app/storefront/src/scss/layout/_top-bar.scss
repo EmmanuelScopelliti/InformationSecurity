@@ -1,0 +1,164 @@
+/*
+Top bar
+==================================================
+Contains styles for the top bar located at the top of the page.
+The top bar contains the language switcher, the currency switcher and the service menu.
+*/
+
+// top bar
+.top-bar {
+    position: relative;
+    background: $zen-top-bar-bg;
+    color: $zen-top-bar-color;
+
+    @if $zen-top-bar-border-bottom == 1 and $zen-top-bar-border-bottom-full-width == 1 {
+        border-bottom: px($zen-top-bar-border-bottom-width) solid $zen-top-bar-border-bottom-color;
+    }
+
+    .btn-close-top-bar {
+        margin-left: $spacer;
+        margin-right: $spacer-xs;
+        height: 36px;
+
+       @if $zen-layout-style == full-width-boxed {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+        }
+    }
+
+    .top-bar-nav {
+        min-height: px($zen-top-bar-height);
+
+        @if $zen-top-bar-border-bottom == 1 and $zen-top-bar-border-bottom-full-width == 0 {
+            border-bottom: px($zen-top-bar-border-bottom-width) solid $zen-top-bar-border-bottom-color;
+        }
+    }
+}
+
+.top-bar-nav-btn {
+    display: flex;
+    align-items: center;
+
+    &.btn {
+        padding-left: $spacer-sm;
+        padding-right: $spacer-sm;
+        background: $zen-top-bar-bg;
+        color: $zen-top-bar-color;
+        line-height: 34px;
+
+        .icon {
+            color: $zen-top-bar-color;
+
+            > svg {
+                top: auto;
+            }
+        }
+
+        &:hover {
+            background: $zen-top-bar-hover-bg;
+            color: $zen-top-bar-hover-color;
+
+            .icon {
+                color: $zen-top-bar-hover-color;
+            }
+        }
+    }
+}
+
+.dropdown.show {
+    .top-bar-nav-btn {
+        background: $zen-top-bar-hover-bg;
+
+        &,
+        .icon {
+            color: $zen-top-bar-hover-color;
+        }
+    }
+}
+
+.top-bar-nav-text {
+    margin: 0 $spacer-xs;
+}
+
+// Marketing Text Slider
+.top-bar-marketing {
+    padding: $spacer-sm 0;
+    text-align: center;
+    flex-grow: 1;
+    justify-content: center;
+
+    .text-slider {
+        margin: 0 $spacer;
+    }
+
+    .text-slider-item {
+        position: absolute;
+    }
+
+    .text-slider-button {
+        padding: 0 $spacer;
+
+        .btn-outline {
+            color: $zen-top-bar-color;
+            border-color: $zen-top-bar-color;
+            border-style: dashed;
+
+            &:hover {
+                color: $zen-top-bar-bg;
+                background: $zen-top-bar-color;
+                border-color: $zen-top-bar-color;
+            }
+        }
+
+        .btn-sm {
+            line-height: 20px;
+        }
+    }
+}
+
+// login register
+.top-bar-login-register {
+    color: $zen-top-bar-color;
+
+    .top-bar-login-item,
+    .top-bar-register-item {
+        color: $zen-top-bar-color;
+        padding: 0 $spacer-xs;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.top-bar-language {
+    .top-bar-list-icon {
+        margin-right: 5px;
+    }
+
+    @if $zen-top-bar-language-widget-text == isoCodeShort {
+        .top-bar-nav-text,
+        .top-bar-list-label {
+            text-transform: uppercase;
+        }
+    }
+
+    @if $zen-top-bar-language-widget-text != standard {
+        .top-bar-list {
+            min-width: 0;
+        }
+    }
+}
+
+.top-bar-nav-item {
+    margin-right: $spacer-xs;
+    flex-shrink: 0;
+
+    @if $zen-header-style != multi-line {
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}

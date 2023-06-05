@@ -1,0 +1,21 @@
+{% sw_extends '@Storefront/storefront/utilities/offcanvas.html.twig' %}
+
+{% block utilities_offcanvas_content %}
+    {% block zen_page_product_detail_custom_field2_container %}
+        <div class="product-detail-custom-field1 tab-pane-container">
+
+            {% block zen_page_product_detail_custom_field2_content %}
+                {% set content = page.product.translated["customFields"]["zenit_stratus_custom_tab2_text"]|raw %}
+
+                {% if config('zenitPlatformStratus.config.twigStringLoaderExtension') %}
+                    {% sw_include '@zenitPlatformStratus/storefront/utilities/zen-template-from-string.html.twig' with {
+                        content: content
+                    } only %}
+                {% else %}
+                    {{ content|raw }}
+                {% endif %}
+            {% endblock %}
+
+        </div>
+    {% endblock %}
+{% endblock %}

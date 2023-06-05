@@ -1,0 +1,56 @@
+<?php //Shopware%255CStorefront%255CController%255CAccountPaymentController%2523paymentOverview
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Shopware\\Core\\Framework\\Routing\\Annotation\\Since'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Shopware\\Core\\Framework\\Routing\\Annotation\\Since')),
+        clone ($p['Symfony\\Component\\Routing\\Annotation\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Routing\\Annotation\\Route')),
+        clone $p['Symfony\\Component\\Routing\\Annotation\\Route'],
+        clone ($p['Shopware\\Storefront\\Framework\\Routing\\Annotation\\NoStore'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Shopware\\Storefront\\Framework\\Routing\\Annotation\\NoStore')),
+    ],
+    null,
+    [
+        'Shopware\\Core\\Framework\\Routing\\Annotation\\Since' => [
+            'value' => [
+                '6.0.0.0',
+            ],
+        ],
+        'Symfony\\Component\\Routing\\Annotation\\Route' => [
+            'path' => [
+                1 => '/account/payment',
+                '/account/payment',
+            ],
+            'name' => [
+                1 => 'frontend.account.payment.page',
+                'frontend.account.payment.page',
+            ],
+            'options' => [
+                1 => [
+                    'seo' => 'false',
+                ],
+                [
+                    'seo' => 'false',
+                ],
+            ],
+            'defaults' => [
+                1 => [
+                    '_loginRequired' => true,
+                ],
+            ],
+            'methods' => [
+                1 => [
+                    'GET',
+                ],
+                [
+                    'GET',
+                ],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[2],
+        $o[3],
+    ],
+    []
+); }];

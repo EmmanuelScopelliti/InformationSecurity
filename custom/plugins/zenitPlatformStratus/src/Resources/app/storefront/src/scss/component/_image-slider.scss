@@ -1,0 +1,240 @@
+/*
+Image slider
+==============================================
+Styling for image slider component.
+Displays images in a reusable slider component.
+based on "base-slider" component and "tiny-slider" (https://github.com/ganlanyuan/tiny-slider)
+*/
+
+// arrow navigation inside
+.image-slider-controls-prev,
+.image-slider-controls-next {
+    border: none;
+    background: $zen-image-slider-controls-inside-bg;
+
+    .icon {
+        color: $zen-image-slider-controls-inside-color;
+    }
+
+    &:hover {
+        background: $zen-image-slider-controls-inside-hover-bg;
+
+        .icon {
+            color: $zen-image-slider-controls-inside-hover-color;
+        }
+    }
+}
+
+// arrow navigation outside
+.has-nav-outside {
+    .image-slider-controls-prev,
+    .image-slider-controls-next {
+        border: none;
+        background: $zen-image-slider-controls-outside-bg;
+
+        .icon {
+            color: $zen-image-slider-controls-outside-color;
+        }
+
+        &:hover {
+            background: $zen-image-slider-controls-outside-hover-bg;
+
+            .icon {
+                color: $zen-image-slider-controls-outside-hover-color;
+            }
+        }
+    }
+}
+
+// dots nav inside
+.image-slider {
+    .tns-nav {
+        button {
+            border-color: $zen-image-slider-controls-dots-inside-color;
+
+            @if $zen-image-slider-controls-dots-style == 'expanding' {
+                background: $zen-image-slider-controls-dots-inside-color;
+            } @else {
+                background: transparent;
+            }
+
+            &:hover,
+            &.tns-nav-active {
+                background: $zen-image-slider-controls-dots-inside-hover-color;
+                border-color: $zen-image-slider-controls-dots-inside-hover-color;
+            }
+        }
+    }
+}
+
+// dots nav outside
+.has-dots-outside {
+    &.image-slider .tns-nav {
+        button {
+            border-color: $zen-image-slider-controls-dots-outside-color;
+
+            @if $zen-image-slider-controls-dots-style == 'expanding' {
+                background: $zen-image-slider-controls-dots-outside-color;
+            } @else {
+                background: transparent;
+            }
+
+            &:hover,
+            &.tns-nav-active {
+                background: $zen-image-slider-controls-dots-outside-hover-color;
+                border-color: $zen-image-slider-controls-dots-outside-hover-color;
+            }
+        }
+    }
+}
+
+
+/*
+Zenit Image slider
+==============================================
+Styling for zen image slider component.
+Displays images in a reusable slider component with text.
+based on "image-slider" and "base-slider" component and "tiny-slider" (https://github.com/ganlanyuan/tiny-slider)
+*/
+.zen-image-slider {
+    .tns-carousel {
+        .image-slider-item-inner {
+            position: relative;
+            overflow: hidden;
+        }
+    }
+
+    .zen-image-slider-item-content-container,
+    .zen-image-slider-item-overlay,
+    .zen-image-slider-item-text-container {
+        display: flex;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+
+    .image-slider-link {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+
+    .zen-image-slider-item-text {
+        position: relative;
+        color: $sw-text-color;
+        font-size: $font-size-base;
+        line-height: 1;
+        font-weight: $font-weight-base;
+        padding: 8px 16px;
+        margin: 20px 10%;
+        border-radius: 2px;
+        transition: transform .3s ease;
+        transform: translateX(0) translateY(0);
+
+        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, p {
+            color: inherit;
+        }
+
+        .display-1 {
+            @include media-breakpoint-down(md) {
+                @include font-size($display1-size * .5);
+            }
+        }
+
+        .display-2 {
+            @include media-breakpoint-down(md) {
+                @include font-size($display2-size * .5);
+            }
+        }
+
+        .display-3 {
+            @include media-breakpoint-down(md) {
+                @include font-size($display3-size * .75);
+            }
+        }
+
+        .display-4 {
+            @include media-breakpoint-down(md) {
+                @include font-size($display4-size * .75);
+            }
+        }
+    }
+
+    .zen-image-slider-item-text-value {
+        transition: all .3s ease;
+    }
+
+    // initial states for animation-in entrance animations
+    .animation-in-fade-in,
+    .animation-in-fade-in-top,
+    .animation-in-slide-in-top,
+    .animation-in-slide-in-bottom,
+    .animation-in-slide-in-left,
+    .animation-in-slide-in-right ,
+    .animation-in-slide-in-bck-center,
+    .animation-in-slide-in-blurred-top,
+    .animation-in-slide-in-blurred-bottom,
+    .animation-in-puff-in-center,
+    .animation-in-flip-in-hor-top,
+    .animation-in-flip-in-hor-bottom {
+        opacity: 0;
+    }
+
+    // triggers the opposite animation
+    .tns-slide-active {
+        .animation-in-fade-in { @extend .fade-in; animation-delay: .5s; }
+        .animation-in-fade-in-top { @extend .fade-in-top; animation-delay: .5s; }
+        .animation-in-slide-in-top { @extend .slide-in-top; animation-delay: .5s; }
+        .animation-in-slide-in-bottom { @extend .slide-in-bottom; animation-delay: .5s; }
+        .animation-in-slide-in-left { @extend .slide-in-left; animation-delay: .5s; }
+        .animation-in-slide-in-right { @extend .slide-in-right; animation-delay: .5s; }
+        .animation-in-slide-in-bck-center { @extend .slide-in-bck-center; animation-delay: .5s; }
+        .animation-in-slide-in-blurred-top { @extend .slide-in-blurred-top; animation-delay: .5s; }
+        .animation-in-slide-in-blurred-bottom { @extend .slide-in-blurred-bottom; animation-delay: .5s; }
+        .animation-in-puff-in-center { @extend .puff-in-center; animation-delay: .5s; }
+        .animation-in-flip-in-hor-top { @extend .flip-in-hor-top; animation-delay: .5s; }
+        .animation-in-flip-in-hor-bottom { @extend .flip-in-hor-bottom; animation-delay: .5s; }
+    }
+
+    .animation-zoom {
+        .image-slider-item {
+            img {
+                transition: all .3s ease;
+                transform: scale(1);
+            }
+        }
+
+        &:hover {
+            .image-slider-item {
+                img {
+                    transition-duration: 1s;
+                    transform: scale(1.05);
+                }
+            }
+        }
+    }
+
+    .animation-kenburns-bottom-left {
+        .image-slider-item {
+            overflow: hidden;
+
+            img {
+                animation: kenburns-bottom-left 40s ease-out infinite alternate both;
+            }
+        }
+    }
+
+    .animation-kenburns-top-right {
+        .image-slider-item {
+            overflow: hidden;
+
+            img {
+                animation: kenburns-top-right 40s ease-out infinite alternate both;
+            }
+        }
+    }
+}

@@ -1,0 +1,34 @@
+{% block zen_buy_widget_quantity %}
+    <div class="input-group buy-widget-quantity-input-group" data-buy-widget-quantity="true">
+        {% block zen_buy_widget_quantity_btn_minus %}
+            <span class="input-group-btn">
+                <button class="btn btn-minus js-buy-widget-quantity-btn-minus" type="button">
+                    {% block zen_buy_widget_quantity_btn_minus_icon %}
+                        {% sw_icon 'minus' %}
+                    {% endblock %}
+                </button>
+            </span>
+        {% endblock %}
+        {% block zen_buy_widget_quantity_input %}
+            {# <label for="lineItems[{{ product.id }}][quantity]">#}
+            <input type="number"
+                   class="form-control custom-number buy-widget-quantity-input {{ quantityClasses }}  js-buy-widget-quantity-input"
+                   value="{% if value %}{{ value }}{% else %}{{ minPurchase }}{% endif %}"
+                   min="{{ minPurchase }}"
+                   max="{{ maxPurchase }}"
+                   step="{{ step }}"
+                   name="{{ name }}"
+                   data-product-id="{{ id }}"
+                   {% if autoChange %}data-auto-change="{{ autoChange }}"{% endif %}>
+        {% endblock %}
+        {% block zen_buy_widget_quantity_btn_plus %}
+            <span class="input-group-btn">
+                <button class="btn btn-plus js-buy-widget-quantity-btn-plus" type="button">
+                    {% block zen_buy_widget_quantity_btn_plus_icon %}
+                        {% sw_icon 'plus' %}
+                    {% endblock %}
+                </button>
+            </span>
+        {% endblock %}
+    </div>
+{% endblock %}

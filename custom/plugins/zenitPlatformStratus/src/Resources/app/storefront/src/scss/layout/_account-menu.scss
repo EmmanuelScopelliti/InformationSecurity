@@ -1,0 +1,74 @@
+.account-menu-dropdown {
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    transition: margin 0.3s ease-in-out 0s, opacity 0.3s;
+    margin-top: -15px;
+
+    .header-single-line & {
+        margin-top: px(($zen-header-height-mobile - 40) * .5 - ($zen-header-height-mobile - $zen-main-navigation-height)  * .25 - 15);
+
+        @include media-breakpoint-up(lg) {
+            margin-top: px(($zen-header-height - 40)  * .5 - ($zen-header-height - $zen-main-navigation-height)  * .25 - 15);
+        }
+    }
+
+    &.show {
+        visibility: visible;
+        opacity: 1;
+        margin-top: 0;
+
+        .header-single-line & {
+            margin-top: px((($zen-header-height-mobile - 40) * .5 - $zen-header-height-mobile - $zen-main-navigation-height)  * .25);
+
+            @include media-breakpoint-up(lg) {
+                margin-top: px(($zen-header-height - 40)  * .5 - ($zen-header-height - $zen-main-navigation-height)  * .25);
+            }
+        }
+    }
+}
+
+.account-menu-offcanvas {
+    .account-menu-header {
+        @include text-color-contrast;
+    }
+
+    .account-menu-login {
+        border-bottom: none;
+    }
+
+    .account-aside-item {
+        @include transition($transition-base);
+        background: $zen-sidebar-navigation-bg;
+        color: $zen-sidebar-navigation-color;
+        padding: $list-group-item-padding-y $list-group-item-padding-x;
+        margin-bottom: -$list-group-border-width;
+
+        @if $zen-sidebar-navigation-mb != 0 {
+            @include border-radius($zen-layout-element-radius * 1px);
+            margin-bottom: px($zen-sidebar-navigation-mb);
+        }
+
+        @if $zen-sidebar-navigation-border == 1 {
+            border: $list-group-border-width solid $zen-sidebar-navigation-border-color;
+        }
+
+        &:last-child {
+            border: 0 none;
+        }
+
+        &:hover {
+            background: $zen-sidebar-navigation-hover-bg;
+            color: $zen-sidebar-navigation-hover-color;
+
+            @if $zen-sidebar-navigation-border == 1 {
+                border: 1px solid $zen-sidebar-navigation-border-hover-color;
+            }
+
+            .navigation-offcanvas-link-icon .icon {
+                color: $zen-sidebar-navigation-hover-color;
+            }
+        }
+    }
+}
+

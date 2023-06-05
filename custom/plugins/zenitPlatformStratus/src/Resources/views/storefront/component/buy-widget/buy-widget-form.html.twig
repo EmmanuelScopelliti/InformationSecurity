@@ -1,0 +1,43 @@
+{% sw_extends '@Storefront/storefront/component/buy-widget/buy-widget-form.html.twig' %}
+
+{% set selectQuantityThreshold = 100 %}
+{% set selectQuantityThresholdExceeded = (product.calculatedMaxPurchase - product.minPurchase) / product.purchaseSteps > selectQuantityThreshold %}
+
+{% if theme_config('zen-buy-quantity-style') is same as ('input') or (theme_config('zen-buy-quantity-style') is same as ('select') and selectQuantityThresholdExceeded) %}
+    {% set quantityGridClasses = 'col-auto' %}
+    {% set btnGridClasses = 'col' %}
+{% else %}
+    {% set quantityGridClasses = 'col-4' %}
+    {% set btnGridClasses = 'col-8' %}
+{% endif %}
+
+{% block buy_widget_buy_quantity_container %}
+    {% if theme_config('zen-product-details-buy-quantity') is not same as (false) %}
+        {# ... change col to col-auto #}
+        <div class="{{ quantityGridClasses }}">
+            {% block buy_widget_buy_quantity %}
+                {% if theme_config('zen-buy-quantity-style') is same as ('input') or (theme_config('zen-buy-quantity-style') is same as ('select') and selectQuantityThresholdExceeded) %}
+                    {% block zen_buy_widget_buy_quantity_zenit_input %}
+                        {% sw_include '@zenitPlatformStratus/storefront/component/buy-widget/zen-buy-widget-quantity.html.twig' with {
+                            value: product.value,
+                            id: product.id,
+                            minPurchase: product.minPurchase,
+                            maxPurchase: product.calculatedMaxPurchase,
+                            step: product.purchaseSteps,
+                            name: "lineItems[#{product.id}][quantity]",
+                            quantityClasses: 'product-detail-quantity-input'
+                        } %}
+                    {% endblock %}
+                {% else %}
+                    {{ parent() }}
+                {% endif %}
+            {% endblock %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block buy_widget_buy_button_container %}
+    <div class="{{ btnGridClasses }}">
+        {{ block('buy_widget_buy_button') }}
+    </div>
+{% endblock %}

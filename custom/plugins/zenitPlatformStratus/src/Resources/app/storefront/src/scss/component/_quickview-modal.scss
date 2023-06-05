@@ -1,0 +1,91 @@
+.quickview-modal,
+.quickview-modal-loading {
+    .modal-dialog {
+        @extend .modal-dialog-centered;
+        @extend .modal-xl;
+    }
+}
+
+.quickview-minimal-product {
+    overflow: hidden;
+
+    .quickview-minimal-product-manufacturer-logo {
+        @extend .product-detail-manufacturer-logo;
+    }
+
+    .product-detail-manufacturer {
+        max-width: 140px;
+    }
+}
+
+.quickview-minimal-product-name {
+    @include font-size($h1-font-size);
+    color: $zen-product-details-name-color;
+    @include font-size($zen-product-details-name-font-size);
+    font-weight: $zen-product-details-name-font-weight;
+    text-transform: $zen-product-details-name-text-transform;
+    line-height: 1.2;
+
+    @if $zen-product-details-name-font-family == headline {
+        font-family: $headings-font-family;
+    } @else {
+        font-family: $font-family-base;
+    }
+}
+
+.quickview-minimal-product-short-description {
+    border-bottom: 1px solid $border-color;
+    padding-bottom: $spacer-md;
+    margin-bottom: $spacer-md;
+}
+
+.quickview-minimal-product-price {
+    .product-price {
+        height: auto;
+        line-height: 1;
+        color: $zen-product-details-price-color;
+        @include font-size($zen-product-details-price-font-size);
+        font-weight: $zen-product-details-price-font-weight;
+        text-align: left;
+
+        @if $zen-product-details-price-font-family == headline {
+            font-family: $headings-font-family;
+        } @else {
+            font-family: $font-family-base;
+        }
+
+        &.with-list-price {
+            color: $sw-color-danger;
+        }
+    }
+}
+
+.quickview-minimal-product-action {
+    .buy-widget {
+        max-width: none;
+
+    }
+
+    .btn-buy {
+        .icon {
+            color: $buy-btn-color;
+        }
+
+        &:hover {
+            .icon {
+                color: color-yiq($buy-btn-bg);
+            }
+        }
+    }
+}
+
+.quickview-minimal-footer {
+    .btn-details {
+        position: absolute;
+        top: calc(100% + 16px);
+        left: 0;
+        right: 0;
+        margin: auto;
+        max-width: 320px;
+    }
+}

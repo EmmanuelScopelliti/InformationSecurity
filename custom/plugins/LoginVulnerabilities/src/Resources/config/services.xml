@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+<!--        <service id="LoginVulnerabilities\Controller\LoginController" public="true">-->
+<!--            <argument type="service" id="Shopware\Storefront\Page\Account\Login\AccountLoginPageLoader"/>-->
+<!--            <argument type="service" id="Shopware\Core\Checkout\Customer\SalesChannel\SendPasswordRecoveryMailRoute"/>-->
+<!--            <argument type="service" id="Shopware\Core\Checkout\Customer\SalesChannel\ResetPasswordRoute"/>-->
+<!--            <argument type="service" id="Shopware\Core\Checkout\Customer\SalesChannel\LoginRoute"/>-->
+<!--            <argument type="service" id="Shopware\Core\Checkout\Customer\SalesChannel\LogoutRoute"/>-->
+<!--            <argument type="service" id="Shopware\Storefront\Checkout\Cart\SalesChannel\StorefrontCartFacade"/>-->
+<!--            <argument type="service" id="Shopware\Storefront\Page\Account\RecoverPassword\AccountRecoverPasswordPageLoader"/>-->
+<!--            <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextService"/>-->
+<!--            <argument type="service" id="Doctrine\DBAL\Connection"/>-->
+<!--            <call method="setContainer">-->
+<!--                <argument type="service" id="service_container"/>-->
+<!--            </call>-->
+<!--        </service>-->
+
+        <service id="LoginVulnerabilities\Controller\Decorators\LoginRouteDecorator" decorates="Shopware\Core\Checkout\Customer\SalesChannel\LoginRoute">
+            <argument type="service" id="LoginVulnerabilities\Controller\Decorators\LoginRouteDecorator.inner"/>
+            <argument type="service" id="Symfony\Contracts\EventDispatcher\EventDispatcherInterface" />
+            <argument type="service" id="Symfony\Component\HttpFoundation\RequestStack" />
+            <argument type="service" id="Shopware\Core\Framework\RateLimiter\RateLimiter" />
+            <argument type="service" id="customer.repository" />
+            <argument type="service" id="Doctrine\DBAL\Connection" />
+            <argument type="service" id="Shopware\Core\Checkout\Customer\Password\LegacyPasswordVerifier" />
+            <argument type="service" id="Shopware\Core\System\SalesChannel\Context\CartRestorer" />
+        </service>
+
+    </services>
+</container>

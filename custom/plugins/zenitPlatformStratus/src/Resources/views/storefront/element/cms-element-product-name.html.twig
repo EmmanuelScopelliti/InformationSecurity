@@ -1,0 +1,66 @@
+{% sw_extends '@Storefront/storefront/element/cms-element-product-name.html.twig' %}
+
+{% block element_product_name_inner %}
+    {% set product = page.product %}
+
+    {% if theme_config('zen-product-details-rating-position') is same as ('headline') %}
+        {% set remoteClickOptions = {
+            selector: "#review-tab-" ~ product.id,
+            scrollToElement: true
+        } %}
+
+        {% set reviewTabHref = "#review-tab-pane-" ~ product.id %}
+
+        {% block zen_element_product_name_inner_review %}
+            {% if product.ratingAverage > 0 and config('core.listing.showReview') %}
+                <div class="product-detail-reviews">
+
+                    {% sw_include '@Storefront/storefront/component/review/rating.html.twig' with {
+                        points: product.ratingAverage,
+                        style: 'text-primary'
+                    } %}
+                    <a data-toggle="tab"
+                       class="product-detail-reviews-link"
+                       data-offcanvas-tabs="true"
+                       data-remote-click="true"
+                       data-remote-click-options='{{ remoteClickOptions|json_encode }}'
+                       href="{{ reviewTabHref }}"
+                       aria-controls="review-tab-pane">
+
+                        {# ... totalReviews is null if cms-element-product-name
+                        is included by cms-block-product-heading #}
+                        {% if not totalReviews %}
+                            {# ... set totalReviews to a value higher than 1 #}
+                            {% set totalReviews = 2 %}
+                        {% else %}
+                            {{ totalReviews }}
+                        {% endif %}
+
+                        {{ "detail.reviewLinkText"|trans({'%count%': totalReviews})|sw_sanitize }}
+                    </a>
+                </div>
+            {% endif %}
+        {% endblock %}
+    {% endif %}
+
+    {{ parent() }}
+
+    {# ... add variant characteristics #}
+    {% block zen_page_product_detail_variant_characteristics %}
+        {% if theme_config('zen-product-details-variant-characteristics') %}
+            <div class="product-variant-characteristics">
+                {% for variation in page.product.variation %}
+                    {{ variation.group }}:
+                    <span class="product-variant-characteristics-option">
+                        {{ variation.option }}
+                    </span>
+
+                    {% if page.product.variation|last != variation %}
+                        {{ " | " }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endblock %}
+
+{% endblock %}

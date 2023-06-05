@@ -1,0 +1,151 @@
+{% sw_extends '@Storefront/storefront/layout/navigation/navigation.html.twig' %}
+
+{% block layout_main_navigation %}
+    <div class="main-navigation"
+         id="mainNavigation"
+        {% if theme_config('zen-main-navigation-subnavigation-style') is same as ('dropdown') and theme_config('zen-dropdown-navigation-trigger') is same as ('hover')%}
+            data-dropdown-menu="true"
+        {% else %}
+            data-flyout-menu="true"
+        {% endif %}>
+        {{ block('layout_main_navigation_navbar') }}
+        {{ block('layout_main_navigation_menu_flyout_wrapper') }}
+    </div>
+{% endblock %}
+
+{% block layout_main_navigation_menu_home %}
+    {% if theme_config('zen-main-navigation-home') is same as (true) %}
+        {% if context.salesChannel.translated.homeEnabled %}
+            {# ... remove active on home #}
+            <a class="nav-link main-navigation-link home-link"
+               href="{{ path('frontend.home.page') }}"
+               itemprop="url"
+               title="{{ homeLabel|striptags }}">
+
+                {# ... add data-hover for hover animations #}
+                <div class="main-navigation-link-text{% if treeItem.children|length > 0 %} has-children{% endif %}" data-hover="{{ homeLabel|striptags }}">
+                    <span class="main-navigation-link-name" itemprop="name" data-hover="{{ homeLabel|striptags }}">{{ homeLabel|sw_sanitize }}</span>
+                </div>
+            </a>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block layout_main_navigation_menu_item %}
+
+    {# ... add navigation divider #}
+    {% if theme_config('zen-main-navigation-divider') is not same as (0) %}
+        {% if ( theme_config('zen-main-navigation-home') is same as (true) and loop.index == 1 ) or loop.index > 1 %}
+            <div class="main-navigation-divider" aria-hidden="true"></div>
+        {% endif %}
+    {% endif %}
+
+    {# ... add main-navigation-item #}
+    {% if theme_config('zen-main-navigation-subnavigation-style') is same as ('dropdown') %}
+        <div class="main-navigation-item dropdown dropdown-trigger-{{ theme_config('zen-dropdown-navigation-trigger') }}">
+    {% endif %}
+        {% if category.type == 'folder' %}
+            <div class="nav-link main-navigation-link"
+            {# ... add dropdown condition #}
+            {% if theme_config('zen-main-navigation-subnavigation-style') is same as ('dropdown') and treeItem.children|length > 0 %}
+                data-dropdown-menu-trigger="{{ category.id }}"
+            {% elseif treeItem.children|length > 0 %}
+                data-flyout-menu-trigger="{{ category.id }}"
+            {% endif %}
+            {% if theme_config('zen-main-navigation-subnavigation-style') is same as ('dropdown') and treeItem.children|length > 0 %}
+                {% if theme_config('zen-dropdown-navigation-trigger') is same as ('click') %}
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                {% endif %}
+            {% endif %}
+             title="{{ name }}">
+
+                {# ... add data-hover for hover animations #}
+                <div class="main-navigation-link-text{% if treeItem.children|length > 0 %} has-children{% endif %}" data-hover="{{ name }}">
+                    <span class="main-navigation-link-name" data-hover="{{ name }}" itemprop="name">{{ name }}</span>
+
+                    {# ... add navigation arrow #}
+                    {% if theme_config('zen-main-navigation-arrow') and treeItem.children|length > 0 %}
+                        {% sw_icon 'arrow-medium-down' style {
+                            'pack': 'solid', 'size': 'xs', 'class': 'main-navigation-link-toggle'
+                        } %}
+                    {% endif %}
+
+                    {# ... add badge #}
+                    {% sw_include '@zenitPlatformStratus/storefront/layout/navigation/zen-navigation-badge.html.twig' with {
+                        category: category,
+                    } only %}
+                </div>
+            </div>
+        {% else %}
+            <a class="nav-link main-navigation-link{% if category.id == page.header.navigation.active.id or category.id in activePath %} active{% endif %}"
+           href="{{ category_url(category) }}"
+           itemprop="url"
+            {# ... add dropdown condition #}
+            {% if theme_config('zen-main-navigation-subnavigation-style') is same as ('dropdown') and treeItem.children|length > 0 %}
+                data-dropdown-menu-trigger="{{ category.id }}"
+            {% elseif treeItem.children|length > 0 %}
+                data-flyout-menu-trigger="{{ category.id }}"
+            {% endif %}
+            {% if theme_config('zen-main-navigation-subnavigation-style') is same as ('dropdown') and treeItem.children|length > 0 %}
+                {% if theme_config('zen-dropdown-navigation-trigger') is same as ('click') %}
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                {% endif %}
+            {% endif %}
+            {% if category_linknewtab(category) %}target="_blank"{% endif %}
+           title="{{ name }}">
+
+                {# ... add data-hover for hover animations #}
+                <div class="main-navigation-link-text{% if treeItem.children|length > 0 %} has-children{% endif %}" data-hover="{{ name }}">
+                    <span class="main-navigation-link-name" data-hover="{{ name }}" itemprop="name">{{ name }}</span>
+
+                    {# ... add navigation arrow #}
+                    {% if theme_config('zen-main-navigation-arrow') and treeItem.children|length > 0 %}
+                        {% sw_icon 'arrow-medium-down' style {'pack': 'solid', 'size': 'xs'} %}
+                    {% endif %}
+
+                    {# ... add badge #}
+                    {% sw_include '@zenitPlatformStratus/storefront/layout/navigation/zen-navigation-badge.html.twig' with {
+                        category: category,
+                    } only %}
+                </div>
+            </a>
+        {% endif %}
+
+        {# ... add dropdown menu #}
+        {% if theme_config('zen-main-navigation-subnavigation-style') is same as ('dropdown') and treeItem.children|length > 0 %}
+            {% sw_include '@zenitPlatformStratus/storefront/layout/navigation/zen-dropdown.html.twig' with {
+                navigationTree: treeItem,
+                level: level+1,
+                page: page,
+                trigger: theme_config('zen-dropdown-navigation-trigger')
+            } only %}
+        {% endif %}
+
+    {# ... add main-navigation-item #}
+    {% if theme_config('zen-main-navigation-subnavigation-style') is same as ('dropdown') %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block layout_main_navigation_menu_flyout_wrapper %}
+    {% if theme_config('zen-main-navigation-subnavigation-style') is not same as ('dropdown') %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block layout_main_navigation_menu_flyout %}
+    <div class="navigation-flyout"
+         data-flyout-menu-id="{{ treeItem.category.id }}">
+
+        {# ... add .navigation-flyout-inner #}
+        <div class="navigation-flyout-inner">
+            <div class="container">
+                {% block layout_main_navigation_menu_flyout_include %}
+                    {% sw_include '@Storefront/storefront/layout/navigation/flyout.html.twig' with {navigationTree: treeItem, level: level+1, page: page} only %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

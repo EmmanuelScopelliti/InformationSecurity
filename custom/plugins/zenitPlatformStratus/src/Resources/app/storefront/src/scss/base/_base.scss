@@ -1,0 +1,171 @@
+/*
+Base
+==================================================
+Contains global base styles for all pages and
+and the specific styles of the different layout modes
+*/
+
+body {
+    border-top: $zen-layout-border-top-width * 1px solid $zen-layout-border-top-color;
+    @include layout-horizontal-padding;
+    @include layout-vertical-padding;
+    overflow-x: hidden; // prevents horizontal scrolling e.g. crossselling cms pages without horizontal paddings
+}
+
+.top-bar,
+.nav-header,
+.main-navigation,
+.navigation-flyout,
+.container-main,
+.breadcrumb-container,
+.content-main,
+.product-detail-content,
+.product-detail-tabs,
+.footer-main,
+.footer-bottom {
+    > .container {
+        @include layout-container-horizontal-padding(px($zen-layout-container-spacing-right), px($zen-layout-container-spacing-left));
+    }
+}
+
+@if $zen-layout-style == boxed {
+    .is-lo-boxed {
+        overflow-x: hidden; // ... because of full-width
+
+        .page-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: px($zen-layout-container-width);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .breadcrumb-wrap {
+            max-width: px($zen-layout-container-width);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        // ... additional paddings for boxed layouts footer,
+        // but only if there is any bg color on one of these cols
+        @if $zen-footer-hotline-column-bg != transparent
+            or $zen-footer-social-column-bg != transparent
+            or $zen-footer-newsletter-column-bg != transparent
+            or $zen-footer-custom-column-bg != transparent {
+            .footer-columns {
+                @include layout-container-horizontal-padding(px($zen-layout-container-spacing-right), px($zen-layout-container-spacing-left));
+                @include layout-container-vertical-padding(px($zen-layout-container-spacing-top), px($zen-layout-container-spacing-bottom));
+            }
+        }
+
+        // ... transparent background container
+        @if $zen-container-bg == transparent {
+            .content-main {
+                > .container {
+                    @media screen and (min-width: $zen-layout-container-width + $grid-gutter-width) {
+                        padding-left: 0;
+                        padding-right: 0;
+                    }
+                }
+            }
+        }
+
+        // ... full width cms section on boxed layout
+        .cms-section,
+        .cms-section-default {
+            overflow: visible;
+
+            &.full-width {
+                width: 100vw;
+                position: relative;
+                left: calc(-1 * (100vw - 100%) / 2);
+            }
+        }
+    }
+}
+
+@if $zen-layout-style == full-width {
+    .is-lo-full-width {
+        .container {
+            max-width: none;
+        }
+
+        .cms-page .cms-section .boxed {
+            max-width: px($zen-layout-container-width);
+        }
+    }
+}
+
+@if $zen-layout-style == full-width-header {
+    .is-lo-full-width-header {
+        .header-main,
+        .nav-main {
+            .container {
+                max-width: none;
+            }
+        }
+    }
+}
+
+.page-wrapper {
+    // ... otherwise the accent line would be covered by the absolutely positioned header
+    position: relative;
+}
+
+.content-main {
+    background: $zen-container-bg;
+}
+
+.container-main {
+    @include layout-container-vertical-padding(px($zen-layout-container-spacing-top), px($zen-layout-container-spacing-bottom));
+
+    .cms-page:not(.search-page, .wishlist-page) {
+        // ... vertical paddings will be configured in the shopping experience Block Layout
+        @include layout-container-negative-vertical-margin(px($zen-layout-container-spacing-top), px($zen-layout-container-spacing-bottom));
+    }
+
+    // ... prevent negative margin on relative positioned pages with breadcrumbs out of cms-pages
+    // ... necessary, because breadcrumbs could be added via cms-pages
+    .breadcrumb-container ~ .cms-page {
+        .content-main & {
+            margin-top: 0
+        }
+    }
+}
+
+.cms-section {
+    .boxed {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+// ... set horizontal paddings, if they are configured as auto in
+// the shopping experience block layout margins
+.cms-section {
+    .cms-block-container {
+        @include layout-container-horizontal-padding(px($zen-layout-container-spacing-right), px($zen-layout-container-spacing-left));
+    }
+}
+
+// flashbags
+.flashbags {
+    overflow: hidden;  // prevent collapsing margins
+    margin: auto;
+
+    .alert {
+        margin-top: $grid-gutter-single-width;
+        margin-bottom: $grid-gutter-single-width;
+    }
+}
+
+.header-pos-absolute ~ .content-main {
+    .flashbags {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1020;
+    }
+}
+

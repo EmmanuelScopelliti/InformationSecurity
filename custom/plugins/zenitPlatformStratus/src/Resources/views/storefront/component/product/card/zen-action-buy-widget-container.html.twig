@@ -1,0 +1,83 @@
+{% block zen_component_product_box_action_buy_widget_container %}
+
+    {% set quantityCol = quantityCol ? quantityCol : 'col-8' %}
+    {% set buttonCol = buttonCol ? buttonCol : 'col-4' %}
+    {% set selectQuantityThreshold = 100 %}
+    {% set selectQuantityThresholdExceeded = (product.calculatedMaxPurchase - product.minPurchase) / product.purchaseSteps > selectQuantityThreshold %}
+
+    {% block zen_component_product_box_action_buy_widget %}
+        <div class="buy-widget-container{% if theme_config('zen-buy-quantity-style') is same as ('input') or (theme_config('zen-buy-quantity-style') is same as ('select') and selectQuantityThresholdExceeded) %} quantity-input{% else %} quantity-select{% endif %}">
+
+            {% block zen_component_product_box_action_buy_widget_quantity %}
+                {% if theme_config('zen-buy-quantity-style') is same as ('input') or (theme_config('zen-buy-quantity-style') is same as ('select') and selectQuantityThresholdExceeded) %}
+                    {% block zen_component_product_box_action_buy_widget_quantity_zenit_input %}
+                        <div class="form-row">
+                            <div class="{{ quantityCol }}">
+                                {% sw_include '@zenitPlatformStratus/storefront/component/buy-widget/zen-buy-widget-quantity.html.twig' with {
+                                    value: product.value,
+                                    id:  product.id,
+                                    minPurchase: product.minPurchase,
+                                    maxPurchase: product.calculatedMaxPurchase,
+                                    step: product.purchaseSteps,
+                                    name: "lineItems[#{ product.id }][quantity]",
+                                    quantityClasses: 'product-listing-quantity-input'
+                                } %}</div>
+                            <div class="{{ buttonCol }}">
+                                <button class="btn btn-block btn-buy{% if theme_config('zen-product-listing-card-actions-quickview') %} btn-icon-only{% endif %}"
+                                        title="{{ "listing.boxAddProduct"|trans|striptags }}">
+                                    {% sw_icon 'bag' %}
+                                </button>
+                            </div>
+                        </div>
+                    {% endblock %}
+                {% else %}
+                    {% block zen_component_product_box_action_buy_widget_quantity_input_group %}
+                        <div class="input-group">
+                            {% if (product.calculatedMaxPurchase - product.minPurchase) / product.purchaseSteps > selectQuantityThreshold %}
+                                {% block zen_component_product_box_action_buy_widget_quantity_input %}
+                                    <input
+                                        type="number"
+                                        name="lineItems[{{ product.id }}][quantity]"
+                                        class="form-control product-listing-quantity-input"
+                                        min="{{ product.minPurchase }}"
+                                        max="{{ product.calculatedMaxPurchase }}"
+                                        step="{{ product.purchaseSteps }}"
+                                        value="{{ product.minPurchase }}"
+                                    />
+                                {% endblock %}
+                            {% else %}
+                                {% block zen_component_product_box_action_buy_widgetquantity_select %}
+                                    <select name="lineItems[{{ product.id }}][quantity]"
+                                            class="custom-select product-listing-quantity-select">
+                                        {% for quantity in range(product.minPurchase, product.calculatedMaxPurchase, product.purchaseSteps) %}
+                                            <option value="{{ quantity }}">
+                                                {{ quantity }}
+                                                {% if quantity == 1 %}
+                                                    {% if product.translated.packUnit %} {{ product.translated.packUnit }}{% endif %}
+                                                {% else %}
+                                                    {% if product.translated.packUnitPlural %}
+                                                        {{ product.translated.packUnitPlural }}
+                                                    {% elseif product.translated.packUnit %}
+                                                        {{ product.translated.packUnit }}
+                                                    {% endif %}
+                                                {% endif %}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                {% endblock %}
+                            {% endif %}
+
+                            <div class="input-group-append">
+                                <button class="btn btn-block btn-buy{% if theme_config('zen-product-listing-card-actions-quickview') %} btn-icon-only{% endif %}"
+                                        title="{{ "listing.boxAddProduct"|trans|striptags }}">
+                                    {% sw_icon 'bag' %}
+                                </button>
+                            </div>
+                        </div>
+                    {% endblock %}
+                {% endif %}
+            {% endblock %}
+
+        </div>
+    {% endblock %}
+{% endblock %}

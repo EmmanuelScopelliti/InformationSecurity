@@ -1,0 +1,55 @@
+{% sw_extends '@Storefront/storefront/section/cms-section-block-container.html.twig' %}
+
+{% block section_content_block_background_image %}
+    {% if block.backgroundMedia %}
+        {% set attributes = {
+            class: "cms-block-background media-mode--" ~ block.backgroundMediaMode
+        } %}
+
+        {# ... enables lazy loading for images #}
+        {% if config('zenitPlatformStratus.config.lazyloading') %}
+            {% set attributes = attributes|merge({ 'loading': 'lazy' }) %}
+        {% endif %}
+
+        {% sw_thumbnails 'cms-block-background' with {
+            media: block.backgroundMedia
+        } %}
+    {% endif %}
+{% endblock %}
+
+{% block section_content_block_container %}
+    {# ... add auto settings as fallback #}
+    {# ... if null or auto, use value from the css stylesheet! #}
+    {% set top = block.marginTop|length ? block.marginTop : 'auto' %}
+    {% set right = block.marginRight|length ? block.marginRight : 'auto' %}
+    {% set bottom = block.marginBottom|length ? block.marginBottom : 'auto' %}
+    {% set left = block.marginLeft|length ? block.marginLeft : 'auto' %}
+
+    {# ... set horizontal auto spacings for locked cms product_detail default page #}
+    {% if cmsPage.type === 'product_detail' and cmsPage.locked === true %}
+        {% if block.marginLeft === '0' %}
+            {% set left = 'auto' %}
+        {% endif %}
+        {% if block.marginRight === '0' %}
+            {% set right = 'auto' %}
+        {% endif %}
+    {% endif %}
+
+    {# ... set horizontal auto spacings for locked cms product_list default page #}
+    {% if cmsPage.type === 'product_list' and cmsPage.locked === true %}
+        {% if block.marginLeft === '20px' %}
+            {% set left = 'auto' %}
+        {% endif %}
+        {% if block.marginRight === '20px' %}
+            {% set right = 'auto' %}
+        {% endif %}
+    {% endif %}
+
+    {# ... split padding into separeted properties #}
+    {# ... using padding instead of margins to prevent collapsing margins #}
+    <div class="cms-block-container"
+         style="{% if top is not same as ('auto') %}padding-top: {{ top }};{% endif %}{% if right is not same as ('auto') %} padding-right: {{ right }};{% endif %}{% if bottom is not same as ('auto') %} padding-bottom: {{ bottom }};{% endif %}{% if left is not same as ('auto') %} padding-left: {{ left }};{% endif %}">
+
+        {{ block('section_content_block_row') }}
+    </div>
+{% endblock %}

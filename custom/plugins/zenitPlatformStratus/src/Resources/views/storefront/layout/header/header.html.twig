@@ -1,0 +1,232 @@
+{% sw_extends '@Storefront/storefront/layout/header/header.html.twig' %}
+
+{% block layout_header %}
+    {% set topBarStyle = theme_config('zen-top-bar-style') %}
+    {% if theme_config('zen-top-bar-style') is same as ('hidden') and (page.header.languages.count > 1 or page.header.currencies.count > 1 or config('zenitPlatformStratus.config.marketingActive')) %}
+        {% set topBarStyle = 'offcanvas' %}
+    {% else %}
+        {% set topBarStyle = theme_config('zen-top-bar-style') %}
+    {% endif %}
+
+    {% block layout_top_bar %}
+        {% if topBarStyle is same as('offcanvas') %}
+            {% if theme_config('zen-header-style') is not same as ('two-line') or (theme_config('zen-header-style') is same as ('two-line') and config('zenitPlatformStratus.config.marketingActive')) %}
+                <div class="d-none js-top-bar-offcanvas-initial-content">
+                    {% sw_include '@zenitPlatformStratus/storefront/layout/header/zen-top-bar-offcanvas.html.twig' with {topBarStyle: topBarStyle} %}
+                </div>
+            {% endif %}
+        {% else %}
+            {% if theme_config('zen-header-style') is not same as ('two-line') or (theme_config('zen-header-style') is same as ('two-line') and config('zenitPlatformStratus.config.marketingActive')) %}
+                <div class="collapse{% if topBarStyle is same as ('collapsible') or topBarStyle is same as ('default') %} show{% endif %}"
+                     id="topBarCollapse">
+                    {% sw_include '@Storefront/storefront/layout/header/top-bar.html.twig' with {topBarStyle: topBarStyle} %}
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endblock %}
+
+    {% block layout_header_navigation %}
+        <div class="nav-header {{ navHeaderClasses|join(' ') }}">
+            <div class="container">
+                <div class="header-row row header-gutters align-items-center {{ headerRowClasses }}">
+                    {% block layout_header_logo %}
+                        <div class="header-logo-col {{ logoClasses }}">
+                            {% sw_include '@Storefront/storefront/layout/header/logo.html.twig' %}
+                        </div>
+                    {% endblock %}
+
+                    {% if theme_config('zen-header-style') is same as ('single-line') %}
+                        {% block layout_header_main_navigation %}
+                            <div class="header-nav-col nav-main {{ mainNavigationClasses }} {{ navMainClasses|join(' ') }}">
+                                {% block layout_header_main_navigation_inner %}
+                                    {% sw_include '@Storefront/storefront/layout/navigation/navigation.html.twig' %}
+                                {% endblock %}
+                            </div>
+                        {% endblock %}
+                    {% endif %}
+
+                    {% if theme_config('zen-header-style') is same as ('two-line') %}
+                        {% block zen_layout_header_top_bar %}
+                            <div class="header-top-bar-col {{ topBarClasses }}">
+                                <div class="row no-gutters">
+                                    {% block zen_layout_navigation_offcanvas_navigation_action_language %}
+                                        {% sw_include '@Storefront/storefront/layout/header/actions/language-widget.html.twig' %}
+                                    {% endblock %}
+
+                                    {% block zen_layout_navigation_offcanvas_navigation_action_currency %}
+                                        {% sw_include '@Storefront/storefront/layout/header/actions/currency-widget.html.twig' %}
+                                    {% endblock %}
+
+                                    {% block zen_layout_navigation_offcanvas_navigation_action_service %}
+                                        {% sw_include '@Storefront/storefront/layout/header/actions/service-menu-widget.html.twig' %}
+                                    {% endblock %}
+                                </div>
+                            </div>
+                        {% endblock %}
+                    {% endif %}
+
+                    {% block layout_header_navigation_toggle %}
+                        <div class="header-menu-button {{ mainNavigationToggleClasses }}">
+                            {% block layout_header_navigation_toggle_button %}
+                                <button class="btn nav-main-toggle-btn header-actions-btn"
+                                        type="button"
+                                        data-offcanvas-menu="true"
+                                        aria-label="{{ "general.menuLink"|trans|striptags }}">
+                                    {% block layout_header_navigation_toggle_button_icon %}
+                                        {% sw_icon 'stack' %}
+                                    {% endblock %}
+                                </button>
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
+
+                    {% block layout_header_search %}
+                        {% if theme_config('zen-search-style') is not same as('expandable') %}
+                            <div class="header-search-col {{ searchClasses }}">
+
+                                {% if theme_config('zen-search-style') is same as('overlay') %}
+                                    {% block zen_layout_header_search_overlay_close %}
+                                        <button class="d-none js-overlay-close"
+                                                type="button"
+                                                aria-label="Close">
+                                            {% block zen_layout_header_search_overlay_close_icon %}
+                                                {% sw_icon 'x' style { 'size': 'lg' } %}
+                                            {% endblock %}
+                                        </button>
+                                    {% endblock %}
+                                {% endif %}
+
+                                {% sw_include '@Storefront/storefront/layout/header/search.html.twig' %}
+                            </div>
+                        {% endif %}
+                    {% endblock %}
+
+                    {% block layout_header_actions %}
+                        <div class="header-actions-col {{ actionClasses }}">
+                            <div class="row no-gutters{% if theme_config('zen-logo-position') is not same as ('right') %} justify-content-end{% endif %}">
+                                {% block layout_header_search_toggle %}
+                                    <div class="col-auto{% if theme_config('zen-search-style') is same as('default') %} d-sm-none{% endif %}{% if theme_config('zen-header-style-mobile') is same as ('single-line') and theme_config('zen-logo-position') is same as ('center') %} mr-auto{% endif %}">
+                                        <div class="search-toggle">
+                                            <button class="btn header-actions-btn search-toggle-btn js-search-toggle-btn collapsed"
+                                                    type="button"
+                                                    {% if theme_config('zen-search-style') is same as('overlay') %}
+                                                        data-toggle="overlay"
+                                                    {% else %}
+                                                        data-toggle="collapse"
+                                                        data-target="#searchCollapse"
+                                                        aria-expanded="false"
+                                                        aria-controls="searchCollapse"
+                                                    {% endif %}
+                                                    aria-label="{{ "header.searchButton"|trans|striptags }}">
+                                                {% sw_icon 'search' %}
+                                                {% sw_icon 'x' style { 'class': 'search-close d-none' } %}
+                                            </button>
+                                        </div>
+                                    </div>
+                                {% endblock %}
+
+                                {% if config('core.cart.wishlistEnabled') %}
+                                    {% block layout_header_actions_wishlist %}
+                                        <div class="col-auto">
+                                            <div class="header-wishlist">
+                                                <a class="btn header-wishlist-btn header-actions-btn"
+                                                   href="{{ path('frontend.wishlist.page') }}"
+                                                   title="{{ 'header.wishlist'|trans|striptags }}"
+                                                   aria-label="{{ 'header.wishlist'|trans|striptags }}">
+                                                    {% sw_include '@Storefront/storefront/layout/header/actions/wishlist-widget.html.twig' %}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    {% endblock %}
+                                {% endif %}
+
+                                {% block layout_header_actions_account %}
+                                    <div class="col-auto">
+                                        <div class="account-menu">
+                                            {% sw_include '@Storefront/storefront/layout/header/actions/account-widget.html.twig' %}
+                                        </div>
+                                    </div>
+                                {% endblock %}
+
+                                {% block layout_header_actions_cart %}
+                                    <div class="col-auto">
+                                        <div class="header-cart"
+                                             data-offcanvas-cart="true">
+                                            <a class="btn header-cart-btn header-actions-btn"
+                                               href="{{ path('frontend.checkout.cart.page') }}"
+                                               data-cart-widget="true"
+                                               title="{{ 'checkout.cartTitle'|trans|striptags }}"
+                                               aria-label="{{ 'checkout.cartTitle'|trans|striptags }}">
+                                                {% sw_include '@Storefront/storefront/layout/header/actions/cart-widget.html.twig' %}
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endblock %}
+
+                                {% block zen_layout_header_top_bar_toggle %}
+                                    {# marketingBannerId is needed for storagekey invalidation #}
+                                    {% set marketingBanner = [] %}
+                                    {% set marketingBanner = [config('zenitPlatformStratus.config.marketingActive')]|merge(marketingBanner) %}
+                                    {% set marketingBanner = [config('zenitPlatformStratus.config.marketingText')]|merge(marketingBanner) %}
+                                    {% set marketingBanner = [config('zenitPlatformStratus.config.marketingButtonText')]|merge(marketingBanner) %}
+                                    {% set marketingBanner = [config('zenitPlatformStratus.config.marketingButtonLink')]|merge(marketingBanner) %}
+                                    {% set marketingBanner = [config('zenitPlatformStratus.config.marketingButtonTarget')]|merge(marketingBanner) %}
+                                    {% set marketingBannerId = marketingBanner|json_encode()|length %}
+
+                                    {% set zenCollapseTopBarOptions = {
+                                        id: topBarStyle ~ '-' ~ marketingBannerId,
+                                        type: topBarStyle
+                                    } %}
+
+                                    {% if topBarStyle is not same as ('default') and topBarStyle is not same as ('hidden')  %}
+                                        {% if theme_config('zen-header-style') is not same as ('two-line') or (theme_config('zen-header-style') is same as ('two-line') and config('zenitPlatformStratus.config.marketingActive')) %}
+                                            <div class="col-auto d-none d-lg-block">
+                                                <div class="top-bar-toggle">
+                                                    <button class="btn header-actions-btn top-bar-toggle-btn"
+                                                            type="button"
+                                                            aria-label="{{ "zentheme.general.moreLink"|trans|striptags }}"
+                                                        {% if topBarStyle is same as ('offcanvas') %}
+                                                            data-offcanvas-top-bar="true"
+                                                        {% endif %}
+                                                        {% if topBarStyle is same as ('collapsible') %}
+                                                            data-toggle="collapse"
+                                                            data-target="#topBarCollapse"
+                                                            aria-expanded="true"
+                                                            data-zen-collapse-top-bar-options="{{ zenCollapseTopBarOptions|json_encode }}"
+                                                        {% endif %}
+                                                        {% if topBarStyle is same as ('expandable') %}
+                                                            data-toggle="collapse"
+                                                            data-target="#topBarCollapse"
+                                                            aria-expanded="false"
+                                                            data-zen-collapse-top-bar-options="{{ zenCollapseTopBarOptions|json_encode }}"
+                                                        {% endif %}>
+                                                        {% if theme_config('zen-main-navigation-style') is same as ('offcanvas-lg')
+                                                            or theme_config('zen-main-navigation-style') is same as ('offcanvas-xl')
+                                                            or theme_config('zen-header-style') is same as ('single-line') and theme_config('zen-logo-position') is same as ('center') and theme_config('zen-header-style-mobile') is same as ('single-line') %}
+                                                            {% sw_icon 'more-vertical' %}
+                                                        {% else %}
+                                                            {% sw_icon 'stack' %}
+                                                        {% endif %}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endblock %}
+                            </div>
+                        </div>
+                    {% endblock %}
+                </div>
+            </div>
+
+            {% block layout_header_search_expandable %}
+                {% if theme_config('zen-search-style') is same as('expandable') %}
+                    <div class="header-search-col">
+                        {% sw_include '@Storefront/storefront/layout/header/search.html.twig' %}
+                    </div>
+                {% endif %}
+            {% endblock %}
+        </div>
+    {% endblock %}
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% sw_extends '@Storefront/storefront/page/content/product-detail.html.twig' %}
+
+{% block base_body %}
+    {# ... body classes #}
+    {% if galleryMode is same as ('scroller') %}
+        {% set bodyClasses = ['is-gallery-scroller']|merge(bodyClasses) %}
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}
+
+
+{% block page_content %}
+    {# ... checks if custom zenit-breadcrumb is in use #}
+    {% set defaultBreadcrumbs = true %}
+    {% for section in page.cmsPage.sections %}
+        {% for block in section.blocks %}
+            {% if block.type is same as ('zenit-breadcrumb') %}
+                {% set defaultBreadcrumbs = false %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+    {% block cms_breadcrumb %}
+        {% if defaultBreadcrumbs %}
+            <div class="breadcrumb-container">
+                <div class="container">
+                    <div class="breadcrumb-wrap cms-breadcrumb justify-content-{{ theme_config('zen-breadcrumbs-align')|replace({'flex-': ''}) }}">
+                        {% sw_include '@Storefront/storefront/layout/breadcrumb.html.twig' with {
+                            context: context,
+                            category: page.product.seoCategory
+                        } only %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endblock %}
+
+    {{ block('cms_content') }}
+{% endblock %}

@@ -1,0 +1,25 @@
+.is-act-cartpage {
+    .checkout {
+        .checkout-aside-container {
+            // needed, because of sticky header
+            @if $zen-header-style == single-line {
+                top: px($zen-header-height + $zen-header-padding-top);
+            } @else {
+                top: px($zen-header-height + $zen-main-navigation-height + $zen-header-padding-top);
+            }
+        }
+    }
+}
+
+.cart-add-product-container {
+    .input-group {
+        > .form-control {
+            // bugfix because of wrong placed label
+            &:not(:first-child) {
+                @if $zen-layout-forms-style != underlined {
+                    @include border-left-radius($zen-layout-input-radius * 1px);
+                }
+            }
+        }
+    }
+}

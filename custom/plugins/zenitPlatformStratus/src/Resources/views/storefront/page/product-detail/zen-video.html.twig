@@ -1,0 +1,58 @@
+{% sw_extends '@Storefront/storefront/utilities/offcanvas.html.twig' %}
+
+{% block utilities_offcanvas_content %}
+    {% block zen_page_product_detail_video_container %}
+        <div class="product-detail-video tab-pane-container">
+            {% block zen_page_product_detail_video_content %}
+                {% set videoIds = page.product.translated["customFields"]["zenit_stratus_youtube_ids"]|split(',') %}
+
+                {% for videoId in videoIds %}
+                    {% block zen_page_product_detail_video_embed %}
+                        <div class="product-video product-detail-youtube-video embed-responsive embed-responsive-16by9" itemprop="video">
+                            <div class="responsive-video">
+
+                                {% set videoId = videoId|trim %}
+                                {% set videoUrl = 'https://www.youtube-nocookie.com/embed/' %}
+                                {% set videoUrl = videoUrl ~ videoId ~ '?' ~ 'rel=0' ~ '&'  %}
+                                {% set iframeClass = 'embed-responsive-item' %}
+
+                                {% if config('zenitPlatformStratus.config.youtubeVideoConsent') %}
+                                    {% set pluginConfiguration = {
+                                        videoUrl: videoUrl,
+                                        iframeClasses: [ iframeClass ],
+                                        btnClasses: [ 'btn', 'btn-outline-secondary' ],
+                                        backdropClasses: [ 'cms-element-youtube-video__backdrop' ],
+                                        confirmButtonText: 'component.cms.vimeo.acceptButtonLabel'|trans,
+                                        overlayText: 'component.cms.vimeo.privacyNotice'|trans({
+                                            '%url%': path('frontend.cms.page',{ id: config('core.basicInformation.privacyPage') }),
+                                            '%platform%': 'YouTube'
+                                        })|raw
+                                    } %}
+
+                                    {% block zen_page_product_detail_video_placeholder %}
+                                        <div class="product-detail-youtube-video-placeholder"
+                                             data-cms-gdpr-video-element="true"
+                                             data-cms-gdpr-video-element-options="{{ pluginConfiguration|json_encode }}">
+                                            <div class="product-detail-youtube-video-placeholder-element">
+                                                {% if config('zenitPlatformStratus.config.youtubeVideoThumbnail') %}
+                                                    <img class="product-detail-youtube-video-placeholder-img" src="http://img.youtube.com/vi/{{ videoId }}/maxresdefault.jpg">
+                                                {% else %}
+                                                    {% sw_icon 'youtube' style {'pack': 'social',  'namespace': 'zenitPlatformStratus', 'size': 'fluid'} %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endblock %}
+                                {% else %}
+                                    <iframe class="{{ iframeClass }}"
+                                            src="{{ videoUrl }}">
+                                    </iframe>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endblock %}
+                {% endfor %}
+
+            {% endblock %}
+        </div>
+    {% endblock %}
+{% endblock %}

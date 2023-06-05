@@ -1,0 +1,37 @@
+{% sw_extends '@Storefront/storefront/block/cms-block-gallery-buybox.html.twig' %}
+
+{% block block_gallery_buybox %}
+    {% set galleryWidthConfig = theme_config('zen-product-gallery-slider-width') ?: 7 %}
+    {% set buyboxWidthConfig = theme_config('zen-product-gallery-slider-width') ? 12 - theme_config('zen-product-gallery-slider-width') : 5 %}
+
+    {% if galleryWidthConfig > 6 %}
+        {% set columns = 1 %}
+    {% else %}
+        {% set columns = 2 %}
+    {% endif %}
+
+    {% block block_gallery_buybox_column_left %}
+        {% set element = block.slots.getSlot('left') %}
+        {% set config = element.fieldConfig.elements %}
+
+        <div class="col-lg-7 col-xl-{{ galleryWidthConfig }} product-detail-media"
+             data-cms-element-id="{{ element.id }}">
+            {# ... @zenit add fallbackImageTitle #}
+            {% sw_include "@Storefront/storefront/element/cms-element-" ~ element.type ~ ".html.twig" ignore missing
+                with {
+                'isProduct': config.sliderItems.value == 'product.media' and config.sliderItems.source == 'mapped',
+                'startIndexThumbnails': 1,
+                'startIndexSlider': 1,
+                'fallbackImageTitle': page.product.translated.name
+            } %}
+        </div>
+    {% endblock %}
+
+    {% block block_gallery_buybox_column_right %}
+        {% set element = block.slots.getSlot('right') %}
+
+        <div class="col-lg-5 col-xl-{{ buyboxWidthConfig }} product-detail-buy" data-cms-element-id="{{ element.id }}" data-sticky-buybox="true">
+            {{ block('block_gallery_buybox_column_right_inner') }}
+        </div>
+    {% endblock %}
+{% endblock %}

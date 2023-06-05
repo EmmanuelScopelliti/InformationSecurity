@@ -1,0 +1,20 @@
+/*
+Theme variables
+==================================================
+Contains the imports to all variables that the theme uses.
+*/
+
+/*
+ * Variables, Mixins, Functions
+ * ---------------------------- */
+@import 'abstract/animations';
+@import 'abstract/mixins/strip-unit';
+@import 'abstract/mixins/hover';
+@import 'abstract/mixins/base';
+@import 'abstract/mixins/fixes';
+@import 'abstract/mixins/grid-of-five';
+@import 'abstract/mixins/cms-grid';
+@import 'abstract/mixins/footer-grid';
+
+@import 'abstract/variables/theme';
+@import 'abstract/variables/custom';

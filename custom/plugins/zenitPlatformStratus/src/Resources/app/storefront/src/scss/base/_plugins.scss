@@ -1,0 +1,21 @@
+// SwagCmsExtensions
+.product-action {
+    .swag-cms-extensions-quickview-listing-button-detail {
+        width: 100%;
+    }
+}
+
+// Buhl Hinsche / Module Factory - SwpAreaCalcSix
+.js-label-floating {
+    .area-calc-width-length {
+        label {
+            @if $zen-layout-forms-style == underlined {
+                left: calc(#{$input-padding-x} + (#{$grid-gutter-width} / 2));
+                right: calc(#{$input-padding-x} + (#{$grid-gutter-width} / 2));
+            } @else {
+                left: calc(#{$input-padding-x} + (#{$grid-gutter-width} / 2) + 1px);
+                right: calc(#{$input-padding-x} + (#{$grid-gutter-width} / 2) + 1px);
+            }
+        }
+    }
+}

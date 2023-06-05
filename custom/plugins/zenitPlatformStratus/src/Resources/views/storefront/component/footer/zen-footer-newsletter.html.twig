@@ -1,0 +1,71 @@
+{% sw_extends '@Storefront/storefront/element/cms-element-form/form-types/newsletter-form.html.twig' %}
+
+{% block cms_form_newsletter %}
+    <div class="cms-block cms-block-form newsletter-block">
+        <div class="cms-element-form">
+            <div class="footer-newsletter-content" data-newsletter-privacy="true">
+                {# ... content will be overwritten by success message #}
+                <p class="newsletter-inner-text">{{ "zentheme.footer.newsletterContent"|trans }}</p>
+
+                <form action="{{ path(action) }}"
+                      method="post"
+                      data-form-csrf-handler="true"
+                      data-form-validation="true">
+
+                    <div class="form-content">
+                        <div class="form-row row">
+                            <div class="footer-newsletter-column-input-email input-group col">
+                                {% block cms_form_newsletter_input_email %}
+                                    {% sw_include '@Storefront/storefront/element/cms-element-form/form-components/cms-element-form-input.html.twig'
+                                        with {
+                                        fieldName: 'email',
+                                        type: 'email',
+                                        required: true,
+                                        additionalClass: 'flex-fill mb-0',
+                                        label: 'newsletter.labelMail',
+                                        placeholder: 'newsletter.placeholderMail'
+                                    }
+                                    %}
+                                {% endblock %}
+
+                                {% block cms_form_newsletter_submit %}
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-primary"
+                                                aria-label="{{ "general.formSubmit"|trans|striptags }}">
+                                            {% sw_icon 'arrow-head-right' %}
+                                        </button>
+                                    </div>
+                                {% endblock %}
+                            </div>
+                            <div class="w-100"></div>
+                            {% block cms_form_newsletter_privacy %}
+                                <div class="footer-column-newsletter-privacy col">
+                                    {% sw_include '@Storefront/storefront/element/cms-element-form/form-components/cms-element-form-privacy.html.twig' with {
+                                        _key: 'footer'
+                                    } %}
+                                </div>
+                            {% endblock %}
+                        </div>
+
+                        {% block cms_form_newsletter_additional_fields %}{% endblock %}
+
+                        {% sw_include '@Storefront/storefront/component/captcha/base.html.twig' with { additionalClass : 'col-md-12'} %}
+
+                        {% block cms_form_newsletter_required_fields_info %}{% endblock %}
+                    </div>
+
+                    {% block cms_form_newsletter_hidden_fields %}
+                        <div class="form-hidden-fields">
+                            {% block cms_form_newsletter_csrf %}
+                                {{ sw_csrf(action) }}
+                            {% endblock %}
+
+                            <input type="hidden" name="option" value="{{ constant('Shopware\\Storefront\\Controller\\FormController::SUBSCRIBE') }}">
+                            <input type="submit" class="submit--hidden d-none" />
+                        </div>
+                    {% endblock %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

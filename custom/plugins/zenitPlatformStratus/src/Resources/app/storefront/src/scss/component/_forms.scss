@@ -1,0 +1,162 @@
+/*
+Form
+==============================================
+Custom skin styling for bootstrap forms.
+
+https://getbootstrap.com/docs/4.3/components/forms/
+*/
+
+.form-control {
+    font-size: $input-font-size; // prevent forms from using rfs()
+
+    @if $zen-layout-forms-style == underlined {
+        border-radius: 0;
+        border-top: none;
+        border-right: none;
+        border-left: none;
+        border-bottom-width: 1px;
+        background: transparent;
+    } @else {
+        @include border-radius($zen-layout-input-radius * 1px);
+    }
+
+    &:focus {
+        @if $zen-layout-forms-style == underlined {
+            background: transparent;
+        }
+
+        &::placeholder {
+            color: $zen-input-focus-placeholder-color;
+        }
+
+        /* Workaround for missing placeholder color in chrome */
+        /* stylelint-disable-next-line selector-no-vendor-prefix */
+        &::-webkit-input-placeholder {
+            color: $zen-input-focus-placeholder-color;
+        }
+    }
+}
+
+@if $zen-layout-forms-style != underlined and $zen-layout-input-radius == 100 {
+    textarea {
+        &.form-control {
+            @include border-radius(25px);
+        }
+    }
+}
+
+// floating labels
+.js-label-floating {
+    position: relative;
+
+    label {
+        position: absolute;
+        margin-bottom: 0;
+        pointer-events: none;
+        cursor: text;
+        transition: all .1s ease-in-out;
+        line-height: $input-line-height;
+        @include font-size($input-font-size);
+        color: lighten($zen-input-color, 10%);
+        font-weight: $zen-input-font-weight;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        @if $zen-layout-forms-style == underlined {
+            top: $input-padding-y;
+            left: calc(#{$input-padding-x});
+            right: calc(#{$input-padding-x});
+        } @else {
+            top: $input-padding-y + rem(1);
+            left: calc(#{$input-padding-x} + 1px);
+            right: calc(#{$input-padding-x} + 1px);
+        }
+    }
+
+    &[class*="col-"],
+    &[class*="col "],
+    &[class*=" col"] {
+        .form-row & {
+            label {
+                @if $zen-layout-forms-style == underlined {
+                    left: calc(#{$input-padding-x} + (#{$form-grid-gutter-width} / 2));
+                    right: calc(#{$input-padding-x} + (#{$form-grid-gutter-width} / 2));
+                } @else {
+                    left: calc(#{$input-padding-x} + (#{$form-grid-gutter-width} / 2) + 1px);
+                    right: calc(#{$input-padding-x} + (#{$form-grid-gutter-width} / 2) + 1px);
+                }
+            }
+        }
+    }
+
+    input {
+        &::-webkit-input-placeholder {
+            color: transparent;
+        }
+
+        &::-moz-placeholder {
+            color: transparent;
+        }
+
+        &:-ms-input-placeholder {
+            color: transparent;
+        }
+
+        &::-ms-input-placeholder {
+            color: transparent;
+        }
+
+        &::placeholder {
+            color: transparent;
+        }
+    }
+
+    select.custom-select {
+        color: transparent;
+
+        &:invalid {
+            color: transparent;
+        }
+
+        &:focus { // needed because js-focus does not work on firefox
+            color: $custom-select-color;
+        }
+    }
+}
+
+.js-floated {
+    label {
+        top: $input-padding-y - rem(5);
+        font-size: 10px;
+        color: rgba($zen-input-color, 70%);
+    }
+
+    input,
+    .form-control {
+        padding-top: $input-padding-y + rem(5);
+        padding-bottom: $input-padding-y - rem(5);
+    }
+
+    select.custom-select {
+        color: $custom-select-color;
+        padding-top: $custom-select-padding-y + rem(5);
+        padding-bottom: $custom-select-padding-y - rem(5);
+    }
+}
+
+.js-focus {
+    select.custom-select {
+        color: $custom-select-color;
+    }
+
+    label {
+        color: $zen-input-focus-color;
+    }
+}
+
+.js-hover {
+    label {
+        color: $zen-input-focus-color;
+    }
+}

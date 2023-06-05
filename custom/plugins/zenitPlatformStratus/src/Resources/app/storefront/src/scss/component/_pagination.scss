@@ -1,0 +1,103 @@
+.pagination {
+    .page-item {
+        &.disabled {
+            @if $zen-layout-pagination-hide-disabled == 1 {
+                display: none;
+            }
+
+            .page-link {
+                background: $pagination-disabled-bg;
+                color: $pagination-disabled-color;
+                border-color: $pagination-disabled-border-color;
+            }
+
+            a {
+                color: $pagination-disabled-color;
+            }
+        }
+
+        &.active {
+            a {
+                color: $pagination-active-color;
+            }
+        }
+    }
+}
+
+.page-link {
+    .icon > svg {
+        color: $pagination-color;
+    }
+
+    &:hover {
+        .icon > svg {
+            color: $pagination-hover-color;
+        }
+    }
+}
+
+.page-item {
+    &.active .page-link {
+        .icon > svg {
+            color: $pagination-active-color;
+        }
+    }
+
+    &.disabled .page-link {
+        .icon > svg {
+            color: $pagination-disabled-color;
+        }
+    }
+}
+
+
+.page-item {
+    @if $zen-layout-pagination-style == pills {
+        margin: 0 $spacer-xs;
+    }
+
+    @if $zen-layout-pagination-style == pills {
+        min-width: px($zen-font-size-base * 2.5);
+        height: px($zen-font-size-base * 2.5);
+    }
+
+    .page-link {
+        @if $zen-layout-pagination-border == 0 {
+            border: none;
+        }
+
+        @if $zen-layout-pagination-style == pills {
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .icon > svg {
+                top: 0;
+            }
+        }
+    }
+
+
+    @if $zen-layout-pagination-style == default {
+        &:first-child {
+            .page-link {
+                @include border-left-radius($zen-layout-button-radius * 1px);
+            }
+        }
+
+        &:last-child {
+            .page-link {
+                @include border-right-radius($zen-layout-button-radius * 1px);
+            }
+        }
+    } @else {
+        .page-link,
+        &:first-child .page-link,
+        &:last-child .page-link {
+            @include border-radius($zen-layout-button-radius * 1px);
+        }
+    }
+}

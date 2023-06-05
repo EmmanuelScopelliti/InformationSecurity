@@ -1,0 +1,75 @@
+{% sw_extends '@Storefront/storefront/page/product-detail/headline.html.twig' %}
+
+{% block page_product_detail_headline_inner %}
+    {# ... @zenit fallbacks for older child-themes without these configs #}
+    {% set productDetailRatingPosition = theme_config('zen-product-details-rating-position') ?: 'default' %}
+    {% set productDetailManufacturerPosition = theme_config('zen-product-details-manufacturer-position') ?: 'default' %}
+
+    {# ... add review position headline #}
+    {% if productDetailRatingPosition is same as ('headline') %}
+        {% set remoteClickOptions = {
+            selector: "#review-tab",
+            scrollToElement: true
+        } %}
+
+        {% block zen_page_product_detail_reviews %}
+            {% if page.product.ratingAverage > 0 and page.reviews.totalReviews > 0 and config('core.listing.showReview') %}
+                <div class="{% if productDetailManufacturerPosition is same as ('top') %}col-md-auto {% else%}col-12 {% endif %}product-detail-reviews-container">
+                    <span class="product-detail-reviews">
+                        {% sw_include '@Storefront/storefront/component/review/rating.html.twig' with {
+                            points: page.product.ratingAverage,
+                            style: 'text-primary'
+                        } %}
+                        <a data-toggle="tab"
+                           class="product-detail-reviews-link"
+                           data-offcanvas-tabs="true"
+                           data-remote-click="true"
+                           data-remote-click-options='{{ remoteClickOptions|json_encode }}'
+                           href="#review-tab-pane"
+                           aria-controls="review-tab-pane">
+                            {{ page.reviews.totalReviews}}
+                            {{ "detail.reviewLinkText"|trans({'%count%': page.reviews.totalReviews})|sw_sanitize }}
+                        </a>
+                    </span>
+                </div>
+            {% endif %}
+        {% endblock %}
+    {% endif %}
+
+    {% if productDetailManufacturerPosition is same as ('top') %}
+        {{ block('page_product_detail_manufacturer') }}
+    {% endif %}
+
+    {% block page_product_detail_name_container %}
+        <div class="{% if productDetailManufacturerPosition is same as ('default') %}col {% else%}col-12 {% endif %}product-detail-name-container">
+            {{ block('page_product_detail_name') }}
+        </div>
+    {% endblock %}
+
+    {% if productDetailManufacturerPosition is same as ('default') %}
+        {{ block('page_product_detail_manufacturer') }}
+    {% endif %}
+{% endblock %}
+
+{# ... add variant-characteristics #}
+{% block page_product_detail_name %}
+    {{ parent() }}
+
+    {# ... add variant characteristics #}
+    {% block zen_page_product_detail_variant_characteristics %}
+        {% if theme_config('zen-product-details-variant-characteristics') %}
+            <div class="product-variant-characteristics">
+                {% for variation in page.product.variation %}
+                    {{ variation.group }}:
+                    <span class="product-variant-characteristics-option">
+                        {{ variation.option }}
+                    </span>
+
+                    {% if page.product.variation|last != variation %}
+                        {{ " | " }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endblock %}
+{% endblock %}

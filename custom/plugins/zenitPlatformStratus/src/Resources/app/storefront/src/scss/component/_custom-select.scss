@@ -1,0 +1,40 @@
+/*
+Custom Select
+==============================================
+Custom skin styling for bootstrap custom select menu.
+
+https://getbootstrap.com/docs/4.3/components/forms/#select-menu
+*/
+
+.custom-select {
+    @if $zen-layout-forms-style == underlined {
+        border-radius: 0;
+        border-top: none;
+        border-right: none;
+        border-left: none;
+        border-bottom-width: 1px;
+        background-color: transparent;
+
+        /* ... if underlined selects have no background,
+        therefore the background icons then becomes relevant */
+        @if $zen-container-bg == transparent {
+            background: color-yiq($body-bg, $custom-select-background, $custom-select-light-background)
+        } @else {
+            background: color-yiq($zen-container-bg, $custom-select-background, $custom-select-light-background)
+        }
+
+    } @else {
+        @include border-radius($zen-layout-input-radius * 1px);
+    }
+
+    &:hover {
+        border-color: $input-focus-border-color;
+        color: $input-focus-color;
+
+        @if $zen-layout-forms-style == underlined {
+            background-color: transparent;
+        } @else {
+            background-color: $input-focus-bg;
+        }
+    }
+}

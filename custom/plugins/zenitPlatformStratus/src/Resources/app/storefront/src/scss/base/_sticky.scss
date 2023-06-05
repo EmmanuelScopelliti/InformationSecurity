@@ -1,0 +1,141 @@
+/*
+Sticky Header
+==================================================
+Contains the sticky header styles added by StickyHeader Plugin
+*/
+
+// on sticky state
+.js-sticky {
+    .header-inner {
+        position: fixed; // can't use sticky because of overflow-x: hidden on page-wrapper
+        top: 0;
+        right: 0;
+        left: 0;
+    }
+}
+
+.header-single-line {
+    &.js-sticky {
+        &:not(.js-sticky-hide) {
+            .header-inner {
+                @if $zen-sticky-header-offset != 0 {
+                    @extend .slide-in-top;
+                }
+            }
+        }
+
+        &.js-sticky-hide {
+            // on scroll down state
+            &.js-sticky-down {
+                &:not(.js-sticky-initial-hidden) {
+                    .header-inner {
+                        @extend .slide-out-top;
+                    }
+                }
+
+                &.js-sticky-initial-hidden {
+                    .header-inner {
+                        transform: translateY(-100%);
+                    }
+                }
+            }
+
+            // on scroll up state
+            &.js-sticky-up {
+                .header-inner {
+                    @extend .slide-in-top;
+                }
+            }
+        }
+    }
+}
+
+
+.header-multi-line,
+.header-two-line {
+    &.js-sticky {
+
+        // slide in animation only if there is a category navigation line
+        $breakpoint: null;
+        @if $zen-main-navigation-style == offcanvas-md {
+            $breakpoint: lg;
+        } @else if $zen-main-navigation-style == offcanvas-lg {
+            $breakpoint: xl;
+        }
+
+        @if $zen-main-navigation-style != offcanvas-xl {
+            @include media-breakpoint-up($breakpoint) {
+                .header-inner {
+                    animation: slide-in-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+                }
+            }
+        }
+
+        &.js-sticky-hide {
+            $breakpoint: null;
+            @if $zen-main-navigation-style == offcanvas-md {
+                $breakpoint: md;
+            } @else if $zen-main-navigation-style == offcanvas-lg {
+                $breakpoint: lg;
+            } @else if $zen-main-navigation-style == offcanvas-xl {
+                $breakpoint: xl;
+            }
+
+            @include media-breakpoint-down($breakpoint) {
+                // on scroll down state
+                &.js-sticky-down {
+                    &:not(.js-sticky-initial-hidden) {
+                        .header-inner {
+                            animation: slide-out-top 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+                        }
+                    }
+
+                    &.js-sticky-initial-hidden {
+                        .header-inner {
+                            transform: translateY(-100%);
+                        }
+                    }
+                }
+
+                // on scroll up state
+                &.js-sticky-up {
+                    .header-inner {
+                        animation: slide-in-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+                    }
+                }
+            }
+
+            .nav-main {
+                transition: transform .4s ease;
+                transform: translateY(-300px);
+                z-index: -1;
+
+                // transform do not affect document flow, therefore I have to set it to absolute position so that header-inner can shrink by the height of the navigation.
+                position: absolute;
+                width: 100%;
+            }
+
+            // on scroll up state
+            &.js-sticky-up {
+                .nav-main {
+                    transition: transform .4s ease;
+                    transform: translateY(0);
+                    animation: position;
+                    animation-delay: .35s;
+                    animation-fill-mode: forwards;
+                }
+
+                // need to affect header-inner height, because of drop shadow
+                @keyframes position {
+                    from {
+                        position: absolute;
+                    }
+                    to {
+                        position: relative;
+                    }
+                }
+            }
+        }
+    }
+}
+

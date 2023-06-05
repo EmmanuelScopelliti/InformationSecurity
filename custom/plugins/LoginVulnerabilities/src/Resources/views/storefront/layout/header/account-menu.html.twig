@@ -1,0 +1,13 @@
+{% sw_extends '@Storefront/storefront/layout/header/account-menu.html.twig' %}
+
+{% block layout_header_actions_account_widget_dropdown_login %}
+    {% if not context.customer %}
+        <div class="account-menu-login">
+            <a href="{{ path('frontend.account.login.page') }}"
+               title="{{ "account.loginSubmit"|trans|striptags }}"
+               class="btn btn-primary account-menu-login-button">
+                {{ "account.loginSubmit"|trans|sw_sanitize }}
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}

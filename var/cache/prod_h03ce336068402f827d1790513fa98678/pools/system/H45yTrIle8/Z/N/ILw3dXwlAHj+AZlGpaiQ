@@ -1,0 +1,42 @@
+<?php //Shopware%255CCore%255CContent%255CCategory%255CSalesChannel%255CCategoryListRoute%2523load
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Shopware\\Core\\Framework\\Routing\\Annotation\\Since'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Shopware\\Core\\Framework\\Routing\\Annotation\\Since')),
+        clone ($p['Shopware\\Core\\Framework\\Routing\\Annotation\\Entity'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Shopware\\Core\\Framework\\Routing\\Annotation\\Entity')),
+        clone ($p['Symfony\\Component\\Routing\\Annotation\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Routing\\Annotation\\Route')),
+    ],
+    null,
+    [
+        'Shopware\\Core\\Framework\\Routing\\Annotation\\Since' => [
+            'value' => [
+                '6.3.2.0',
+            ],
+        ],
+        'Shopware\\Core\\Framework\\Routing\\Annotation\\Entity' => [
+            'value' => [
+                1 => 'category',
+            ],
+        ],
+        'Symfony\\Component\\Routing\\Annotation\\Route' => [
+            'path' => [
+                2 => '/store-api/category',
+            ],
+            'name' => [
+                2 => 'store-api.category.search',
+            ],
+            'methods' => [
+                2 => [
+                    'GET',
+                    'POST',
+                ],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[2],
+    ],
+    []
+); }];

@@ -1,0 +1,102 @@
+/*
+Button
+==============================================
+Custom skin styling for bootstrap button component.
+
+https://getbootstrap.com/docs/4.3/components/buttons/
+*/
+
+.btn {
+    @include border-radius($zen-layout-button-radius * 1px);
+
+    .icon > svg {
+        @include transition($btn-transition);
+    }
+}
+
+//
+// Alternate buttons
+//
+
+@each $color, $value in $theme-colors {
+    .btn-#{$color} {
+        box-shadow: 0 0 0 0 $value;
+
+        &:hover,
+        &:focus {
+            box-shadow: 0 0 0 .2rem darken($value, 7.5%);
+            border-color: darken($value, 7.5%);
+        }
+    }
+}
+
+@each $color, $value in $theme-colors {
+    .btn-outline-#{$color} {
+        box-shadow: 0 0 0 0 $value;
+
+        &:hover,
+        &:focus {
+            box-shadow:0 0 0 .2rem $value;
+        }
+    }
+}
+
+.btn-buy {
+    box-shadow: 0 0 0 0 $buy-btn-bg;
+
+    &:hover,
+    &:focus {
+        box-shadow: 0 0 0 .2rem darken($buy-btn-bg, 7.5%);
+        border-color: darken($buy-btn-bg, 7.5%);
+    }
+}
+
+.input-group {
+    .btn {
+        &:hover {
+            box-shadow: none;
+        }
+    }
+}
+
+.offcanvas-close {
+    &.btn {
+        &:hover {
+            box-shadow: none;
+        }
+    }
+}
+
+.btn-link {
+    border-radius: 0;
+}
+
+.btn,
+.btn-buy {
+    &.disabled,
+    &:disabled {
+        color: $disabled-btn-color;
+    }
+}
+
+.cart-item-remove-button {
+    height: $input-height;
+    width: $input-height;
+    padding: 0;
+}
+
+.btn-icon-only {
+    display: flex;
+    justify-content: center;
+    font-size: $input-font-size;
+    line-height: $input-height;
+    height: $input-height;
+    width: $input-height;
+    padding: 0;
+
+    .icon {
+        > svg {
+            top: 0;
+        }
+    }
+}

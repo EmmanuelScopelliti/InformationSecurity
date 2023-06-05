@@ -1,0 +1,27 @@
+<?php //Shopware%255CCore%255CContent%255CImportExport%255CController%255CImportExportActionController%2523prepareTemplateFileDownload
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['Symfony\\Component\\Routing\\Annotation\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Routing\\Annotation\\Route')),
+    ],
+    null,
+    [
+        'Symfony\\Component\\Routing\\Annotation\\Route' => [
+            'path' => [
+                '/api/_action/import-export/prepare-template-file-download',
+            ],
+            'name' => [
+                'api.action.import_export.template_file.prepare_download',
+            ],
+            'methods' => [
+                [
+                    'POST',
+                ],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+    ],
+    []
+); }];

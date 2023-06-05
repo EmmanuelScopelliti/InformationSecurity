@@ -1,0 +1,179 @@
+{% sw_extends '@Storefront/storefront/page/product-detail/index.html.twig' %}
+
+{% block base_body %}
+    {# ... body classes #}
+    {% if galleryMode is same as ('scroller') %}
+        {% set bodyClasses = ['is-gallery-scroller']|merge(bodyClasses) %}
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block base_main_inner %}
+    {# ... remove .container here #}
+    {{ block('base_main_container') }}
+{% endblock %}
+
+{% block base_breadcrumb %}
+    <div class="breadcrumb-container">
+        <div class="container">
+            {{ parent() }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block base_content %}
+    {% block page_product_detail %}
+
+        <div class="product-detail"
+             itemscope
+             itemtype="https://schema.org/Product">
+            {% block page_product_detail_inner %}
+                {% block page_product_detail_content %}
+                    <div class="product-detail-content">
+                        <div class="container">
+                            {# ... removed headline here #}
+
+                            {% set mediaItems = page.product.media.media %}
+
+                            {% block page_product_detail_main %}
+
+                                {# ... these settings are only available on default product-pages (non-cms product pages) #}
+                                {% set galleryWidthConfig = theme_config('zen-product-gallery-slider-width') ?: 7 %}
+                                {% set buyboxWidthConfig = theme_config('zen-product-gallery-slider-width') ? 12 - theme_config('zen-product-gallery-slider-width') : 5 %}
+                                {% set displayModeConfig = theme_config('zen-product-gallery-slider-display-mode') ?: 'contain' %}
+                                {% set verticalAlignConfig = theme_config('zen-product-gallery-slider-vertical-align') ?: 'center' %}
+                                {% set minHeightConfig = theme_config('zen-product-gallery-slider-min-height-desktop') ? theme_config('zen-product-gallery-slider-min-height-desktop')  ~ 'px' : '430px' %}
+                                {% set navigationArrowsConfig = theme_config('zen-product-gallery-slider-navigation-arrows') ?: 'inside' %}
+                                {% set navigationDotsConfig = theme_config('zen-product-gallery-slider-navigation-dots') ?: 'inside' %}
+                                {% set galleryPositionConfig = theme_config('zen-product-gallery-slider-gallery-position') ?: 'left' %}
+                                {% set thumbnailsConfig = thumbnailsConfig ? thumbnailsConfig : true %}
+
+                                {% if buyboxWidthConfig is same as (0) %}
+                                    {% set buyboxWidthConfig = 12 %}
+                                {% endif %}
+
+                                {% if theme_config('zen-product-gallery-slider-zoom') is null %}
+                                    {# fallback for older child-themes without this config #}
+                                    {% set zoomConfig = true %}
+                                {% else %}
+                                    {% set zoomConfig = theme_config('zen-product-gallery-slider-zoom') %}
+                                {% endif %}
+
+                                {% if theme_config('zen-product-gallery-slider-zoom-modal') is null %}
+                                    {# fallback for older child-themes without this config #}
+                                    {% set zoomModalConfig = true %}
+                                {% else %}
+                                    {% set zoomModalConfig = theme_config('zen-product-gallery-slider-zoom-modal') %}
+                                {% endif %}
+
+                                {% if theme_config('zen-product-gallery-slider-keep-aspect-ratio-on-zoom') is null %}
+                                    {# fallback for older child-themes without this config #}
+                                    {% set keepAspectRatioOnZoom = false %}
+                                {% else %}
+                                    {% set keepAspectRatioOnZoom = theme_config('zen-product-gallery-slider-keep-aspect-ratio-on-zoom') %}
+                                {% endif %}
+
+                                {% if theme_config('zen-product-gallery-slider-magnifier-over-gallery') is null %}
+                                    {# fallback for older child-themes without this config #}
+                                    {% set magnifierOverGallery = false %}
+                                {% else %}
+                                    {% set magnifierOverGallery = theme_config('zen-product-gallery-slider-magnifier-over-gallery') %}
+                                {% endif %}
+
+                                {% if navigationArrowsConfig is same as ('none') %}
+                                    {% set navigationArrowsConfig = null %}
+                                {% endif %}
+
+                                {% if navigationDotsConfig is same as ('none') %}
+                                    {% set navigationDotsConfig = null %}
+                                {% endif %}
+
+                                {% if galleryPositionConfig is same as ('none') %}
+                                    {# if gallery position is none, behave like underneath and hides the thumbnails #}
+                                    {% set galleryPositionConfig = 'underneath' %}
+                                    {% set hideThumbnailsConfig = true %}
+                                {% endif %}
+
+                                {% if theme_config("zen-category-header-position") is same as ('absolute') or (theme_config("zen-category-header-position") is same as ('relative') and zenCustomFields.category.zenit_stratus_category_header_position is same as ('absolute')) %}
+                                    {% set sectionCategoryOverlay = true %}
+                                {% endif %}
+
+                                <div class="row product-detail-main">
+                                    {% block page_product_detail_media %}
+                                        <div class="col-lg-7 col-xl-{{ galleryWidthConfig }} product-detail-media">
+                                            {% if page.product.media %}
+                                                {% sw_include '@Storefront/storefront/element/cms-element-image-gallery.html.twig' with {
+                                                    'mediaItems': mediaItems,
+                                                    'zoom': zoomConfig,
+                                                    'zoomModal': zoomModalConfig,
+                                                    'displayMode': displayModeConfig,
+                                                    'verticalAlign': verticalAlignConfig,
+                                                    'gutter': gutterConfig,
+                                                    'minHeight': minHeightConfig,
+                                                    'navigationArrows': navigationArrowsConfig,
+                                                    'navigationDots': navigationDotsConfig,
+                                                    'galleryPosition': galleryPositionConfig,
+                                                    'hideThumbnails': hideThumbnailsConfig,
+                                                    'isProduct': true,
+                                                    'fallbackImageTitle': page.product.translated.name,
+                                                    'startIndexThumbnails': 1,
+                                                    'startIndexSlider': 1,
+                                                    'keepAspectRatioOnZoom': keepAspectRatioOnZoom
+                                                } %}
+                                            {% endif %}
+                                        </div>
+                                    {% endblock %}
+
+                                    {% block page_product_detail_buy %}
+                                        <div class="col-lg-5 col-xl-{{ buyboxWidthConfig }} product-detail-buy" data-sticky-buybox="true">
+
+                                            {# ... add headline here #}
+                                            {% block page_product_detail_headline %}
+                                                <div class="row product-detail-headline">
+                                                    {% sw_include '@Storefront/storefront/page/product-detail/headline.html.twig' %}
+                                                </div>
+                                            {% endblock %}
+
+                                            {# ... add short description #}
+                                            {% block zen_page_product_detail_short_description %}
+                                                {% if page.product.translated.metaDescription and theme_config('zen-product-details-short-description') %}
+                                                    <div class="product-detail-short-description">
+                                                        {{ page.product.translated.metaDescription|raw }}
+                                                    </div>
+                                                {% endif %}
+                                            {% endblock %}
+
+                                            {% sw_include '@Storefront/storefront/page/product-detail/buy-widget.html.twig' %}
+                                        </div>
+                                    {% endblock %}
+                                </div>
+                            {% endblock %}
+                        </div>
+                    </div>
+                {% endblock %}
+
+                {% block page_product_detail_tabs %}
+                    <div class="product-detail-tabs">
+                        <div class="container">
+                            {% sw_include '@Storefront/storefront/page/product-detail/tabs.html.twig' %}
+                        </div>
+                    </div>
+                {% endblock %}
+
+                {% block page_product_detail_cross_selling %}
+                    {% if page.crossSellings.elements is not empty %}
+                        <div class="product-detail-tabs product-detail-cross-selling">
+                            <div class="container">
+                                {% sw_include '@Storefront/storefront/page/product-detail/cross-selling/tabs.html.twig' with {
+                                    crossSellings: page.crossSellings
+                                } %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endblock %}
+
+            {% endblock %}
+        </div>
+    {% endblock %}
+{% endblock %}

@@ -1,0 +1,342 @@
+/*
+CMS elements
+==============================================
+General styling for cms elements
+*/
+.cms-element-product-slider {
+    .cms-element-title {
+        @include headline-color-contrast;
+        font-family: $sw-font-family-headline;
+        font-size: 1.5rem;
+    }
+}
+
+.cms-element-text,
+.cms-element-image,
+.cms-element-product-box,
+.cms-element-buy-box,
+.cms-element-product-slider,
+.cms-element-image-slider,
+.cms-element-product-description-reviews,
+.cms-element-image-gallery {
+
+    // ... needed to make bootstrap responsive tables work
+    [class*="table-responsive"] {
+        word-break: initial;
+    }
+}
+
+// zenit teaser element
+.cms-element-zen-teaser {
+    overflow: hidden; // ... because of animations
+    position: relative;
+    height: 100%;
+    word-break: break-word;
+
+    &.has-vertical-alignment {
+        display: flex;
+        height: 100%;
+    }
+
+    .cms-teaser-image {
+        transition: all .3s ease;
+        display: block;
+        max-width: 100%;
+    }
+
+    .cms-teaser-image-container {
+        display: block;
+        max-width: 100%;
+        position: relative;
+
+        &.is-cover {
+            object-fit: contain;
+            font-family: 'object-fit: contain;'; // IE polyfill
+            height: 100%;
+
+            .cms-teaser-image {
+                object-fit: cover;
+                font-family: 'object-fit: cover;'; // IE polyfill
+                height: 100%;
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+            }
+        }
+
+        &.is-cover,
+        &.is-stretch {
+            .cms-teaser-image {
+                width: 100%;
+            }
+        }
+    }
+
+    .cms-teaser-image-inner {
+        display: block;
+        height: 100%;
+    }
+
+    .cms-teaser-image-link {
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    .cms-teaser-content-container,
+    .cms-teaser-overlay,
+    .cms-teaser-text-container {
+        display: flex;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+
+    .cms-teaser-text {
+        position: relative;
+        color: $sw-text-color;
+        font-size: $font-size-base;
+        line-height: 1;
+        font-weight: $font-weight-base;
+        padding: 8px 16px;
+        margin: 20px;
+        border-radius: 2px;
+    }
+
+    .cms-teaser-text-value {
+        transition: all .3s ease;
+    }
+
+    // initial states for animation-in entrance animations
+    .animation-in-fade-in,
+    .animation-in-fade-in-top,
+    .animation-in-slide-in-top,
+    .animation-in-slide-in-bottom,
+    .animation-in-slide-in-left,
+    .animation-in-slide-in-right ,
+    .animation-in-slide-in-bck-center,
+    .animation-in-slide-in-blurred-top,
+    .animation-in-slide-in-blurred-bottom,
+    .animation-in-puff-in-center,
+    .animation-in-flip-in-hor-top,
+    .animation-in-flip-in-hor-bottom {
+        opacity: 0;
+    }
+
+    // triggers the opposite animation
+    .js-animation-in {
+        .animation-in-fade-out { @extend .fade-out }
+        .animation-in-fade-out-top { @extend .fade-out-top }
+        .animation-in-slide-out-top { @extend .slide-out-top }
+        .animation-in-slide-out-bottom { @extend .slide-out-bottom }
+        .animation-in-slide-out-left { @extend .slide-out-left }
+        .animation-in-slide-out-right { @extend .slide-out-right }
+        .animation-in-slide-out-bck-center { @extend .slide-out-bck-center }
+        .animation-in-slide-out-blurred-top { @extend .slide-out-blurred-top }
+        .animation-in-slide-out-blurred-bottom { @extend .slide-out-blurred-bottom }
+        .animation-in-puff-out-center { @extend .puff-out-center }
+        .animation-in-flip-out-hor-top { @extend .flip-out-hor-top }
+        .animation-in-flip-out-hor-bottom { @extend .flip-out-hor-bottom }
+        .animation-in-fade-in { @extend .fade-in }
+        .animation-in-fade-in-top { @extend .fade-in-top }
+        .animation-in-slide-in-top { @extend .slide-in-top }
+        .animation-in-slide-in-bottom { @extend .slide-in-bottom }
+        .animation-in-slide-in-left { @extend .slide-in-left }
+        .animation-in-slide-in-right { @extend .slide-in-right }
+        .animation-in-slide-in-bck-center { @extend .slide-in-bck-center }
+        .animation-in-slide-in-blurred-top { @extend .slide-in-blurred-top }
+        .animation-in-slide-in-blurred-bottom { @extend .slide-in-blurred-bottom }
+        .animation-in-puff-in-center { @extend .puff-in-center }
+        .animation-in-flip-in-hor-top { @extend .flip-in-hor-top }
+        .animation-in-flip-in-hor-bottom { @extend .flip-in-hor-bottom }
+    }
+
+    .js-animation-out {
+        .animation-out-fade-out { @extend .fade-out }
+        .animation-out-fade-out-top { @extend .fade-out-top }
+        .animation-out-slide-out-top { @extend .slide-out-top }
+        .animation-out-slide-out-bottom { @extend .slide-out-bottom }
+        .animation-out-slide-out-left { @extend .slide-out-left }
+        .animation-out-slide-out-right { @extend .slide-out-right }
+        .animation-out-slide-out-bck-center { @extend .slide-out-bck-center }
+        .animation-out-slide-out-blurred-top { @extend .slide-out-blurred-top }
+        .animation-out-slide-out-blurred-bottom { @extend .slide-out-blurred-bottom }
+        .animation-out-puff-out-center { @extend .puff-out-center }
+        .animation-out-flip-out-hor-top { @extend .flip-out-hor-top }
+        .animation-out-flip-out-hor-bottom { @extend .flip-out-hor-bottom }
+        .animation-out-fade-in { @extend .fade-in }
+        .animation-out-fade-in-top { @extend .fade-in-top }
+        .animation-out-slide-in-top { @extend .slide-in-top }
+        .animation-out-slide-in-bottom { @extend .slide-in-bottom }
+        .animation-out-slide-in-left { @extend .slide-in-left }
+        .animation-out-slide-in-right { @extend .slide-in-right }
+        .animation-out-slide-in-bck-center { @extend .slide-in-bck-center }
+        .animation-out-slide-in-blurred-top { @extend .slide-in-blurred-top }
+        .animation-out-slide-in-blurred-bottom { @extend .slide-in-blurred-bottom }
+        .animation-out-puff-in-center { @extend .puff-in-center }
+        .animation-out-flip-in-hor-top { @extend .flip-in-hor-top }
+        .animation-out-flip-in-hor-bottom { @extend .flip-in-hor-bottom }
+    }
+
+    .icon-cms-teaser {
+        transition: all .3s ease;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+
+        > svg {
+            top: 0;
+        }
+    }
+
+    &.hover-text-show-arrow {
+        .icon-cms-teaser {
+            opacity: 0;
+            left: 90%;
+        }
+
+        &:hover {
+            .icon-cms-teaser {
+                opacity: 1;
+                left: calc(100% - 12px);
+            }
+        }
+    }
+
+    &.hover-image-zoom {
+        &:hover {
+            .cms-teaser-image {
+                transition-duration: 1s;
+                transform: scale(1.1);
+            }
+        }
+    }
+}
+
+// zenit grid placeholder element
+.cms-element-zen-grid-placeholder {
+    height: 100%;
+
+    .card {
+        min-height: 120px;
+        height: 100%;
+        border-radius: 8px;
+        border: 2px dashed $gray-300;
+    }
+
+    .card-body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cms-block-zen-layout-simple &,
+    .cms-block-zen-layout-simple-reversed & {
+        padding-top: 0;
+        padding-bottom: 0;
+
+        &.card {
+            min-height: 300px;
+        }
+    }
+}
+
+// zenit features element
+.cms-element-zenit-features {
+    .cms-element-zenit-features-element {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 10px 0;
+
+        @include media-breakpoint-up(lg) {
+            justify-content: flex-start;
+        }
+
+        .icon-cms-element-zenit-features-icon {
+            margin-right: $spacer-sm;
+            color: $sw-text-color;
+            flex-shrink: 0;
+
+            > svg {
+                top: 0;
+            }
+        }
+
+        .cms-element-zenit-features-text {
+            font-family: $sw-font-family-headline;
+            font-size: $h4-font-size;
+            font-weight: $font-weight-bolder;
+
+            @include media-breakpoint-up(lg) {
+                flex-grow: 1;
+            }
+        }
+    }
+}
+
+.cms-element-product-listing-actions {
+    position: relative;
+
+    @if $zen-product-listing-actions-border-top == 1 {
+        padding-top: $spacer-lg;
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: $grid-gutter-single-width;
+            right: $grid-gutter-single-width;
+            height: 1px;
+            background: $zen-product-listing-actions-border-top-color;
+            bottom: 100%;
+        }
+    }
+
+    @if $zen-product-listing-actions-border-bottom == 1 {
+        padding-bottom: $spacer-lg;
+
+        &::after {
+            content: '';
+            position: absolute;
+            left: $grid-gutter-single-width;
+            right: $grid-gutter-single-width;
+            height: 1px;
+            background: $zen-product-listing-actions-border-bottom-color;
+            top: 100%;
+        }
+    }
+}
+
+
+.cms-element-product-listing {
+    .cms-listing-row {
+        @if $zen-product-listing-card-padding <= 8 {
+            margin-top: $spacer-lg;
+            margin-bottom: $spacer-lg;
+        } @else if $zen-product-listing-card-padding <= 16 {
+            margin-top: $spacer-sm;
+            margin-bottom: $spacer-sm;
+        }
+    }
+
+    @media (max-width: 374px) {
+        .cms-listing-col {
+            &.col-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+    }
+}
+
+
+.element-loader-backdrop-open {
+    > div {
+        background: rgba(255, 255, 255, 0.85);
+        color: $sw-text-color;
+    }
+}

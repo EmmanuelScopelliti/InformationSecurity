@@ -1,0 +1,73 @@
+.header-minimal {
+    background-color: $zen-header-bg;
+    color: $zen-header-color;
+    margin-top: px($zen-header-padding-top-mobile);
+
+    @include media-breakpoint-up(lg) {
+        margin-top: px($zen-header-padding-top);
+    }
+}
+
+.header-minimal-logo {
+    height: px($zen-header-height-mobile);
+    //
+    //@if $zen-logo-position == center {
+    //    order: 2;
+    //    justify-content: center;
+    //} @elseif $zen-logo-position == right {
+    //    order: 3;
+    //    justify-content: flex-end;
+    //}
+
+    @include media-breakpoint-up(lg) {
+        height: px($zen-header-height);
+    }
+}
+
+.header-minimal-contact {
+    //padding-top: $spacer-xs;
+    //padding-bottom: $spacer-xs;
+
+    //@if $zen-logo-position == center {
+    //    order: 1;
+    //} @elseif $zen-logo-position == right {
+    //    order: 2;
+    //    justify-content: center;
+    //    text-align: center;
+    //} @else {
+    //    justify-content: center;
+    //    text-align: center;
+    //}
+
+    a {
+        color: $zen-header-color;
+    }
+}
+
+//.header-minimal-back-to-shop {
+//    @if $zen-logo-position == center {
+//        order: 3;
+//    } @elseif $zen-logo-position == right {
+//        order: 1;
+//        justify-content: flex-start;
+//    }
+//}
+
+.header-minimal-back-to-shop-button {
+    background: $zen-shop-navigation-bg;
+    color: $zen-shop-navigation-color;
+
+    .icon {
+        @include transition($transition-base);
+        color: $zen-shop-navigation-color;
+    }
+
+    &:hover {
+        background: $zen-shop-navigation-hover-bg;
+        color: $zen-shop-navigation-hover-color;
+
+        .icon {
+            color: $zen-shop-navigation-hover-color;
+        }
+    }
+}

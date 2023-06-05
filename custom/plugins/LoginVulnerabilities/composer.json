@@ -1,0 +1,29 @@
+{
+  "name": "inf_sec/vulnerabilities_in_login",
+  "description": "Vulnerabilities in login page",
+  "type": "shopware-platform-plugin",
+  "authors": [
+    {
+      "name": "Emmanuel Scopelliti",
+      "homepage": "https://github.com/EmmanuelScopelliti"
+    },
+    {
+      "name": "Daniel Fischnaller",
+      "homepage": "https://github.com/fischi20"
+    }
+  ],
+  "version": "1.0.0",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "LoginVulnerabilities\\": "src/"
+    }
+  },
+  "extra": {
+    "shopware-plugin-class": "LoginVulnerabilities\\LoginVulnerabilities",
+    "label": {
+      "de-DE": "Login Vuln",
+      "en-GB": "Login Vuln"
+    }
+  }
+}

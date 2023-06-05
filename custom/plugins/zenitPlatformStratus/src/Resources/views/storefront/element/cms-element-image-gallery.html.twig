@@ -1,0 +1,199 @@
+{% sw_extends '@Storefront/storefront/element/cms-element-image-gallery.html.twig' %}
+
+{% block element_image_gallery %}
+    {# TODO: Check again as soon as Shopware solves the bug in the original code itself. #}
+    {% if element.fieldConfig is defined and element.data is defined %}
+        {% if not config %}
+            {% set config = element.fieldConfig.elements %}
+        {% endif %}
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block element_image_gallery_alignment %}
+    {% set magnifierOptions = magnifierOptions|merge({
+        'zoomFactor': theme_config('zen-product-gallery-slider-zoom-factor')?: 3
+    }) %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block element_image_gallery_inner_wrapper %}
+    {% if config('core.cart.wishlistEnabled') and page.product.id is not empty %}
+        {# ... @zenit fallback for older child-themes without this config #}
+        {% set productDetailWishlistPosition = theme_config('zen-product-details-wishlist-position') ?: 'default' %}
+        {% if productDetailWishlistPosition is same as ('gallery') %}
+            {% sw_include '@Storefront/storefront/component/product/card/wishlist.html.twig' with {
+                showText: false,
+                size: 'xl',
+                productId: page.product.id,
+                tooltip: true,
+                tooltipPlacement: 'left'
+            } %}
+        {% endif %}
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block element_image_gallery_slider_dots %}
+    {# ... add aria-label #}
+    {% if imageCount > 1 and navigationDots %}
+        <div class="base-slider-dots {% if imageCount > maxItemsToShowNav %} hide-dots{% elseif imageCount > maxItemsToShowMobileNav %} hide-dots-mobile{% endif %}">
+            {% block element_image_gallery_slider_dots_buttons %}
+                {% for image in mediaItems %}
+                    {% block element_image_gallery_slider_dots_button %}
+                        <button class="base-slider-dot"
+                                aria-label="base-slider-dot-{{ loop.index }}"
+                                data-nav-dot="{{ loop.index }}"
+                                tabindex="-1"></button>
+                    {% endblock %}
+                {% endfor %}
+            {% endblock %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block element_image_gallery_inner %}
+    {# ... add nav to false, otherwise the tns-nav would appear when there are no thumbnails #}
+    {% if hideThumbnails is same as (true) %}
+        {% set gallerySliderOptions = gallerySliderOptions|replace_recursive({
+            slider: {
+                nav: false
+            }
+        }) %}
+    {% endif %}
+
+    {# too many underneath thumbs or slider dots make them hard to see #}
+    {% set maxItemsToShowMobileNav = theme_config('zen-max-items-to-show-mobile-nav') ?: 5 %}
+    {% set maxItemsToShowNav = theme_config('zen-max-items-to-show-nav') ?: 8 %}
+
+    <div class="row gallery-slider-row{% if imageCount == 1 %} is-single-image{% else %} is-loading{% endif %} js-gallery-zoom-modal-container"
+        {% if zoom %}
+            data-magnifier="true"
+        {% endif %}
+        {% if magnifierOptions|length > 0 %}
+            data-magnifier-options='{{ magnifierOptions|json_encode|raw }}'
+        {% endif %}
+        {% if imageCount > 1 %}
+            data-gallery-slider="true"
+            data-gallery-slider-options='{{ gallerySliderOptions|json_encode }}'
+        {% endif %}
+        {# ... @zenit add galleryMode #}
+        {% if galleryMode is same as ('scroller') and isProduct %}
+            data-zen-gallery-scroller="true"
+        {% endif %}
+        {% if galleryMode is same as ('grid') and isProduct %}
+            data-zen-gallery-grid="true"
+        {% endif %}>
+
+        {{ block('element_image_gallery_inner_col') }}
+
+        {{ block('element_image_gallery_inner_thumbnails_col') }}
+
+        {{ block('element_image_gallery_inner_zoom_modal_wrapper') }}
+
+    </div>
+{% endblock %}
+
+{% block element_image_gallery_inner_item %}
+    {# ... add container .gallery-slider-item-wrap #}
+    <div class="gallery-slider-item-container">
+        <div class="gallery-slider-item-wrap">
+
+            {% if theme_config('zen-product-gallery-fallback-image-title') is not same as ('default') %}
+                {% set fallbackImageTitle = image.fileName %}
+            {% endif %}
+
+            <div class="gallery-slider-item is-{{ displayMode }} js-magnifier-container"{% if minHeight and  (displayMode == "cover" or displayMode == "contain" ) %} style="min-height: {{ minHeight }}"{% endif %}>
+                {% set attributes = {
+                    'class': 'img-fluid gallery-slider-image magnifier-image js-magnifier-image',
+                    'alt': (image.translated.alt ?: fallbackImageTitle),
+                    'title': (image.translated.title ?: fallbackImageTitle),
+                    'data-full-image': image.url
+                } %}
+
+                {% if displayMode == 'cover' or displayMode == 'contain' %}
+                    {% set attributes = attributes|merge({ 'data-object-fit': displayMode }) %}
+                {% endif %}
+
+                {% if isProduct %}
+                    {% set attributes = attributes|merge({ 'itemprop': 'image' }) %}
+                {% endif %}
+
+                {# ... enables lazy loading for images,
+                but only on cover mode, because of JS height calculation #}
+                {% if displayMode == 'cover' %}
+                    {% if config('zenitPlatformStratus.config.lazyloading') %}
+                        {% set attributes = attributes|merge({ 'loading': 'lazy' }) %}
+                    {% endif %}
+                {% endif %}
+
+                {% sw_thumbnails 'gallery-slider-image-thumbnails' with {
+                    media: image,
+                } %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block element_image_gallery_inner_single %}
+    <div class="gallery-slider-single-image is-{{ displayMode }}{% if imageCount <= 0 %} is-placeholder{% endif %} js-magnifier-container"{% if minHeight %} style="min-height: {{ imageCount > 0 ? minHeight : '430px' }}"{% endif %}>
+        {% if theme_config('zen-product-gallery-fallback-image-title') is not same as ('default') %}
+            {% set fallbackImageTitle = mediaItems|first.fileName %}
+        {% endif %}
+
+        {% if imageCount > 0 %}
+            {% set attributes = {
+                'class': 'img-fluid gallery-slider-image magnifier-image js-magnifier-image',
+                'alt': (mediaItems|first.translated.alt ?: fallbackImageTitle),
+                'title': (mediaItems|first.translated.title ?: fallbackImageTitle),
+                'data-full-image': mediaItems|first.url
+            } %}
+
+            {% if displayMode == 'cover' or displayMode == 'contain' %}
+                {% set attributes = attributes|merge({ 'data-object-fit': displayMode }) %}
+            {% endif %}
+
+            {% if isProduct %}
+                {% set attributes = attributes|merge({ 'itemprop': 'image' }) %}
+            {% endif %}
+
+            {# ... enables lazy loading for images #}
+            {% if config('zenitPlatformStratus.config.lazyloading') %}
+                {% set attributes = attributes|merge({ 'loading': 'lazy' }) %}
+            {% endif %}
+
+            {% sw_thumbnails 'gallery-slider-image-thumbnails' with {
+                media: mediaItems|first
+            } %}
+        {% else %}
+            {% sw_icon 'placeholder' style {
+                'size': 'fluid'
+            } %}
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block element_image_gallery_inner_thumbnails_col %}
+    {% if hideThumbnails is not same as (true) %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block element_image_gallery_inner_thumbnails_item_inner %}
+    {% if theme_config('zen-product-gallery-fallback-image-title') is not same as ('default') %}
+        {% set fallbackImageTitle = image.fileName %}
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block element_image_gallery_inner_zoom_modal_slider_item_image %}
+    {% if theme_config('zen-product-gallery-fallback-image-title') is not same as ('default') %}
+        {% set fallbackImageTitle = image.fileName %}
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}

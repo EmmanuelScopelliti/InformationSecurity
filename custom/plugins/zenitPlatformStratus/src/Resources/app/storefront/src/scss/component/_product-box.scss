@@ -1,0 +1,842 @@
+.product-box {
+    transition: transform 500ms cubic-bezier(0.34, 2, 0.6, 1), box-shadow 200ms ease;
+
+    @if $zen-product-listing-card-border== 0 {
+        background: transparent;
+    }
+
+    @if $zen-product-listing-card-shadow == 1 {
+        box-shadow: 0 0 px($zen-product-listing-card-padding * .5) $zen-product-listing-card-shadow-color;
+    }
+
+    &.card {
+        background: $zen-product-listing-card-bg;
+        border-color: $zen-product-listing-card-border-color;
+
+        @if $zen-product-listing-card-border == 0 {
+            border: 0;
+        }
+
+        .card-body {
+            overflow: hidden; // prevent seeing product-action animation from bottom
+            @if $zen-product-listing-card-border == 0
+            and $zen-product-listing-card-shadow == 0
+            and $zen-product-listing-card-hover-shadow == 0
+            and (($zen-container-bg != transparent and $zen-product-listing-card-bg == $zen-container-bg)
+            or ($zen-container-bg == transparent and $zen-product-listing-card-bg == $sw-background-color)) {
+                padding: 0;
+            } @else {
+                padding: $spacer;
+            }
+        }
+    }
+
+    &:hover {
+        @if $zen-product-listing-card-attention-animation == 1 {
+            transform: translateY(-5px);
+        }
+
+        @if $zen-product-listing-card-hover-shadow == 1 {
+            box-shadow: 0 px($zen-product-listing-card-padding * .5) px($zen-product-listing-card-padding * .75) $zen-product-listing-card-hover-shadow-color;
+        }
+    }
+
+    &.box-image {
+        .product-image-wrapper {
+            height: px($zen-product-listing-card-big-img-height);
+        }
+
+        .product-image {
+            max-height: px($zen-product-listing-card-big-img-height);
+        }
+    }
+
+    .product-image-wrapper {
+        overflow: hidden; // prevents actions buttons transition seen outside
+        margin-bottom: 0;
+        position: relative;
+        @include border-radius($zen-layout-element-radius * 1px);
+
+        .product-image-link {
+            overflow: hidden;
+            @include border-radius($zen-layout-element-radius * 1px);
+
+            @if $zen-product-listing-card-img-border == 1 {
+                border: 1px solid $zen-product-listing-card-img-border-color;
+            }
+
+            @if $zen-product-listing-card-img-color-overlay == 1 and $zen-product-listing-card-img-display-bg == 1 {
+                background-color: #fff;
+
+                &:after {
+                    content: '';
+                    background-color: $zen-product-listing-card-img-bg;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
+                    opacity: .03;
+                    pointer-events: none;
+                    @include border-radius($zen-layout-element-radius * 1px);
+                }
+            } @else if $zen-product-listing-card-img-display-bg == 1 {
+                background-color: $zen-product-listing-card-img-bg;
+            }
+        }
+
+        // keep aspect ratio on displayMode contain, standard and minimal
+        // (minimal mode is set on crossselling)
+        &.is-contain,
+        &.is-standard,
+        &.is-minimal {
+            @if $zen-product-listing-card-img-width == 0 or $zen-product-listing-card-img-height == 0 {
+                height: 0;
+                padding-top: percent($zen-product-listing-card-img-padding);
+            } @else {
+                height: 0;
+                padding-top: percent(strip-unit($zen-product-listing-card-img-height) / strip-unit($zen-product-listing-card-img-width) * 100);
+            }
+
+            .product-image-link {
+                position: absolute;
+                top: 0;
+            }
+
+            .product-image {
+                @include border-radius($zen-layout-element-radius * 1px);
+            }
+        }
+
+        &:hover {
+            @if $zen-product-listing-card-rating-position == overlay-bottom-center and $zen-product-listing-card-actions == overlay or $zen-product-listing-card-rating-position == overlay-top-right {
+                .product-rating {
+                    opacity: 0;
+                }
+            }
+        }
+    }
+
+    .product-price-info {
+        margin-top: 5px;
+
+        @if $zen-product-listing-card-rating-position == overlay-top-right and $zen-product-listing-card-actions == overlay {
+            margin-right: 45px;
+        }
+
+        .product-price-wrapper {
+            @include font-size($zen-product-listing-card-description-font-size);
+            text-align: $zen-product-listing-card-price-font-align;
+            color: $zen-product-listing-card-price-color;
+        }
+
+        .product-price-unit {
+            color: $zen-product-listing-card-product-price-unit-color;
+            @include font-size($zen-product-listing-card-product-price-unit-font-size);
+            font-weight: $zen-product-listing-card-product-price-unit-font-weight;
+            text-align: $zen-product-listing-card-product-price-unit-font-align;
+            height: px($zen-product-listing-card-product-price-unit-font-size * 2);
+            line-height: px($zen-product-listing-card-product-price-unit-font-size);
+            margin-bottom: $spacer-xs;
+        }
+
+        .product-cheapest-price {
+            color: $zen-product-listing-card-cheapest-price-color;
+            @include font-size($zen-product-listing-card-cheapest-price-font-size);
+            font-weight: $zen-product-listing-card-cheapest-price-font-weight;
+            text-align: $zen-product-listing-card-cheapest-price-font-align;
+            margin-bottom: $spacer-xs;
+
+            &.with-regulation-price,
+            &.with-list-price {
+                margin-bottom: $spacer-xs;
+            }
+        }
+
+        .product-price {
+            margin-top: 0;
+            @include font-size($zen-product-listing-card-price-font-size);
+            font-weight: $zen-product-listing-card-price-font-weight;
+            color: $zen-product-listing-card-price-color;
+            text-transform: $zen-product-listing-card-name-text-transform;
+
+            &.with-list-price {
+                color: $sw-color-danger;
+            }
+        }
+
+        .list-price {
+            color: rgba($zen-product-listing-card-description-color, 0.75);
+            text-decoration-color: rgba($zen-product-listing-card-description-color, 0.5);
+            font-weight: 500;
+        }
+
+        .regulation-price {
+            color: rgba($zen-product-listing-card-description-color, 0.75);
+        }
+    }
+
+    .product-image {
+        max-height: 100%;
+    }
+
+    .product-image-placeholder {
+        width: 100%;
+    }
+
+    .product-rating {
+        margin-top: $spacer-sm;
+        margin-bottom: $spacer-sm;
+        height: 16px;
+    }
+
+    .product-ordernumber {
+        @include font-size($zen-product-listing-card-ordernumber-font-size);
+        font-weight: $zen-product-listing-card-ordernumber-font-weight;
+        color: $zen-product-listing-card-ordernumber-color;
+        text-align: $zen-product-listing-card-ordernumber-font-align;
+        margin-top: $spacer-md;
+        line-height: 1.25;
+
+        ~ .product-name {
+            margin-top: 0;
+        }
+
+        .product-name ~ & {
+            margin-top: $spacer-sm;
+        }
+    }
+
+    .product-name {
+        @include font-size($zen-product-listing-card-name-font-size);
+        font-weight: $zen-product-listing-card-name-font-weight;
+        color: $zen-product-listing-card-name-color;
+        text-align: $zen-product-listing-card-name-font-align;
+        margin-bottom: 0;
+        margin-top: $spacer-md;
+        height: px($zen-product-listing-card-name-font-size * 2.5);
+        line-height: 1.25;
+        text-transform: $zen-product-listing-card-name-text-transform;
+        @include transition(color .3s ease-in);
+
+        @if $zen-product-listing-card-name-font-family == headline {
+            font-family: $headings-font-family;
+        }
+
+        &:hover {
+            color: $zen-product-listing-card-name-hover-color;
+        }
+    }
+
+    .product-variant-characteristics {
+        .product-variant-characteristics-text {
+            color: $zen-product-listing-card-variant-characteristics-color;
+            @include font-size($zen-product-listing-card-variant-characteristics-font-size);
+            font-weight: $zen-product-listing-card-variant-characteristics-font-weight;
+            text-align: $zen-product-listing-card-variant-characteristics-font-align;
+        }
+    }
+
+    .product-description {
+        $line-height-addition: 4;
+        margin-top: 5px;
+        @include font-size($zen-product-listing-card-description-font-size);
+        line-height: px($zen-product-listing-card-description-font-size + $line-height-addition);
+        height: px(($zen-product-listing-card-description-font-size + $line-height-addition) * 3);
+        font-weight: $zen-product-listing-card-description-font-weight;
+        color: $zen-product-listing-card-description-color;
+        text-align: $zen-product-listing-card-description-font-align;
+        position: relative;
+    }
+}
+
+// Overlapping product rating
+@if $zen-product-listing-card-rating-position != default {
+    .product-rating {
+        position: absolute;
+        margin-top: 0;
+        margin-bottom: 0;
+
+        @if $zen-product-listing-card-rating-position == overlay-bottom-center {
+            left: 0;
+            right: 0;
+            bottom: $spacer-md;
+            text-align: center;
+        } @else if $zen-product-listing-card-rating-position == overlay-top-right {
+            text-align: center;
+
+            @if $zen-product-listing-card-border == 0
+            and $zen-product-listing-card-shadow == 0
+            and $zen-product-listing-card-hover-shadow == 0
+            and (($zen-container-bg != transparent and $zen-product-listing-card-bg == $zen-container-bg)
+            or ($zen-container-bg == transparent and $zen-product-listing-card-bg == $sw-background-color)) {
+                top: $spacer-md;
+                right: $spacer-md;
+            } @else {
+                top: $spacer-sm;
+                right: $spacer-sm;
+            }
+        }
+
+        .product-review-rating {
+            margin: 0;
+        }
+    }
+}
+
+.product-wishlist {
+    margin: 0;
+}
+
+.product-wishlist-action-circle {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+
+    @if $zen-product-listing-card-rating-position != overlay-top-right {
+        top: $spacer;
+        bottom: auto;
+    }
+}
+
+// product actions
+.product-action {
+    display: flex;
+
+    .quickview-toggle {
+        margin-right: auto;
+
+        .btn-icon-only {
+            font-size: $input-font-size;
+            line-height: $input-height;
+            height: $input-height;
+            width: $input-height;
+            padding: 0;
+        }
+    }
+
+    .quickview-toggle ~ {
+        .buy-widget,
+        .btn-details {
+            margin-left: $spacer-md;
+            //line-height: $input-height;
+        }
+
+        .buy-widget {
+            .buy-widget-container {
+                &.quantity-input {
+                    max-width: 220px;
+                }
+
+                &.quantity-select {
+                    max-width: 120px;
+                }
+            }
+        }
+
+        .btn-buy {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+    }
+
+    .buy-widget {
+        flex-grow: 2;
+        width: 100%;
+
+        .buy-widget-container {
+            margin-left: auto;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .form-row {
+            flex: 1 1 auto;
+            justify-content: center;
+        }
+
+        .col {
+            max-width: 200px;
+        }
+
+        .input-group {
+            flex-wrap: nowrap;
+            justify-content: flex-end;
+        }
+
+        .btn-minus,
+        .btn-plus {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        .buy-widget-quantity-input {
+            height: auto;
+            min-width: 36px;
+            max-width: none;
+        }
+
+        .btn-icon-only {
+            font-size: $input-font-size;
+            line-height: $input-height;
+            height: $input-height;
+            width: $input-height;
+            padding: 0;
+        }
+    }
+
+    .btn-details {
+        font-size: $input-font-size;
+        line-height: $input-height;
+        height: $input-height;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    .quantity-input {
+        .buy-widget-quantity-input-group {
+            .icon {
+                @if $zen-product-listing-card-bg != transparent {
+                    color: color-yiq($zen-product-listing-card-bg, $sw-text-color, $zen-light-text-color);
+                }
+            }
+        }
+    }
+
+    .btn-buy {
+        font-size: $input-font-size;
+        line-height: $input-height;
+        height: $input-height;
+        padding-top: 0;
+        padding-bottom: 0;
+
+        &:hover {
+            .icon {
+                color: color-yiq($buy-btn-bg);
+            }
+        }
+
+        .icon {
+            color: $buy-btn-color;
+        }
+    }
+}
+
+@if $zen-product-listing-card-actions != default {
+    .product-image-wrapper {
+        .overlay-product-actions {
+            opacity: 0;
+            position: absolute;
+            transform: translate3d(150%,0,0);
+            transition: all .3s ease;
+            z-index: 1;
+
+            @if $zen-product-listing-card-border == 0
+            and $zen-product-listing-card-shadow == 0
+            and $zen-product-listing-card-hover-shadow == 0
+            and (($zen-container-bg != transparent and $zen-product-listing-card-bg == $zen-container-bg)
+            or ($zen-container-bg == transparent and $zen-product-listing-card-bg == $sw-background-color)) {
+                top: $spacer-md;
+                right: $spacer-md;
+            } @else {
+                top: $spacer-sm;
+                right: $spacer-sm;
+            }
+
+            button {
+                position: relative;
+                margin-bottom: 10px;
+                background: $white;
+                line-height: 40px;
+                height: 40px;
+                width: 40px;
+                @include transition($btn-transition);
+                @include border-radius($zen-layout-button-radius * 1px);
+                overflow: visible;
+
+                .icon {
+                    color: color-yiq($white);
+                }
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
+                    @include border-radius($zen-layout-button-radius * 1px);
+                    box-shadow: 0 2px 4px rgba($black, .15);
+                    z-index: -1;
+                }
+
+                &:hover {
+                    background: $sw-color-brand-primary;
+                    box-shadow: 0 0 0 .2rem rgba($sw-color-brand-primary, 1);
+
+                    .icon {
+                        color: color-yiq($sw-color-brand-primary);
+                    }
+                }
+            }
+
+            .product-wishlist-action-circle,
+            .product-wishlist-btn {
+                position: relative;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+            }
+
+            .btn-quickview {
+                border: none;
+
+                &.btn-icon-only {
+                    padding: 0;
+                }
+            }
+        }
+
+        &:hover {
+            .overlay-product-actions {
+                opacity: 1;
+                transform: translateZ(0);
+            }
+
+            @if $zen-product-listing-card-rating-position == overlay-bottom-center and $zen-product-listing-card-actions == overlay or $zen-product-listing-card-rating-position == overlay-top-right {
+                .product-rating {
+                    opacity: 0;
+                }
+            }
+        }
+    }
+}
+
+// Product action shift product info from below
+@if $zen-product-listing-card-actions == shiftbelow {
+    .product-box {
+        $offset: 75px;
+
+        .product-image-link {
+            @include transition(opacity .3s ease-in-out);
+        }
+
+        .product-info {
+            display: inline-block; // prevent collapsing margins
+            width: 100%; // prevent collapsing margins
+            position: relative;
+            margin-top: 0;
+            padding-bottom: 0;
+            @include transition(all .3s ease-in-out);
+            background: $zen-product-listing-card-bg;
+        }
+
+        .product-action {
+            position: absolute;
+            bottom: $offset * -1;
+            width: 100%;
+            visibility: hidden;
+            opacity: 0;
+            @include transition(all .3s ease-in-out);
+            pointer-events: none; // prevents transition from jumping between states
+
+            @if $zen-product-listing-card-border == 0 and $zen-product-listing-card-shadow == 0 and $zen-product-listing-card-hover-shadow == 0 {
+                padding: 1rem; // needed to prevent button shadow expansion by card-body overflow hidden
+            }
+        }
+
+        &:hover {
+            .product-image-link {
+                opacity: .7;
+                @include transition(opacity .3s ease-in-out);
+            }
+
+            .product-info {
+                margin-top: $offset * -1;
+                padding-bottom: $offset;
+            }
+
+            .product-action {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: all;
+                bottom: 0;
+            }
+
+            .overlay-product-actions {
+                opacity: 1;
+                transform: translateZ(0);
+            }
+
+            @if $zen-product-listing-card-rating-position == overlay-bottom-center and $zen-product-listing-card-actions == overlay or $zen-product-listing-card-rating-position == overlay-top-right {
+                .product-rating {
+                    opacity: 0;
+                }
+            }
+        }
+    }
+}
+
+// Product action overlaying product info
+@if $zen-product-listing-card-actions == overlayinfo {
+    .product-box {
+        .product-info {
+            position: relative;
+        }
+
+        .product-action {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            margin-top: 0;
+            margin-bottom: -80px;
+            visibility: hidden;
+            opacity: 0;
+            @include transition(all .3s ease-in-out);
+            pointer-events: none; // prevents transition from jumping between states
+            background: $zen-product-listing-card-bg;
+
+            @if $zen-product-listing-card-border == 0 and $zen-product-listing-card-shadow == 0 and $zen-product-listing-card-hover-shadow == 0 {
+                padding: 1rem; // needed to prevent button shadow expansion by card-body overflow hidden
+            }
+        }
+
+        &:hover {
+            .product-action {
+                opacity: 1;
+                margin-bottom: 0;
+                visibility: visible;
+                pointer-events: all;
+            }
+
+            .overlay-product-actions {
+                opacity: 1;
+                transform: translateZ(0);
+            }
+
+
+        }
+    }
+}
+
+// Product action overlaying product image
+@if $zen-product-listing-card-actions == overlay {
+    .product-image-wrapper {
+        .buy-widget {
+            .product-listing-quantity-select,
+            .product-listing-quantity-input {
+                background-color: $custom-select-bg;
+            }
+
+            .quantity-input {
+                .buy-widget-quantity-input-group {
+                    .custom-number {
+                        @if $zen-layout-forms-style == underlined {
+                            background-color: $zen-product-listing-card-bg;
+                            color: color-yiq($zen-product-listing-card-bg, $sw-text-color, $zen-light-text-color);
+                            border: none;
+                        } @else {
+                            @include border-radius(0);
+                            border-color: $zen-product-listing-card-bg;
+                        }
+                    }
+
+                    .btn {
+                        background-color: $zen-product-listing-card-bg;
+                        color: color-yiq($zen-product-listing-card-bg, $sw-text-color, $zen-light-text-color);
+                    }
+
+                    .btn-minus {
+                        @include border-right-radius(0);
+                    }
+
+                    .btn-plus {
+                        @include border-left-radius(0);
+                    }
+                }
+            }
+        }
+
+        .product-action {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            overflow: hidden;
+            margin-bottom: -80px;
+            visibility: hidden;
+            opacity: 0;
+            @include transition(all .3s ease-in-out);
+            pointer-events: none; // prevents transition from jumping between states
+
+            @if $zen-product-listing-card-border == 0
+            and $zen-product-listing-card-shadow == 0
+            and $zen-product-listing-card-hover-shadow == 0
+            and (($zen-container-bg != transparent and $zen-product-listing-card-bg == $zen-container-bg)
+            or ($zen-container-bg == transparent and $zen-product-listing-card-bg == $sw-background-color)) {
+                padding: $spacer-md;
+            } @else {
+                padding: $spacer-sm;
+            }
+        }
+
+        &:hover {
+            .product-action {
+                opacity: 1;
+                margin-bottom: 0;
+                visibility: visible;
+                pointer-events: all;
+            }
+        }
+    }
+}
+// cover switch
+.product-image-link {
+    .cover-switch {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        opacity: 0;
+    }
+}
+
+.js-animation-out {
+    .product-image {
+        &:first-child {
+            @if $zen-product-listing-card-img-switch == switch-fade {
+                @extend .fade-in-top;
+            }
+
+            @if $zen-product-listing-card-img-switch == switch-flip {
+                transform: rotateX(0);
+                @extend .flip-in-hor-bottom;
+            }
+
+            @if $zen-product-listing-card-img-switch == switch-slide {
+                transform: translateY(0);
+                filter: blur(0);
+                visibility: visible;
+                @extend .slide-in-blurred-bottom;
+            }
+        }
+
+        &.cover-switch {
+            @if $zen-product-listing-card-img-switch == switch {
+                @include transition($transition-opacity, $transition-transform);
+                opacity: 0;
+            }
+
+            @if $zen-product-listing-card-img-switch == switch-fade {
+                transform: translateY(-50px);
+                @extend .fade-out-top;
+            }
+
+            @if $zen-product-listing-card-img-switch == switch-flip {
+                transform: rotateX(70deg);
+                @extend .flip-out-hor-top;
+            }
+
+            @if $zen-product-listing-card-img-switch == switch-slide {
+                transform: translateY(-1000px) scaleY(2) scaleX(0.2);
+                transform-origin: 50% 0%;
+                filter: blur(40px);
+                @extend .slide-out-blurred-top;
+            }
+        }
+    }
+}
+
+.js-animation-in {
+    .product-image {
+        &:first-child {
+            @if $zen-product-listing-card-img-switch == switch {
+                @include transition($transition-opacity, $transition-transform);
+                opacity: 0;
+            }
+
+            @if $zen-product-listing-card-img-switch == switch-fade {
+                transform: translateY(-50px);
+                @extend .fade-out-top;
+            }
+
+            @if $zen-product-listing-card-img-switch == switch-flip {
+                transform: rotateX(70deg);
+                @extend .flip-out-hor-top;
+            }
+
+            @if $zen-product-listing-card-img-switch == switch-slide {
+                transform: translateY(-1000px) scaleY(2) scaleX(0.2);
+                transform-origin: 50% 0%;
+                filter: blur(40px);
+                @extend .slide-out-blurred-top;
+            }
+        }
+
+        &.cover-switch {
+            @if $zen-product-listing-card-img-switch == switch {
+                @include transition($transition-opacity, $transition-transform);
+                opacity: 1;
+                transform: scale3d(1.1,1.1,1.1) translateZ(0);
+            }
+
+            @if $zen-product-listing-card-img-switch == switch-fade {
+                transform: translateY(0);
+                @extend .fade-in-top;
+            }
+
+            @if $zen-product-listing-card-img-switch == switch-flip {
+                transform: rotateX(0);
+                @extend .flip-in-hor-bottom;
+            }
+
+            @if $zen-product-listing-card-img-switch == switch-slide {
+                transform: translateY(0);
+                filter: blur(0);
+                visibility: visible;
+                @extend .slide-in-blurred-bottom;
+            }
+        }
+    }
+}
+
+.product-badges {
+    pointer-events: none;
+
+    @if $zen-product-listing-card-border == 0
+        and $zen-product-listing-card-shadow == 0
+        and $zen-product-listing-card-hover-shadow == 0
+        and (($zen-container-bg != transparent and $zen-product-listing-card-bg == $zen-container-bg)
+        or ($zen-container-bg == transparent and $zen-product-listing-card-bg == $sw-background-color)) {
+        top: $spacer-md;
+        left: $spacer-md;
+    } @else {
+        top: $spacer-sm + 1rem;
+        left: $spacer-sm + 1rem;
+    }
+
+    .badge {
+        display: flex;
+        @include border-radius($zen-layout-input-radius * 1px);
+        pointer-events: initial;
+        float: left;
+        clear: both;
+        line-height: px($zen-product-badge-font-size + 10);
+        height: px($zen-product-badge-font-size + 10);
+        @include font-size($zen-product-badge-font-size);
+        padding: px($zen-product-badge-padding-horizontal - 10) px($zen-product-badge-padding-horizontal);
+        margin-left: px($zen-product-badge-margin-left);
+
+        .icon {
+            width: 14px;
+            height: 14px;
+            color: #fff;
+            margin-right: 5px;
+
+            > svg {
+                top: 0;
+            }
+        }
+
+    }
+}

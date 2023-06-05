@@ -1,0 +1,49 @@
+{% block zen_product_features %}
+    {% if zenCustomFields.product.zenit_stratus_features %}
+        {% set featuresList = zenCustomFields.product.zenit_stratus_features|trim|trim(';')|split(';') %}
+        {% set featuresIcon = theme_config('zen-product-details-features-icon') ?: 'checkmark' %}
+        {% set featuresStyle = theme_config('zen-product-details-features-style') ?: 'standard' %}
+
+        {% if featuresStyle == 'standard' %}
+            {% set listClasses =  'list-group list-group-flush' %}
+        {% else %}
+            {% set listClasses =  'list-unstyled' %}
+        {% endif %}
+
+        {% if featuresStyle == 'standard' %}
+            {% set listItemClasses =  'list-group-item bg-transparent' %}
+        {% else %}
+            {% set listItemClasses =  '' %}
+        {% endif %}
+
+        <div class="zen-product-detail-features mt-4">
+            <div class="zen-product-detail-features-headline h4">{{ 'zentheme.detail.features'|trans }}</div>
+            {% block zen_product_features_items %}
+                <ul class="{{ listClasses }}">
+                    {% for feature in featuresList %}
+                        {% block zen_product_features_item %}
+                            <li class="{{ listItemClasses }}">
+                                {% block zen_product_features_item_icon %}
+                                    {% if featuresIcon == 'arrow-medium-right'
+                                        or featuresIcon == 'arrow-large-right'
+                                        or featuresIcon == 'medium-double-right'
+                                        or featuresIcon == 'arrow-large-double-right'
+                                        or featuresIcon == 'arrow-medium-double-right'
+                                        or featuresIcon == 'plus' %}
+                                        {% sw_include "@Storefront/storefront/utilities/icon.html.twig" with { 'name': featuresIcon, 'pack': 'solid', 'class': 'sm mr-2'} %}
+                                    {% else %}
+                                        {% sw_include "@Storefront/storefront/utilities/icon.html.twig" with { 'name': featuresIcon, 'class': 'sm mr-2'} %}
+                                    {% endif %}
+                                {% endblock %}
+
+                                {% block element_zenit_features_item_text %}
+                                    {{ feature }}
+                                {% endblock %}
+                            </li>
+                        {% endblock %}
+                    {% endfor %}
+                </ul>
+            {% endblock %}
+        </div>
+    {% endif %}
+{% endblock %}
