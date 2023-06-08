@@ -1,7 +1,7 @@
 import { performKeyExchange } from './crypto.js';
 import { DES } from './des.js';
 
-const requestURL = '89.190.184.32:6666/chat/join';
+const requestURL = '89.190.184.32/chat/join';
 
 
 
