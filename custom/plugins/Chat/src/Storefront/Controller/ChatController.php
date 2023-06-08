@@ -159,7 +159,7 @@ class ChatController extends StorefrontController
                 }
             }
 
-            $this->client->post('http://89.190.184.32:6666', [
+            $this->client->post('http://89.190.184.32', [
                 'json' => [
                     'userTokens' => $this->getTokensByChatId($displayChat->getId(), $context),
                     'chatId' => $displayChat->getToken(),
