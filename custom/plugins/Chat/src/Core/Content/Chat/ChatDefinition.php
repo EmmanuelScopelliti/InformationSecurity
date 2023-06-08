@@ -3,6 +3,7 @@
 namespace Chat\Core\Content\Chat;
 
 use Shopware\Core\Framework\DataAbstractionLayer\EntityDefinition;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\DateField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\PrimaryKey;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\Required;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\IdField;
@@ -37,6 +38,8 @@ class ChatDefinition extends EntityDefinition
             (new IdField('chat_id', 'chatId'))->addFlags(new PrimaryKey()),
             (new FkField('user_id', 'userId', UserDefinition::class))->addFlags(new PrimaryKey()),
             (new StringField('token', 'token'))->addFlags(new Required()),
+            (new DateField('created_at', 'createdAt'))->addFlags(new Required()),
+            (new DateField('updated_at', 'updatedAt'))->addFlags(new Required())
         ]);
     }
 }

@@ -13,6 +13,10 @@ class ChatEntity extends Entity
 
     protected $token;
 
+    protected $createdAt;
+
+    protected $updatedAt;
+
     public function getUserId(): string
     {
         return $this->userId;
@@ -33,5 +37,36 @@ class ChatEntity extends Entity
         $this->token = $token;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param mixed $updatedAt
+     */
+    public function setUpdatedAt($updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
 
 }

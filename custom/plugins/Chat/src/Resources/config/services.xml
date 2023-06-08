@@ -5,9 +5,12 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="chat.controller.chat" class="Chat\Controller\ChatController" public="true">
+        <service id="Chat\Storefront\Controller\ChatController" public="true">
             <argument type="service" id="chat_entry.repository"/>
-            <argument type="service" id="Shopware\Core\System\User\UserRepository"/>
+            <argument type="service" id="user.repository"/>
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
         </service>
         <service class="Chat\Core\Content\Chat\ChatDefinition" id="chat.definition.chat" public="true">
             <tag name="shopware.entity.definition" entity="chat_entry"/> 
