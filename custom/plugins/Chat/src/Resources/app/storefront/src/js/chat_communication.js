@@ -6,7 +6,7 @@ const requestURL = '89.190.184.32:6666/chat/join';
 
 
 /**
- * @typedef {{message_type: 'message', chatId: string, from: ChatUser, message: string}} Message
+ * @typedef {{message_type: 'message', chatId: string, from: string, message: string}} Message
  */
 
 /**
@@ -46,7 +46,7 @@ export function getActiveChat() {
 /**
  * @returns {Promise<WebSocket>} - Promise resolving to the WebSocket connection.
  */
-function createWebSocketConnection() {
+function createWebSocketConnection(chatId, userToken) {
     return new Promise((resolve, reject) => {
         if (activeChat) {
             fetch(`http://${requestURL}`, {
@@ -55,12 +55,11 @@ function createWebSocketConnection() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    chatId: activeChat.chatId,
-                    userToken: activeChat.userToken
+                    chatId: chatId,
+                    userToken: userToken
                 })
             })
                 .then(res => {
-                    let keyExchangeState = 0;
                     if (res.headers.get('Upgrade') === 'websocket') {
                         const ws = new WebSocket(`ws://${requestURL}`);
                         resolve(ws);
@@ -112,11 +111,12 @@ export function setupChatCommunication(userId, onMessage, onLoad) {
         let chatState = getChatStateFromLocalStorage();
 
         const [chats, activeChatIndex] = getChatData();
-
-        createWebSocketConnection().then(ws => {
+        const activeChat = chats[activeChatIndex];
+        createWebSocketConnection(activeChat.chatId, activeChat.userToken).then(ws => {
             performKeyExchange(ws).then((desKey) => {
                 keyExchangeState = !!desKey;
                 const des = new DES(desKey)
+
                 ws.onmessage = createOnMessageHandler(0, onMessage);
 
 
@@ -127,6 +127,8 @@ export function setupChatCommunication(userId, onMessage, onLoad) {
                 ws.onclose = () => {
                     localStorage.setItem('chatData', JSON.stringify(chatData));
                 };
+
+                ws.send(des.encryptFull(JSON.stringify({ message_type: 'fetch_pending_messages' })))
 
                 const sendMessage = (message) => {
                     let messageString = JSON.stringify(message);

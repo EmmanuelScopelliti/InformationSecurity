@@ -4,8 +4,10 @@ import { Message } from './chat_communication.js';
 
 const chatel = document.getElementById('chat');
 
+
+
 export function getUserId() {
-    return chatel.dataset.userId;
+    return getChatData()[0][getChatData()[1]].userToken;
 }
 
 function getChatUsername(chatId) {

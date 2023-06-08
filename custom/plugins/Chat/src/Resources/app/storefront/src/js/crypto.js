@@ -11,18 +11,51 @@ const key = await crypto.subtle.generateKey(
     ["encrypt", "decrypt"]
 )
 
+
+
+export async function getRSAPublicKeyString() {
+    try {
+        // Export the public key as ArrayBuffer
+        const keyArrayBuffer = await crypto.subtle.exportKey('raw', cryptoKey);
+
+        // Convert the ArrayBuffer to a Uint8Array
+        const keyUint8Array = new Uint8Array(keyArrayBuffer);
+
+        // Convert the Uint8Array to a Base64-encoded string
+        const keyString = btoa(String.fromCharCode.apply(null, keyUint8Array));
+
+        return keyString;
+    } catch (error) {
+        console.error('Public key export error:', error);
+        throw error;
+    }
+}
+
 export function getRSAPublicKey() {
+
     return key.publicKey;
 }
 
+function arrayBufferToString(arrayBuffer) {
+    const decoder = new TextDecoder();
+    const decodedString = decoder.decode(arrayBuffer);
+    return decodedString;
+}
+
 export function decryptRSA(cyphertext) {
-    return crypto.subtle.decrypt(
-        {
-            name: "RSA-OAEP"
-        },
-        key.privateKey,
-        cyphertext
-    )
+    return new Promise((resolve, reject) => {
+        crypto.subtle.decrypt(
+            {
+                name: "RSA-OAEP"
+            },
+            key.privateKey,
+            cyphertext
+        ).then((decrypted) => {
+            resolve(arrayBufferToString(decrypted))
+        }).catch((err) => {
+            reject(err)
+        })
+    })
 }
 
 /**
@@ -50,22 +83,22 @@ export function performKeyExchange(ws, skip = false) {
                 case 'challenge': {
                     /**@type {{message_type: 'challenge',challenge: string}} */
                     const challangeMessage = data;
-                    const desKey = decryptRSA(challangeMessage.challenge);
-                    ws.send(
-                        des.encrypt(
+                    decryptRSA(challangeMessage.challenge).then(desKey => {
+                        des.generateKeys(desKey)
+                        ws.send(
                             JSON.stringify({
                                 message_type: 'challenge_response',
-                                challenge_response: desKey
+                                challenge_response: des.encryptFull(desKey)
                             })
                         )
-                    )
+                    });
                     break;
                 }
-                case 'challenge_confirm': {
+                case 'challenge_success': {
                     cleanupListener(ws)
                     resolve(desKey);
                 }
-                case 'challenge_reject': {
+                case 'challenge_fail': {
                     cleanupListener(ws)
                     resolve(false)
                 }
@@ -74,7 +107,7 @@ export function performKeyExchange(ws, skip = false) {
         ws.onopen = () => {
             ws.send(JSON.stringify({
                 message_type: 'pubKey',
-                key: getRSAPublicKey()
+                key: getRSAPublicKeyString()
             }))
         }
     })

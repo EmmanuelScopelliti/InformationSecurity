@@ -103,13 +103,24 @@ class ChatController extends StorefrontController
         return $tokens;
     }
 
+    private function chatIntersection($userChat, $otherChat)
+    {
+        $chats = [];
+        for ($i = 0; $i < count($userChat); $i++) {
+            for ($j = 0; $j < count($otherChat); $j++) {
+                if ($userChat[$i]->getId() == $otherChat[$j]->getId()) {
+                    chats[] = $otherChat[$i];
+                }
+            }
+        }
+        return $chats;
+    }
+
     /**
-     * @Route("/chat", name="frontend.chat.page", methods={"GET"})
+     * @Route("/chat?{chatId}&{userId}", name="frontend.chat.page", methods={"GET"})
      */
     public function showChatPage(Request $request, SalesChannelContext $context): Response
     {
-
-
         $userId = $context->getCustomer()->getId();
         $displayChats = $this->getOpenChats($userId, $context);
         $displayChat = null;
@@ -129,7 +140,7 @@ class ChatController extends StorefrontController
             ]), $context->getContext())->getEntities()->first();
 
 
-            $intersect = array_intersect($otherChat, $userChat);
+            $intersect = $this->chatIntersection($userChat, $otherChat);
 
             if (count($intersect) > 0) {
                 $displayChat = $intersect[0];
