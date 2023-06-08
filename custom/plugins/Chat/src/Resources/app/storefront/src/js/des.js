@@ -1,5 +1,32 @@
-const TextEncoder = new TextEncoder();
+export class LCG {
+    constructor(seed) {
+        this.seed = seed;
+        this.m = this.generateRandomModulus();
+        this.a = this.generateRandomMultiplier();
+        this.c = this.generateRandomIncrement();
+    }
 
+    generateRandomMultiplier() {
+        // Choose a random multiplier 'a' between 1 and m-1
+        return Math.floor(Math.random() * (this.m - 1)) + 1;
+    }
+
+    generateRandomIncrement() {
+        // Choose a random increment 'c' between 0 and m-1
+        return Math.floor(Math.random() * this.m);
+    }
+
+    generateRandomModulus() {
+        // Choose a random modulus 'm' greater than the multiplier 'a' and the increment 'c'
+        return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+    }
+
+    /** @returns {number} */
+    getNext() {
+        this.seed = (this.a * this.seed + this.c) % this.m;
+        return this.seed;
+    }
+}
 class Matrices {
     IP = [
         58, 50, 42, 34, 26, 18, 10, 2,
@@ -114,6 +141,8 @@ class Matrices {
 }
 
 const matrices = new Matrices();
+const lcg = new LCG(new Date().getTime());
+
 
 function splitStringEqually(str, n) {
     const chunks = str.match(new RegExp(`.{1,${n}}`, 'g')) || [];
@@ -133,7 +162,7 @@ function computeXOR(a, b) {
 
 function strToBin(str) {
     if (isBinary(str)) return str;
-
+    const txtEncoder = new TextEncoder();
     return Array.from(
         txtEncoder.encode(str),
         (byte) => byte.toString(2).padStart(8, '0')
@@ -158,8 +187,8 @@ function isBinary(str) {
 
 export function generateKey(length = 8) {
     return Array.from({ length }, () => {
-        lcg.getNext().toString('hex')
-    })
+        return lcg.getNext().toString(16).padStart(2, '0');
+    }).join('')
 }
 
 function encodeString(binary) {
@@ -290,8 +319,8 @@ export class DES {
      * @param {string} cyphertext cyphertext to be encoded 
      */
     decryptFull(cyphertext) {
-        const encodedCypher = des.encode(cyphertext);
-        const decryptedMessage = des.decrypt(...encodedCypher);
+        const encodedCypher = this.encode(cyphertext);
+        const decryptedMessage = this.decrypt(...encodedCypher);
         return binToStr(decryptedMessage);
     }
 
@@ -302,8 +331,7 @@ export class DES {
         */
     encryptFull(message) {
         const messageBin = strToBin(message);
-        const encodedMessage = des.encode(messageBin);
-        return des.encrypt(...encodedMessage);
+        const encodedMessage = this.encode(messageBin);
+        return this.encrypt(...encodedMessage);
     }
 }
-
