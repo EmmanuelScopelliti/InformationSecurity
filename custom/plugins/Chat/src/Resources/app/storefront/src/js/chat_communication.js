@@ -1,16 +1,15 @@
 import { performKeyExchange } from './crypto.js';
 import { DES } from './des.js';
 
+//change to correct url with IP address
 const requestURL = '89.190.184.32/chat/join';
-
-
 
 /**
  * @typedef {{message_type: 'message', chatId: string, from: string, message: string}} Message
  */
 
 /**
-     * @return {Record<string, Message[]>}
+* @return {Record<string, Message[]>}
 */
 function getChatStateFromLocalStorage() {
     return JSON.parse(localStorage.getItem('chatState')) || {};
@@ -20,16 +19,16 @@ function getChatStateFromLocalStorage() {
  * @returns {[{chatId: string, userToken: string, active: boolean, username: string}[], number]}
  */
 export function getChatData() {
-    const chatListItem = document.querySelector('.chat-list-item');
+    const chatListItem = document.querySelectorAll('.chat-list-item');
     let activeChatIndex = -1;
     const chatData = Array.from(chatListItem).map((chatListItem, index) => {
         const active = chatListItem.classList.contains('active');
         const linkEl = chatListItem.querySelector('a');
-        const chatId = linkEl.dataset.chatId;
+        const chatId = linkEl.dataset.chatid;
         const userToken = linkEl.dataset.userToken;
         const username = linkEl.innerText.trim();
 
-        const obj = { chatId, userToken, active, username };
+        const obj = { chatId, userToken: userToken, active, username };
         if (active) {
             activeChatIndex = index;
         }
@@ -48,28 +47,10 @@ export function getActiveChat() {
  */
 function createWebSocketConnection(chatId, userToken) {
     return new Promise((resolve, reject) => {
+        const activeChat = getActiveChat();
         if (activeChat) {
-            fetch(`http://${requestURL}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    chatId: chatId,
-                    userToken: userToken
-                })
-            })
-                .then(res => {
-                    if (res.headers.get('Upgrade') === 'websocket') {
-                        const ws = new WebSocket(`ws://${requestURL}`);
-                        resolve(ws);
-                    } else {
-                        reject('Server does not support WebSocket upgrade');
-                    }
-                })
-                .catch(err => {
-                    reject(err);
-                });
+            const ws = new WebSocket(`ws://${requestURL}/${activeChat.userToken}`);
+            resolve(ws);
         } else {
             reject('No active chat found');
         }
@@ -125,11 +106,13 @@ export function setupChatCommunication(userId, onMessage, onLoad) {
                 }
 
                 ws.onclose = () => {
+                    console.log('closing connection')
+                    console.log('keyExchangeState:', keyExchangeState)
                     localStorage.setItem('chatData', JSON.stringify(chatData));
                 };
 
                 ws.send(des.encryptFull(JSON.stringify({ message_type: 'fetch_pending_messages' })))
-
+                debugger;
                 const sendMessage = (message) => {
                     let messageString = JSON.stringify(message);
                     if (keyExchangeState) {
