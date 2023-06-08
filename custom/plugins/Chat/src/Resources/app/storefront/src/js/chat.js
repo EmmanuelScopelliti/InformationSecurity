@@ -1,9 +1,4 @@
-import Plugin from 'src/plugin-system/plugin.class';
 import { getActiveChat, getChatData, setupChatCommunication } from './chat_communication.js';
-import { Message } from './chat_communication.js';
-
-const chatel = document.getElementById('chat');
-
 
 
 export function getUserId() {
@@ -26,15 +21,24 @@ function prepareMessage(messageText, chatId, userId) {
 
 function sendListener(sendMessage, userId, chatId) {
     const sendButton = document.getElementById('chat-send');
+    const formSubmit = document.getElementById('chat-form');
     const messageInput = document.getElementById('chat-input');
 
-    sendButton.addEventListener('click', (ev) => {
+    const send = (ev) => {
         ev.preventDefault();
         const message = messageInput.value;
         messageInput.value = '';
         sendMessage(prepareMessage(message, chatId, userId));
         displayMessage(prepareMessage(message, chatId, userId), true);
+    }
+
+    sendButton.addEventListener('click', (ev) => {
+        send(ev);
     })
+
+    chatForm.addEventListener('submit', (ev) => {
+        send(ev);
+    });
 }
 
 /**
@@ -61,13 +65,15 @@ function displayMessage(message, self) {
     chatel.appendChild(msgDiv);
 }
 
+
+
 export function displayMessages(...messages) {
     messages.forEach(message => {
         displayMessage(message, chat.chatId, message.from.userId === getUserId());
     });
 }
 
-export default class Chat extends Plugin {
+export default class Chat {
     init() {
         window.addEventListener('load', this.onLoad.bind(this));
     }
