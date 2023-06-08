@@ -1,0 +1,7 @@
+{
+    "loginVulnerabilities" : {
+        "account" : {
+            "register" : "Ich bin ein Verkäufer"
+        }
+    }
+}

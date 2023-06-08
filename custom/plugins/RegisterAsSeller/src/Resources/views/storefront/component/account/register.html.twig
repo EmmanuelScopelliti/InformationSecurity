@@ -1,0 +1,11 @@
+{% sw_extends '@Storefront/storefront/component/account/register.html.twig' %}
+
+{% block component_account_register_personal_fields %}
+    {{ parent() }}
+    <div class="form-row">
+        <div class="form-group col-sm-6 custom-checkbox register-is-vendor">
+            <input type="checkbox" id="isVendor" class="custom-control-input is-vendor" name="isVendor" value="1">
+            <label for="isVendor" class="custom-control-label no-validation">{{ 'loginVulnerabilities.account.register'|trans }}</label>
+        </div>
+    </div>
+{% endblock %}
