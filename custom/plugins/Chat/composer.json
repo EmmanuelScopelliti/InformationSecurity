@@ -1,0 +1,29 @@
+{
+  "name": "inf_sec/chat",
+  "description": "Chat plugin",
+  "type": "shopware-platform-plugin",
+  "authors": [
+    {
+      "name": "Emmanuel Scopelliti",
+      "homepage": "https://github.com/EmmanuelScopelliti"
+    },
+    {
+      "name": "Daniel Fischnaller",
+      "homepage": "https://github.com/fischi20"
+    }
+  ],
+  "version": "1.0.0",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Chat\\": "src/"
+    }
+  },
+  "extra": {
+    "shopware-plugin-class": "Chat\\Chat",
+    "label": {
+      "de-DE": "Chat plugin",
+      "en-GB": "Chat plugin"
+    }
+  }
+}
