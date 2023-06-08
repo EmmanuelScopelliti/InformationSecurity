@@ -1,0 +1,7 @@
+{
+    "loginVulnerabilities" : {
+        "account" : {
+            "register" : "Sono un vendotore"
+        }
+    }
+}

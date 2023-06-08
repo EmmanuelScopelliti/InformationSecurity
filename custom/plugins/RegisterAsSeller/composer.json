@@ -1,0 +1,29 @@
+{
+  "name": "inf_sec/register_as_seller",
+  "description": "Register as seller",
+  "type": "shopware-platform-plugin",
+  "authors": [
+    {
+      "name": "Emmanuel Scopelliti",
+      "homepage": "https://github.com/EmmanuelScopelliti"
+    },
+    {
+      "name": "Daniel Fischnaller",
+      "homepage": "https://github.com/fischi20"
+    }
+  ],
+  "version": "1.0.0",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "RegisterAsSeller\\": "src/"
+    }
+  },
+  "extra": {
+    "shopware-plugin-class": "RegisterAsSeller\\RegisterAsSeller",
+    "label": {
+      "de-DE": "Register as Seller",
+      "en-GB": "Register as Seller"
+    }
+  }
+}

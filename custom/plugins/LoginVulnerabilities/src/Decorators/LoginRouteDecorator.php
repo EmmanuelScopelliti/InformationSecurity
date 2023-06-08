@@ -1,6 +1,6 @@
 <?php
 
-namespace LoginVulnerabilities\Controller\Decorators;
+namespace LoginVulnerabilities\Decorators;
 
 use Doctrine\DBAL\Connection;
 use Psr\EventDispatcher\EventDispatcherInterface;
